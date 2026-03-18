@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TheCodeKid — Learn Coding Like a Game</title>
+  <meta name="description" content="India's most engaging gamified coding education platform. Fun logic games, coding adventures, and real-world challenges for Class 1-12 students. A product of thecodekid.com" />
+  <meta name="keywords" content="coding for kids, learn programming, gamified coding, Indian coding platform, thecodekid, logic games, coding games" />
+  <link rel="canonical" href="https://learn.thecodekid.com/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="stylesheet" href="/styles/themes.css" />
+  <link rel="stylesheet" href="/styles/components.css" />
+  <link rel="stylesheet" href="/styles/animations.css" />
+  <link rel="stylesheet" href="/styles/responsive.css" />
+</head>
+<body data-theme="default">
+  <!-- Animated Background -->
+  <div class="animated-bg" id="animated-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="mesh-gradient"></div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Cursor Glow Effect -->
+  <div class="cursor-glow" id="cursor-glow"></div>
+
+  <!-- Navigation -->
+  <nav id="main-nav" class="navbar">
+    <div class="nav-inner">
+      <div class="nav-brand" id="nav-brand">
+        <div class="brand-logo">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="8" fill="url(#brandGrad)"/>
+            <path d="M8 14L12 10L16 14L12 18L8 14Z" fill="white" fill-opacity="0.9"/>
+            <path d="M14 10L18 6L22 10L18 14L14 10Z" fill="white" fill-opacity="0.6"/>
+            <path d="M14 18L18 14L22 18L18 22L14 18Z" fill="white" fill-opacity="0.6"/>
+            <defs>
+              <linearGradient id="brandGrad" x1="0" y1="0" x2="28" y2="28">
+                <stop stop-color="#6C5CE7"/>
+                <stop offset="1" stop-color="#A29BFE"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-text">TheCodeKid</span>
+      </div>
+      <div class="nav-links" id="nav-links">
+        <a href="#/" class="nav-link active" data-page="home" id="nav-home">
+          <i data-lucide="home" class="nav-icon"></i>
+          <span>Home</span>
+        </a>
+        <a href="#/dashboard" class="nav-link" data-page="dashboard" id="nav-dashboard">
+          <i data-lucide="layout-dashboard" class="nav-icon"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#/courses" class="nav-link" data-page="courses" id="nav-courses">
+          <i data-lucide="book-open" class="nav-icon"></i>
+          <span>Courses</span>
+        </a>
+        <a href="#/challenges" class="nav-link" data-page="challenges" id="nav-challenges">
+          <i data-lucide="target" class="nav-icon"></i>
+          <span>Challenges</span>
+        </a>
+        <a href="#/leaderboard" class="nav-link" data-page="leaderboard" id="nav-leaderboard">
+          <i data-lucide="trophy" class="nav-icon"></i>
+          <span>Leaderboard</span>
+        </a>
+        <a href="#/community" class="nav-link" data-page="community" id="nav-community">
+          <i data-lucide="users" class="nav-icon"></i>
+          <span>Community</span>
+        </a>
+      </div>
+      <div class="nav-right">
+        <div class="nav-pill nav-xp" id="nav-xp">
+          <i data-lucide="sparkles" class="pill-icon"></i>
+          <span class="pill-value" id="nav-xp-count">0</span>
+          <span class="pill-label">XP</span>
+        </div>
+        <div class="nav-pill nav-streak" id="nav-streak">
+          <i data-lucide="flame" class="pill-icon"></i>
+          <span class="pill-value" id="nav-streak-count">0</span>
+        </div>
+        <div class="nav-pill nav-level" id="nav-level">
+          <span class="level-badge" id="nav-level-badge">Lv 1</span>
+        </div>
+        <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Toast Notifications -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Page Transition Overlay -->
+  <div class="page-transition-overlay" id="page-transition"></div>
+
+  <!-- Main Content -->
+  <main id="app" class="main-content">
+    <!-- Pages rendered here by router -->
+  </main>
+
+  <!-- Level Up Modal -->
+  <div id="levelup-modal" class="modal-overlay" style="display:none;">
+    <div class="modal levelup-modal">
+      <div class="modal-particles">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="levelup-glow"></div>
+      <div class="levelup-content">
+        <div class="levelup-icon-wrap">
+          <div class="levelup-ring"></div>
+          <i data-lucide="rocket" class="levelup-main-icon"></i>
+        </div>
+        <h2>LEVEL UP!</h2>
+        <p class="levelup-level" id="levelup-level-text">Level 2</p>
+        <p class="levelup-title" id="levelup-title-text">Curious Coder</p>
+        <p class="levelup-xp" id="levelup-xp-text">+50 XP</p>
+        <button class="btn btn-primary btn-glow levelup-btn" id="levelup-close">Continue <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Badge Earned Modal -->
+  <div id="badge-modal" class="modal-overlay" style="display:none;">
+    <div class="modal badge-modal">
+      <div class="modal-particles">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="badge-sparkle"></div>
+      <div class="badge-content">
+        <div class="badge-icon-large" id="badge-icon-display">🧠</div>
+        <h2>Badge Earned!</h2>
+        <p class="badge-name" id="badge-name-text">Logic Genius</p>
+        <p class="badge-desc" id="badge-desc-text">Solved 10 logic puzzles</p>
+        <button class="btn btn-primary btn-glow" id="badge-close">Awesome! <i data-lucide="party-popper" style="width:16px;height:16px;"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
