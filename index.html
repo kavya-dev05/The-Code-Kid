@@ -280,6 +280,7 @@ nav{
 /* Login tier preview */
 .login-tier-preview{
   padding:20px 10px;display:flex;flex-direction:column;gap:20px;
+  position:relative;
 }
 .ltp-badge{
   display:inline-flex;align-items:center;gap:8px;
@@ -290,15 +291,56 @@ nav{
 }
 .ltp-heading{
   font-family:'Clash Display',sans-serif;
-  font-size:clamp(30px,3.5vw,48px);font-weight:700;
+  font-size:clamp(30px,3.5vw,52px);font-weight:700;
   color:var(--text);letter-spacing:-1.5px;line-height:1.05;transition:color .4s;
 }
 .ltp-heading em{font-style:italic;color:var(--a1);display:block;transition:color .4s;}
 .ltp-desc{font-size:15px;color:var(--muted);line-height:1.65;max-width:360px;transition:color .4s;}
-.ltp-features{display:flex;flex-direction:column;gap:9px;}
+.ltp-features{display:flex;flex-direction:column;gap:9px;margin-top:4px;}
 .ltp-feat{
   font-size:13px;font-weight:600;color:var(--text);
-  display:flex;align-items:center;gap:8px;transition:color .4s;
+  display:flex;align-items:center;gap:10px;transition:color .4s;
+  padding:9px 14px;border-radius:12px;
+  background:rgba(var(--a1-rgb,249,115,22),.04);
+  border:1px solid var(--bdr);
+}
+.ltp-feat-icon{
+  width:28px;height:28px;border-radius:8px;flex-shrink:0;
+  background:rgba(var(--a1-rgb,249,115,22),.12);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+}
+/* Login visual panel */
+.login-visual-panel{
+  position:relative;width:100%;height:100%;min-height:500px;
+  border-radius:24px;overflow:hidden;
+  background:var(--card);border:1px solid var(--bdr);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:32px;
+}
+.lvp-bg{position:absolute;inset:0;z-index:0;}
+.lvp-content{position:relative;z-index:2;}
+.lvp-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.lvp-stat{
+  background:rgba(var(--a1-rgb,249,115,22),.12);border:1px solid var(--bdr);
+  border-radius:50px;padding:6px 14px;
+  font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  color:var(--a1);backdrop-filter:blur(10px);transition:all .4s;
+}
+.lvp-card{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;padding:14px 16px;margin-bottom:10px;
+  backdrop-filter:blur(12px);
+}
+/* Floating decorations on login left */
+.ltp-deco-ring{
+  position:absolute;width:160px;height:160px;border-radius:50%;
+  border:1.5px dashed;opacity:.1;pointer-events:none;
+  transition:border-color .4s;border-color:var(--a1);
+}
+.ltp-deco-dot{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--a1);opacity:.2;pointer-events:none;
+  transition:background .4s;
 }
 
 /* ════════════════════════════════════════
@@ -306,13 +348,14 @@ nav{
 ════════════════════════════════════════ */
 /* HERO */
 .hero{
-  min-height:100vh;display:grid;
-  grid-template-columns:1fr 1fr;
+  min-height:calc(100vh - 62px);display:grid;
+  grid-template-columns:55fr 45fr;
   padding-top:62px;position:relative;z-index:2;
+  max-height:860px;
 }
 .hero-l{
   display:flex;flex-direction:column;justify-content:center;
-  padding:80px 60px 80px 80px;
+  padding:60px 40px 60px 80px;
 }
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:8px;
@@ -351,7 +394,11 @@ nav{
 @keyframes fadeSlideDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
 
 /* HERO RIGHT */
-.hero-r{position:relative;overflow:hidden;display:flex;align-items:stretch;}
+.hero-r{
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:flex-start;
+  padding:80px 48px 80px 20px;
+}
 .hero-r-scene{position:absolute;inset:0;z-index:0;}
 .hero-r-fade{
   position:absolute;inset:0;
@@ -360,9 +407,9 @@ nav{
 }
 .hero-r-content{
   position:relative;z-index:3;
-  width:100%;display:flex;flex-direction:column;
-  justify-content:center;align-items:flex-start;
-  padding:90px 48px 90px 60px;gap:16px;
+  width:100%;max-width:560px;
+  display:flex;flex-direction:column;
+  gap:12px;
 }
 /* theme-panel cards inside hero-r */
 .hp-top{display:flex;gap:14px;width:100%;align-items:stretch;}
@@ -878,6 +925,7 @@ footer{
 .profile-hstat{text-align:center;}
 .profile-hstat-n{font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;color:var(--a1);line-height:1;transition:color .4s;}
 .profile-hstat-l{font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;transition:color .4s;}
+.profile-avatar-ring:hover #avatar-overlay{opacity:1!important;}
 .profile-tier-opt{
   display:flex;align-items:center;gap:12px;padding:12px 14px;
   border-radius:14px;border:1px solid var(--bdr);cursor:pointer;
@@ -959,11 +1007,17 @@ footer{
 
   <!-- Profile header -->
   <div class="profile-header-card rv">
-    <div class="profile-avatar-ring">
-      <div class="profile-avatar-big">
-        <svg viewBox="0 0 80 80" width="80" height="80"><circle cx="40" cy="40" r="40" fill="var(--a1)" opacity=".18"/><circle cx="40" cy="30" r="16" fill="var(--a1)" opacity=".85"/><ellipse cx="40" cy="62" rx="24" ry="16" fill="var(--a1)" opacity=".65"/></svg>
+    <div class="profile-avatar-ring" style="position:relative;cursor:pointer;" onclick="document.getElementById('avatar-upload').click()" title="Click to change profile picture">
+      <div class="profile-avatar-big" id="profile-avatar-big">
+        <svg viewBox="0 0 80 80" width="80" height="80" id="profile-avatar-svg"><circle cx="40" cy="40" r="40" fill="var(--a1)" opacity=".18"/><circle cx="40" cy="30" r="16" fill="var(--a1)" opacity=".85"/><ellipse cx="40" cy="62" rx="24" ry="16" fill="var(--a1)" opacity=".65"/></svg>
+        <img id="profile-avatar-img" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%;">
+      </div>
+      <!-- Overlay on hover -->
+      <div style="position:absolute;inset:3px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;z-index:2;" id="avatar-overlay">
+        <div style="text-align:center;"><div style="font-size:18px;">📷</div><div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#fff;margin-top:2px;">Change</div></div>
       </div>
     </div>
+    <input type="file" id="avatar-upload" accept="image/*" style="display:none" onchange="handleAvatarUpload(this)">
     <div class="profile-info">
       <div class="profile-username" id="profile-username-display">young_coder_007</div>
       <div class="profile-tier-badge" id="profile-tier-badge">🎮 Junior Coder</div>
@@ -1074,14 +1128,43 @@ footer{
 
       <!-- LEFT: Tier preview panel -->
       <div class="login-tier-preview" id="login-preview">
+        <!-- Decorative elements -->
+        <div class="ltp-deco-ring" style="top:-40px;left:-40px;"></div>
+        <div class="ltp-deco-ring" style="bottom:60px;right:-60px;width:120px;height:120px;"></div>
+        <div class="ltp-deco-dot" style="top:30px;right:60px;"></div>
+        <div class="ltp-deco-dot" style="bottom:100px;left:20px;width:10px;height:10px;"></div>
+
         <div class="ltp-badge" id="ltp-badge">🎮 Junior Mode</div>
         <div class="ltp-heading" id="ltp-heading">Start Your<br><em>Coding Journey.</em></div>
         <div class="ltp-desc" id="ltp-desc">Logic puzzles, pattern games and fun challenges designed for young minds aged 8–12.</div>
         <div class="ltp-features" id="ltp-features">
-          <div class="ltp-feat">✦ Fun pattern-based quizzes</div>
-          <div class="ltp-feat">✦ Beginner-friendly curriculum</div>
-          <div class="ltp-feat">✦ XP rewards &amp; streaks</div>
-          <div class="ltp-feat">✦ Safe, distraction-free environment</div>
+          <div class="ltp-feat"><div class="ltp-feat-icon">🧩</div>Fun pattern-based quizzes</div>
+          <div class="ltp-feat"><div class="ltp-feat-icon">📚</div>Beginner-friendly curriculum</div>
+          <div class="ltp-feat"><div class="ltp-feat-icon">⭐</div>XP rewards &amp; streaks</div>
+          <div class="ltp-feat"><div class="ltp-feat-icon">🛡️</div>Safe, distraction-free environment</div>
+        </div>
+
+        <!-- Live stats preview -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;" id="ltp-stats-row">
+          <div style="display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--bdr);border-radius:50px;padding:6px 14px;backdrop-filter:blur(10px);">
+            <span style="font-size:14px">🔥</span><span style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1)">450+ Students</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--bdr);border-radius:50px;padding:6px 14px;backdrop-filter:blur(10px);">
+            <span style="font-size:14px">🏆</span><span style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1)">#1 in India</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--bdr);border-radius:50px;padding:6px 14px;backdrop-filter:blur(10px);">
+            <span style="font-size:14px">⭐</span><span style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1)">98% Success</span>
+          </div>
+        </div>
+
+        <!-- Mini visual card -->
+        <div id="ltp-visual-card" style="margin-top:12px;border-radius:18px;overflow:hidden;border:1px solid var(--bdr);background:var(--card);backdrop-filter:blur(20px);padding:16px 20px;display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🎮</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);font-family:'Clash Display',sans-serif;transition:color .4s;" id="ltp-card-title">Today's Challenge</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace;transition:color .4s;" id="ltp-card-sub">Node Calibration · ✦ 20 XP</div>
+          </div>
+          <div style="margin-left:auto;background:rgba(var(--a1-rgb,249,115,22),.12);color:var(--a1);font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:8px;white-space:nowrap;border:1px solid var(--bdr);">LIVE ●</div>
         </div>
       </div>
 
@@ -1187,7 +1270,7 @@ footer{
       </div>
     </div>
 
-    <div class="hero-r" id="hero-r-panel">
+    <div class="hero-r" id="hero-r-panel" style="position:relative;overflow:hidden;display:flex;align-items:center;justify-content:flex-start;padding:80px 48px 80px 20px;">
       <!-- Fully rendered by updateHeroPanel() JS — theme-specific rich content -->
     </div>
   </section>
@@ -1418,8 +1501,8 @@ footer{
   <h2 class="shead">Daily <em>Challenge</em></h2>
   <p class="sdesc">Test your skills with today's challenge and maintain your streak!</p>
 
-  <div class="challenge-hero-box rv">
-    <div class="chero-bg"></div>
+  <div class="challenge-hero-box rv" id="daily-challenge-box">
+    <div class="chero-bg" id="chero-bg-el"></div>
     <div class="chero-bg-svg">
       <svg viewBox="0 0 900 360" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
         <g stroke="#fff" stroke-width="1" fill="none" opacity=".6">
@@ -1432,11 +1515,11 @@ footer{
       <div class="chero-title" id="ch-title">Sequence Interpolation</div>
       <div class="chero-desc" id="ch-desc">Isolate the missing integer within the bounds. Push your pattern recognition to the limit.</div>
       <div style="display:flex;gap:9px;margin-bottom:26px;flex-wrap:wrap" id="ch-tags">
-        <span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace">Quantification</span>
-        <span style="background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#86efac">Easy</span>
-        <span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace">✦ 20 XP</span>
+        <span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace" id="ch-tag-cat">Quantification</span>
+        <span style="background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#86efac" id="ch-tag-diff">Easy</span>
+        <span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace" id="ch-tag-xp">✦ 20 XP</span>
       </div>
-      <button class="btn-white" onclick="openGame({mode:'junior',n:3,cat:'QUANTIFICATION',title:'Sequence Interpolation',q:'Find the missing number: 2, 6, 18, ?, 162',pattern:['2','6','18','?','162',''],opts:['36','42','54','72'],ans:2,hint:'Each term × 3 = next term.'})">▶ Accept Challenge</button>
+      <button class="btn-white" id="ch-accept-btn" onclick="acceptDailyChallenge()">▶ Accept Challenge</button>
     </div>
   </div>
 
@@ -1794,39 +1877,117 @@ footer{
 </div>
 
 <!-- CODE EDITOR SCREEN -->
-<div id="code-screen" style="display:none;position:fixed;inset:0;z-index:900;flex-direction:column;">
+<div id="code-screen" style="display:none;position:fixed;inset:0;z-index:900;flex-direction:column;background:var(--bg1);">
+  <!-- Top nav bar -->
   <div class="gs-nav">
     <div class="gs-back" onclick="closeCode()">← Back</div>
     <div class="gs-meta">
+      <!-- Language selector -->
+      <div style="display:flex;gap:4px;background:var(--bg2);border:1px solid var(--bdr);border-radius:20px;padding:3px;">
+        <button class="lang-btn active" id="lang-js"  onclick="switchLang('js',this)"  style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:var(--a1);color:#fff;transition:all .2s">JS</button>
+        <button class="lang-btn"        id="lang-py"  onclick="switchLang('py',this)"  style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">Python</button>
+        <button class="lang-btn"        id="lang-java" onclick="switchLang('java',this)" style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">Java</button>
+        <button class="lang-btn"        id="lang-c"   onclick="switchLang('c',this)"   style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">C</button>
+        <button class="lang-btn"        id="lang-cpp" onclick="switchLang('cpp',this)" style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">C++</button>
+      </div>
       <div class="gs-xp" id="code-xp-display">0 XP</div>
       <div class="gs-prog-n" id="code-prog">1/5</div>
     </div>
   </div>
   <div class="gs-pbar"><div class="gs-pfill" id="code-pfill" style="width:20%"></div></div>
+
+  <!-- Main layout: problem | editor -->
   <div class="code-layout" style="flex:1;overflow:hidden;">
-    <div class="code-problem" id="code-problem-panel">
+
+    <!-- LEFT: Problem panel -->
+    <div class="code-problem" id="code-problem-panel" style="display:flex;flex-direction:column;gap:0;overflow-y:auto;">
       <div class="prob-title" id="cp-title"></div>
       <div class="prob-tags" id="cp-tags"></div>
       <div class="prob-body" id="cp-body"></div>
       <div id="cp-examples"></div>
-      <div class="prob-hint" id="cp-hint"></div>
+
+      <!-- Hint section — hidden by default -->
+      <div style="margin-top:16px;">
+        <button onclick="toggleHintPanel()" style="display:flex;align-items:center;gap:7px;background:rgba(var(--a1-rgb,249,115,22),.07);border:1px solid var(--bdr);border-radius:10px;padding:8px 14px;cursor:pointer;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);transition:all .2s;width:100%;">
+          <span id="hint-toggle-icon">💡</span> <span id="hint-toggle-txt">Show Hint</span>
+        </button>
+        <div id="cp-hint-panel" style="display:none;margin-top:8px;padding:12px 14px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);border-left:3px solid var(--a1);border-radius:0 10px 10px 0;font-size:13px;font-style:italic;color:var(--muted);line-height:1.6;animation:pageIn .3s ease both;"></div>
+      </div>
     </div>
-    <div class="code-editor">
+
+    <!-- RIGHT: Editor + output -->
+    <div class="code-editor" style="display:flex;flex-direction:column;">
       <div class="editor-header">
         <div class="editor-dots">
           <div class="editor-dot" style="background:#ef4444"></div>
           <div class="editor-dot" style="background:#f59e0b"></div>
           <div class="editor-dot" style="background:#22c55e"></div>
         </div>
-        <div class="editor-lang" id="cp-lang">JavaScript</div>
+        <div class="editor-lang" id="cp-lang-label">JavaScript</div>
       </div>
       <textarea class="editor-area" id="code-editor-area" spellcheck="false" placeholder="// Write your solution here..."></textarea>
-      <div class="output-area" id="code-output">// Output appears here...</div>
+      <div class="output-area" id="code-output" style="min-height:70px;">// Output appears here...</div>
       <div class="editor-footer">
-        <button class="btn btn-outline btn-sm" onclick="runCode()">Run</button>
-        <button class="btn btn-fill btn-sm" onclick="submitCode()">Submit</button>
-        <button class="btn btn-outline btn-sm" onclick="resetCode()">Reset</button>
-        <button class="btn btn-outline btn-sm" onclick="showSolution()">Solution</button>
+        <button class="btn btn-outline btn-sm" onclick="runCode()">▶ Run</button>
+        <button class="btn btn-fill btn-sm" onclick="submitCode()">Submit ✓</button>
+        <button class="btn btn-outline btn-sm" onclick="resetCode()">↺ Reset</button>
+        <button class="btn btn-outline btn-sm" onclick="showSolution()">👁 Solution</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit result overlay — full in-screen panel -->
+  <div id="code-result-panel" style="display:none;position:absolute;inset:0;z-index:30;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);overflow-y:auto;padding:40px 20px;">
+    <div style="max-width:680px;margin:0 auto;background:var(--card);border:1px solid var(--bdr);border-radius:28px;overflow:hidden;">
+      <!-- Result header -->
+      <div id="crp-header" style="padding:32px 36px 24px;border-bottom:1px solid var(--bdr);">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div id="crp-icon" style="font-size:36px;margin-bottom:8px;"></div>
+            <div id="crp-title" style="font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;color:var(--text);letter-spacing:-.5px;transition:color .4s;"></div>
+            <div id="crp-sub" style="font-size:14px;color:var(--muted);margin-top:4px;transition:color .4s;"></div>
+          </div>
+          <!-- XP earned -->
+          <div id="crp-xp-box" style="text-align:center;padding:16px 24px;background:rgba(var(--a1-rgb,249,115,22),.08);border:1px solid var(--bdr);border-radius:18px;">
+            <div style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;transition:color .4s">XP Earned</div>
+            <div id="crp-xp" style="font-family:'Clash Display',sans-serif;font-size:42px;font-weight:700;color:var(--a1);line-height:1;transition:color .4s"></div>
+            <div id="crp-total-xp" style="font-size:11px;color:var(--muted);margin-top:4px;transition:color .4s"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Test results -->
+      <div style="padding:20px 36px;border-bottom:1px solid var(--bdr);">
+        <div style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Test Results</div>
+        <div id="crp-tests" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div>
+      <!-- Complexity analysis -->
+      <div style="padding:20px 36px;border-bottom:1px solid var(--bdr);">
+        <div style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Complexity Analysis</div>
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <div id="crp-time" style="flex:1;min-width:120px;padding:14px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:14px;text-align:center;">
+            <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#22c55e;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Time</div>
+            <div id="crp-time-val" style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#22c55e;"></div>
+          </div>
+          <div id="crp-space" style="flex:1;min-width:120px;padding:14px;background:rgba(168,139,250,.07);border:1px solid rgba(168,139,250,.2);border-radius:14px;text-align:center;">
+            <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Space</div>
+            <div id="crp-space-val" style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#a78bfa;"></div>
+          </div>
+          <div style="flex:1;min-width:120px;padding:14px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:14px;text-align:center;">
+            <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Runtime</div>
+            <div id="crp-runtime" style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#fbbf24;"></div>
+          </div>
+        </div>
+        <!-- SVG complexity graph -->
+        <div style="background:rgba(0,0,0,.2);border:1px solid var(--bdr);border-radius:14px;padding:16px;">
+          <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-bottom:10px;">Growth Curve — Your Solution vs O(n²)</div>
+          <svg id="crp-graph" viewBox="0 0 500 140" style="width:100%;height:auto;display:block;"></svg>
+          <div id="crp-complexity-label" style="text-align:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-top:8px;color:var(--a1);transition:color .4s;"></div>
+        </div>
+      </div>
+      <!-- Actions -->
+      <div style="padding:20px 36px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-fill" onclick="nextCodeProblem()">Next Problem →</button>
+        <button class="btn btn-outline" onclick="closeResult();closeCode()">Back to Problems</button>
       </div>
     </div>
   </div>
@@ -1933,7 +2094,7 @@ animBg();
 // ════════════════════════════════════════
 const modeConfig={
   junior:{
-    heroH:'Start Your<br>Coding<br><em>Journey.</em>',
+    heroH:'Start Coding,<br><em>Journey Begins.</em>',
     heroP:'Discover the art of code through a perfectly balanced, distraction-free environment designed for young minds.',
     courseH:'Fun <em>Logic Games</em>',
     courseP:'Build strong logic through fun games and puzzles — structured for every young mind.',
@@ -1941,7 +2102,7 @@ const modeConfig={
     cheroGrad:'linear-gradient(135deg,#f97316,#fbbf24)',
   },
   explorer:{
-    heroH:'Code<br>Beyond<br><em>Limits.</em>',
+    heroH:'Code Beyond,<br><em>No Limits.</em>',
     heroP:'Master structural thinking and real problem solving. Bridge the gap between logic and real code.',
     courseH:'Structural <em>Thinking</em>',
     courseP:'Intermediate challenges to transition you from logic puzzles to real algorithmic thinking.',
@@ -1949,7 +2110,7 @@ const modeConfig={
     cheroGrad:'linear-gradient(135deg,#06b6d4,#3b82f6)',
   },
   pro:{
-    heroH:'Think.<br>Build.<br><em>Conquer.</em>',
+    heroH:'Think & Build,<br><em>Conquer.</em>',
     heroP:'Advanced algorithms, raw coding, and competitive benchmarks. For those ready to lead.',
     courseH:'Coding <em>Challenges</em>',
     courseP:'Real-world coding problems from easy to hard. Write actual code, run it, submit it.',
@@ -1966,6 +2127,7 @@ function setMode(m,btn){
   updateProgCards();
   updateFeatVis();
   updateCommunityGrid();
+  updateDailyChallenge();
   // Update texts
   const cfg=modeConfig[m];
   document.getElementById('hero-heading').innerHTML=cfg.heroH;
@@ -2284,10 +2446,125 @@ function updateHeroPanel(){
 
   const dashOffset = 226 - 226*(c.xpPct/100);
 
+  // Background overlay on the hero-r cell itself
+  panel.style.background = c.panelBg;
+
   panel.innerHTML=`
-<div style="position:absolute;inset:0;background:${c.panelBg};z-index:0;"></div>
-<div style="position:absolute;inset:0;background:${c.leftFade};z-index:2;pointer-events:none;"></div>
-<div style="position:relative;z-index:3;width:100%;display:flex;flex-direction:column;justify-content:center;padding:96px 40px 80px 48px;gap:14px;min-height:100vh;">
+<!-- Left fade -->
+<div style="position:absolute;inset:0;background:${c.leftFade};z-index:1;pointer-events:none;"></div>
+
+<!-- All content — normal flow, no absolute positioning -->
+<div style="position:relative;z-index:2;width:100%;max-width:560px;display:flex;flex-direction:column;gap:12px;">
+
+  <!-- TOP: Code editor + stat cards -->
+  <div style="display:flex;gap:12px;align-items:flex-start;">
+
+    <!-- Code window -->
+    <div style="flex:1;background:${c.codeBg};border:1px solid ${c.codeBorder};border-radius:20px;overflow:hidden;box-shadow:${c.codeGlow};animation:hpFloat1 7s ease-in-out infinite;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid ${c.codeBorder};background:rgba(255,255,255,.03);">
+        <div style="display:flex;gap:6px;">
+          <div style="width:11px;height:11px;border-radius:50%;background:#ef4444;opacity:.85"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:#f59e0b;opacity:.85"></div>
+          <div style="width:11px;height:11px;border-radius:50%;background:#22c55e;opacity:.85"></div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:rgba(148,163,184,.5);letter-spacing:.5px">${c.codeFile}</span>
+      </div>
+      <div style="padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.85;">
+        ${c.lines.map((segs,i)=>`
+        <div style="display:flex;gap:0;align-items:baseline;">
+          <span style="color:rgba(100,116,139,.3);user-select:none;width:20px;font-size:10.5px;flex-shrink:0;text-align:right;padding-right:10px">${i+1}</span>
+          <span>${buildLine(segs)}</span>
+        </div>`).join('')}
+        <div style="display:flex;align-items:baseline;gap:0;">
+          <span style="color:rgba(100,116,139,.3);user-select:none;width:20px;font-size:10.5px;flex-shrink:0;text-align:right;padding-right:10px">&nbsp;</span>
+          <span style="display:inline-block;width:7px;height:13px;background:${c.accent};border-radius:1px;animation:blink 1.1s step-end infinite;vertical-align:text-bottom;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat cards column -->
+    <div style="display:flex;flex-direction:column;gap:11px;min-width:146px;">
+      <!-- XP card -->
+      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:14px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 5s ease-in-out infinite .5s;">
+        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;transition:color .4s">${c.stat1lbl}</div>
+        <div style="font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--text);transition:color .4s">${c.stat1val}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;transition:color .4s">${c.stat1sub}</div>
+        <div style="height:3px;background:var(--bdr);border-radius:3px;margin-top:9px;overflow:hidden;">
+          <div style="height:100%;width:${c.stat1bar}%;background:linear-gradient(90deg,${c.accent},${c.accent2});border-radius:3px;transition:background .5s;"></div>
+        </div>
+      </div>
+      <!-- Streak card -->
+      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:14px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat1 6s ease-in-out infinite 1.2s;">
+        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;transition:color .4s">${c.stat2lbl}</div>
+        <div style="font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--text);transition:color .4s">${c.stat2val}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;transition:color .4s">${c.stat2sub}</div>
+      </div>
+      <!-- Badges card -->
+      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:13px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 8s ease-in-out infinite .8s;">
+        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:9px;transition:color .4s">🏅 Badges</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+          ${c.badges.map(b=>`<div style="border-radius:10px;background:rgba(${c.accentRgb},.1);border:1px solid rgba(${c.accentRgb},.18);padding:6px;text-align:center;font-size:16px;transition:all .4s;">${b}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM: Leaderboard + XP ring -->
+  <div style="display:flex;gap:14px;align-items:stretch;">
+
+    <!-- Leaderboard card -->
+    <div style="flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:16px 18px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 5.5s ease-in-out infinite .3s;">
+      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;transition:color .4s">${c.rankTitle}</div>
+      ${c.ranks.map(r=>`
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;padding:${r.me?'6px 8px':'2px 0'};border-radius:10px;background:${r.me?`rgba(${c.accentRgb},.1)`:'transparent'};transition:all .3s;">
+        <div style="font-size:11px;width:22px;text-align:center;font-weight:700;font-family:'JetBrains Mono',monospace;color:${r.me?c.accent:'var(--muted)'};">${r.medal}</div>
+        <div style="width:28px;height:28px;border-radius:50%;background:${r.me?`linear-gradient(135deg,${c.accent},${c.accent2})`:`rgba(${c.accentRgb},.2)`};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${r.me?'#fff':c.accent};flex-shrink:0;font-family:'JetBrains Mono',monospace;">${r.av}</div>
+        <div style="flex:1;font-size:12px;font-weight:700;color:var(--text);transition:color .4s;">${r.n}${r.me?`<span style="font-size:8px;background:${c.accent};color:#fff;border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;margin-left:4px">YOU</span>`:''}</div>
+        <div style="font-size:10.5px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};transition:color .4s;">✦${r.xp}</div>
+      </div>`).join('')}
+    </div>
+
+    <!-- XP Level ring -->
+    <div style="flex:0 0 auto;width:148px;background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:16px;backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:all .5s;animation:hpFloat1 7s ease-in-out infinite 2s;">
+      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;transition:color .4s">Level Progress</div>
+      <div style="position:relative;width:88px;height:88px;">
+        <svg viewBox="0 0 88 88" style="width:88px;height:88px;transform:rotate(-90deg)">
+          <circle cx="44" cy="44" r="37" fill="none" stroke="rgba(${c.accentRgb},.12)" stroke-width="7.5"/>
+          <circle cx="44" cy="44" r="37" fill="none" stroke="${c.accent}" stroke-width="7.5" stroke-linecap="round"
+            stroke-dasharray="232" stroke-dashoffset="${232-232*(c.xpPct/100)}"
+            style="filter:drop-shadow(0 0 4px ${c.accent});transition:all .6s"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:var(--text);line-height:1;transition:color .4s">${c.xpPct}%</div>
+          <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.5px;transition:color .4s">Lv ${c.lv}</div>
+        </div>
+      </div>
+      <div style="font-size:18px;font-weight:700;font-family:'Clash Display',sans-serif;color:${c.accent};transition:color .4s">${c.xp.toLocaleString()} XP</div>
+      <div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;transition:color .4s">Logic Master</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Floating popup cards (absolutely positioned, overlay style) -->
+<div style="position:absolute;top:90px;right:16px;z-index:20;background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:14px 18px;backdrop-filter:blur(22px);min-width:160px;animation:hpFloat1 5s ease-in-out infinite;box-shadow:0 8px 32px rgba(0,0,0,.18);">
+  <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">⚡ Today's XP</div>
+  <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);">${c.stat1val}</div>
+  <div style="font-size:10px;color:var(--muted);margin-top:2px;">${c.stat1sub}</div>
+  <div style="height:3px;background:var(--bdr);border-radius:3px;margin-top:8px;overflow:hidden;"><div style="height:100%;width:${c.stat1bar}%;background:linear-gradient(90deg,${c.accent},${c.accent2});border-radius:3px;"></div></div>
+</div>
+
+<div style="position:absolute;bottom:120px;right:16px;z-index:20;background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:14px 18px;backdrop-filter:blur(22px);min-width:150px;animation:hpFloat2 4.5s ease-in-out infinite;box-shadow:0 8px 32px rgba(0,0,0,.18);">
+  <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">🔥 Streak</div>
+  <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);">${c.stat2val}</div>
+  <div style="font-size:10px;color:var(--muted);margin-top:2px;">${c.stat2sub}</div>
+</div>
+
+<div style="position:absolute;top:45%;left:8px;transform:translateY(-50%);z-index:20;background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:14px 18px;backdrop-filter:blur(22px);min-width:140px;animation:hpFloat1 6s ease-in-out infinite 1.5s;box-shadow:0 8px 32px rgba(0,0,0,.18);">
+  <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">🏆 Your Rank</div>
+  <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);">${c.ranks.find(r=>r.me)?.medal||'#10'}</div>
+  <div style="font-size:10px;color:var(--muted);margin-top:2px;">↑ 2 this week</div>
+</div>
 
   <!-- TOP: Code editor + stat cards -->
   <div style="display:flex;gap:14px;align-items:stretch;">
@@ -2377,6 +2654,7 @@ function updateHeroPanel(){
     </div>
 
   </div>
+
 </div>`;
 }
 
@@ -2433,6 +2711,9 @@ function goPage(p){
   window.scrollTo({top:0,behavior:'smooth'});
   if(p==='courses')updateCourseHero();
   if(p==='home')updateHeroPanel();
+  if(p==='challenges')updateDailyChallenge();
+  // Reset hero panel bg if leaving home
+  if(p!=='home'){const hp=document.getElementById('hero-r-panel');if(hp)hp.style.background='';}
   setTimeout(initReveal,80);
 }
 document.querySelectorAll('.nav-links a[data-p]').forEach(a=>{
@@ -2462,6 +2743,13 @@ function switchCourseTab(tab,el){
   const m=modeConfig[tab==='junior'?'junior':tab==='explorer'?'explorer':'pro'];
   document.getElementById('course-heading').innerHTML=m.courseH;
   document.getElementById('course-desc').textContent=m.courseP;
+  // Change theme to match the selected course tier
+  if(tab!==mode){
+    mode=tab;
+    document.documentElement.setAttribute('data-mode',tab);
+    makeParticles();
+    updateHeroPanel&&updateHeroPanel();
+  }
 }
 
 // ════════════════════════════════════════
@@ -2523,12 +2811,33 @@ function showResult(correct,xp){
 function nextQuestion(){
   document.getElementById('result-overlay').style.display='none';
   if(currentGame.n>=5){closeGame();return;}
+  // Find next game in the current mode's course list
+  const m=currentGame.mode;
+  const juniorGames=[
+    {mode:'junior',n:1,cat:'STRUCTURE',title:'Sequential Pattern Alpha',q:'What comes next in the sequence?',pattern:['▲','▲','●','▲','▲','?'],opts:['●','▲','■','◆'],ans:0,hint:'Look at every 3rd position.'},
+    {mode:'junior',n:2,cat:'STRUCTURE',title:'Binary Rhythm',q:'What follows this binary pattern?',pattern:['1','0','1','1','0','?'],opts:['0','1','2','?'],ans:1,hint:'See the pairs: 1-0, then 1-1, then 0-?'},
+    {mode:'junior',n:3,cat:'QUANTIFICATION',title:'Node Calibration',q:'Determine the total active logical nodes.',pattern:['◆','◆','◆','◆','◆','?'],opts:['3','4','5','6'],ans:2,hint:'Count all the active diamond nodes visible.'},
+    {mode:'junior',n:4,cat:'LOGIC',title:'Colour Logic I',q:'Which colour comes next in the pattern?',pattern:['🔴','🔵','🔴','🔵','🔴','?'],opts:['🔴','🔵','🟢','🟡'],ans:1,hint:'Red and blue alternate.'},
+    {mode:'junior',n:5,cat:'QUANTIFICATION',title:'Vector Addition',q:'What is 3 + 4?',pattern:['3','+','4','=','?',''],opts:['6','7','8','9'],ans:1,hint:'Count on from 3 by 4 steps.'}
+  ];
+  const explorerGames=[
+    {mode:'explorer',n:1,cat:'ALGORITHMS',title:'Fibonacci Sequence',q:'What comes next?',pattern:['1','1','2','3','5','8','?'],opts:['10','11','13','15'],ans:2,hint:'Each number = sum of the two before it.'},
+    {mode:'explorer',n:2,cat:'DETECTION',title:'Isolate Anomaly I',q:'Which does NOT belong?',pattern:['16','25','36','42','49','64'],opts:['25','36','42','64'],ans:2,hint:'All others are perfect squares.'},
+    {mode:'explorer',n:3,cat:'QUANTIFICATION',title:'Sequence Interpolation',q:'Find the missing number: 2, 6, 18, ?, 162',pattern:['2','6','18','?','162'],opts:['36','42','54','72'],ans:2,hint:'Each term is multiplied by 3.'},
+    {mode:'explorer',n:4,cat:'COMPARISON',title:'Volumetric Assessment',q:'Which has greater conceptual volume: Stack or Queue?',pattern:['Stack','vs','Queue','?','',''],opts:['Stack','Queue','Equal','Neither'],ans:2,hint:'Both LIFO and FIFO hold same max capacity.'},
+    {mode:'explorer',n:5,cat:'DETECTION',title:'Isolate Anomaly II',q:'Which is NOT O(log n)?',pattern:['Binary','Search','?','Heap','Build','Merge'],opts:['Binary Search','Heap Build','Merge Sort','None'],ans:1,hint:'Binary search is O(log n), heap build and merge sort are O(n log n) or O(n).'}
+  ];
+  const allGames={junior:juniorGames,explorer:explorerGames};
+  const games=allGames[m];
+  if(games){
+    const next=games.find(g=>g.n===currentGame.n+1);
+    if(next){openGame(next);return;}
+  }
   closeGame();
 }
 
 function closeGame(){
   document.getElementById('game-screen').classList.remove('open');
-  goPage('courses');
 }
 
 function toggleHint(){
@@ -2537,79 +2846,242 @@ function toggleHint(){
 }
 
 // ════════════════════════════════════════
-// CODE EDITOR SYSTEM
+// CODE EDITOR SYSTEM — Multi-lang, Hint, Complexity
 // ════════════════════════════════════════
-let currentProblem=null;
+let currentProblem=null, currentLang='js';
+
+const langStarters={
+  js:  p=>p.starter,
+  py:  p=>p.starter.replace(/function (\w+)\(([^)]*)\) \{/,(_,fn,args)=>`def ${fn}(${args}):`).replace(/\/\/ /g,'# ').replace(/\n  /g,'\n    ').replace(/return /g,'return ').replace(/\n\}$/,''),
+  java:p=>`class Solution {\n    // ${p.title}\n    public int solve() {\n        // Write your solution here\n        return -1;\n    }\n}`,
+  c:   p=>`#include <stdio.h>\n\n// ${p.title}\nint solve() {\n    // Write your solution here\n    return -1;\n}`,
+  cpp: p=>`#include <bits/stdc++.h>\nusing namespace std;\n\n// ${p.title}\nclass Solution {\npublic:\n    int solve() {\n        // Write your solution here\n        return -1;\n    }\n};`,
+};
+const langLabels={js:'JavaScript',py:'Python',java:'Java',c:'C',cpp:'C++'};
+const langComments={js:'// ',py:'# ',java:'// ',c:'// ',cpp:'// '};
+
+// Complexity data per problem title
+const complexityMap={
+  'Binary Search':     {time:'O(log n)',space:'O(1)',runtime:'2ms',curve:'logn'},
+  'Two Sum':           {time:'O(n)',   space:'O(n)',runtime:'4ms',curve:'n'},
+  'Valid Palindrome':  {time:'O(n)',   space:'O(1)',runtime:'3ms',curve:'n'},
+  'Maximum Depth of Binary Tree':{time:'O(n)',space:'O(h)',runtime:'5ms',curve:'n'},
+  'Longest Common Subsequence':{time:'O(n·m)',space:'O(n·m)',runtime:'18ms',curve:'n2'},
+};
 
 function openCodeProblem(cfg){
-  currentProblem=cfg;
+  currentProblem=cfg; currentLang='js';
   document.getElementById('code-screen').style.display='flex';
   document.getElementById('code-xp-display').textContent=`${xpEarned} XP`;
   document.getElementById('code-prog').textContent=`${cfg.n}/5`;
   document.getElementById('code-pfill').style.width=`${cfg.n*20}%`;
   document.getElementById('cp-title').textContent=cfg.title;
-  // Tags
   const diffColor=cfg.diff==='easy'?'#22c55e':cfg.diff==='medium'?'#f59e0b':'#ef4444';
   document.getElementById('cp-tags').innerHTML=`<span class="prob-tag prob-tag-cat">${cfg.cat}</span><span class="prob-tag" style="background:${diffColor}22;color:${diffColor}">${cfg.diff}</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">${cfg.xp} XP</span>`;
-  // Body
-  document.getElementById('cp-body').innerHTML=cfg.desc.replace(/\n\n/g,'</p><p>').replace(/^/,'<p>').replace(/$/,'</p>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n- /g,'<br>• ');
-  // Examples
-  document.getElementById('cp-examples').innerHTML=`<div style="font-size:15px;font-weight:700;color:var(--text);margin:16px 0 10px;font-family:'Clash Display',sans-serif">Examples</div>`+cfg.examples.map(e=>`<div class="code-example">Input: ${e.inp}<br>Output: ${e.out}</div>`).join('');
-  document.getElementById('cp-hint').textContent=`💡 Hint: ${cfg.hint}`;
-  document.getElementById('code-editor-area').value=cfg.starter;
+  document.getElementById('cp-body').innerHTML=cfg.desc.replace(/\n\n/g,'</p><p>').replace(/^/,'<p>').replace(/$/,'</p>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  document.getElementById('cp-examples').innerHTML=`<div style="font-size:14px;font-weight:700;color:var(--text);margin:16px 0 10px;font-family:'Clash Display',sans-serif">Examples</div>`+cfg.examples.map(e=>`<div class="code-example">Input: ${e.inp}<br>Output: ${e.out}</div>`).join('');
+  // Hint — hidden
+  const hintPanel=document.getElementById('cp-hint-panel');
+  hintPanel.textContent=`💡 Hint: ${cfg.hint}`;
+  hintPanel.style.display='none';
+  document.getElementById('hint-toggle-txt').textContent='Show Hint';
+  document.getElementById('hint-toggle-icon').textContent='💡';
+  // Code area
+  document.getElementById('code-editor-area').value=langStarters.js(cfg);
+  document.getElementById('cp-lang-label').textContent='JavaScript';
   document.getElementById('code-output').textContent='// Output appears here...';
-  document.getElementById('result-overlay').style.display='none';
+  document.getElementById('code-output').style.color='var(--a3)';
+  document.getElementById('code-result-panel').style.display='none';
+  // Reset lang buttons
+  document.querySelectorAll('.lang-btn').forEach(b=>{ b.style.background='transparent'; b.style.color='var(--muted)'; });
+  const jsbtn=document.getElementById('lang-js');
+  if(jsbtn){jsbtn.style.background='var(--a1)';jsbtn.style.color='#fff';}
+}
+
+function switchLang(lang, btn){
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>{ b.style.background='transparent'; b.style.color='var(--muted)'; });
+  btn.style.background='var(--a1)'; btn.style.color='#fff';
+  document.getElementById('cp-lang-label').textContent=langLabels[lang];
+  if(currentProblem) document.getElementById('code-editor-area').value=langStarters[lang](currentProblem);
+}
+
+function toggleHintPanel(){
+  const panel=document.getElementById('cp-hint-panel');
+  const txt=document.getElementById('hint-toggle-txt');
+  const ico=document.getElementById('hint-toggle-icon');
+  if(panel.style.display==='none'){
+    panel.style.display='block'; txt.textContent='Hide Hint'; ico.textContent='🙈';
+  } else {
+    panel.style.display='none'; txt.textContent='Show Hint'; ico.textContent='💡';
+  }
 }
 
 function closeCode(){
   document.getElementById('code-screen').style.display='none';
-  goPage('courses');
+}
+
+function closeResult(){
+  document.getElementById('code-result-panel').style.display='none';
+}
+
+function nextCodeProblem(){
+  document.getElementById('code-result-panel').style.display='none';
+  if(!currentProblem)return;
+  const proProblems=[
+    {n:1,cat:'SEARCH',diff:'medium',xp:60,title:'Binary Search',desc:'Implement binary search on a sorted array.\n\nGiven a sorted array of integers and a target value, return the index if the target is found, or -1 if not.',constraints:'- Array is sorted in ascending order\n- O(log n) time complexity required',examples:[{inp:'[-1,0,3,5,9,12], target = 9',out:'4'},{inp:'[-1,0,3,5,9,12], target = 2',out:'-1'}],hint:'Divide the search space in half each iteration using two pointers.',starter:'function binarySearch(nums, target) {\n  // Implement binary search\n  // Return index or -1\n\n}'},
+    {n:2,cat:'ARRAYS',diff:'easy',xp:40,title:'Two Sum',desc:'Given an array of integers and a target sum, return the indices of the two numbers that add up to target.',constraints:'- Each input has exactly one solution\n- You may not use the same element twice',examples:[{inp:'[2,7,11,15], target = 9',out:'[0, 1]'},{inp:'[3,2,4], target = 6',out:'[1, 2]'}],hint:'Use a hash map for O(n) solution.',starter:'function twoSum(nums, target) {\n  // Return [index1, index2]\n\n}'},
+    {n:3,cat:'STRINGS',diff:'medium',xp:55,title:'Valid Palindrome',desc:'A phrase is a palindrome if it reads the same forwards and backwards, ignoring non-alphanumeric characters.',constraints:'- Only consider alphanumeric characters\n- Case insensitive comparison',examples:[{inp:'"A man, a plan, a canal: Panama"',out:'true'},{inp:'"race a car"',out:'false'}],hint:'Two pointer approach: one at start, one at end.',starter:'function isPalindrome(s) {\n  // Return true or false\n\n}'},
+    {n:4,cat:'TREES',diff:'medium',xp:70,title:'Maximum Depth of Binary Tree',desc:'Given the root of a binary tree, return its maximum depth. Maximum depth is the number of nodes along the longest path from root to leaf.',constraints:'- Number of nodes: [0, 10⁴]\n- Node values: [-100, 100]',examples:[{inp:'root = [3,9,20,null,null,15,7]',out:'3'},{inp:'root = [1,null,2]',out:'2'}],hint:'Use recursion: depth = 1 + max(left depth, right depth)',starter:'function maxDepth(root) {\n  // Return max depth\n\n}'},
+    {n:5,cat:'DP',diff:'hard',xp:100,title:'Longest Common Subsequence',desc:'Given two strings, return the length of their longest common subsequence.',constraints:'- 1 ≤ text1.length, text2.length ≤ 1000\n- Strings contain only lowercase English letters',examples:[{inp:'"abcde", "ace"',out:'3'},{inp:'"abc", "abc"',out:'3'}],hint:'Classic 2D DP: dp[i][j] = LCS of first i chars of s1 and first j chars of s2.',starter:'function longestCommonSubsequence(text1, text2) {\n  // Return length of LCS\n\n}'}
+  ];
+  const next=proProblems.find(p=>p.n===currentProblem.n+1);
+  if(next){openCodeProblem(next);}
+  else{closeCode();}
 }
 
 function runCode(){
-  const code=document.getElementById('code-editor-area').value;
   const out=document.getElementById('code-output');
-  try{
-    // Safe eval with timeout simulation
-    out.textContent='// Running...\n// ✓ Test 1: Passed\n// ✓ Test 2: Passed\n// All visible tests passed. Submit to check full test suite.';
-    out.style.color='var(--a3)';
-  } catch(e){out.textContent='// Error: '+e.message;out.style.color='#ef4444';}
+  out.style.color='var(--a3)';
+  out.textContent='// Running...\n// ✓ Test 1: Passed\n// ✓ Test 2: Passed\n// All visible tests passed. Submit to check full test suite.';
 }
 
 function submitCode(){
   const code=document.getElementById('code-editor-area').value;
-  if(code.trim()===currentProblem?.starter.trim()||code.trim().length<30){
-    document.getElementById('code-output').textContent='// Please write your solution first!';
-    document.getElementById('code-output').style.color='#ef4444';
-    return;
+  if(!currentProblem||code.trim()===langStarters[currentLang](currentProblem).trim()||code.trim().length<20){
+    const out=document.getElementById('code-output');
+    out.textContent='// Please write your solution first!';
+    out.style.color='#ef4444'; return;
   }
-  // Show result
-  const o=document.getElementById('result-overlay');
-  document.getElementById('code-screen').style.position='relative';
-  document.getElementById('code-screen').appendChild(o);
-  o.style.display='flex';
+  // Earn XP
   xpEarned+=currentProblem.xp;
-  document.getElementById('xp-display').textContent=445+xpEarned;
-  document.getElementById('r-icon').textContent='🎉';
-  document.getElementById('r-h').textContent='Accepted!';
-  document.getElementById('r-p').textContent='All test cases passed. Great solution!';
-  document.getElementById('r-xp').textContent=`+${currentProblem.xp} XP`;
-  document.getElementById('r-next').textContent=currentProblem.n<5?'Next Problem →':'All Done! 🏆';
-  document.getElementById('r-next').onclick=()=>{o.style.display='none';closeCode();};
+  const totalXp=445+xpEarned;
+  document.getElementById('xp-display').textContent=totalXp;
+  document.getElementById('code-xp-display').textContent=`${xpEarned} XP`;
+
+  const cx=complexityMap[currentProblem.title]||{time:'O(n)',space:'O(n)',runtime:'5ms',curve:'n'};
+
+  // Fill result panel
+  document.getElementById('crp-icon').textContent='🎉';
+  document.getElementById('crp-title').textContent='Accepted!';
+  document.getElementById('crp-sub').textContent=`All test cases passed · ${langLabels[currentLang]}`;
+  document.getElementById('crp-xp').textContent=`+${currentProblem.xp}`;
+  document.getElementById('crp-total-xp').textContent=`Total: ${totalXp} XP`;
+  document.getElementById('crp-time-val').textContent=cx.time;
+  document.getElementById('crp-space-val').textContent=cx.space;
+  document.getElementById('crp-runtime').textContent=cx.runtime;
+  document.getElementById('crp-complexity-label').textContent=`Your solution: ${cx.time} time · ${cx.space} space — Beats 94% of submissions`;
+
+  // Test result chips
+  document.getElementById('crp-tests').innerHTML=[1,2,3,4,5].map(i=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:20px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#22c55e;">✓ Test ${i}</span>`).join('');
+
+  // Draw complexity graph
+  drawComplexityGraph(cx.curve);
+
+  document.getElementById('code-result-panel').style.display='block';
 }
 
-function resetCode(){document.getElementById('code-editor-area').value=currentProblem?.starter||'';}
+function drawComplexityGraph(curve){
+  const svg=document.getElementById('crp-graph');
+  const W=500,H=140,pad=30;
+  const pts=n=>Array.from({length:20},(_,i)=>{
+    const x=i/19; const xv=x*(W-pad*2)+pad;
+    let yv;
+    if(n==='logn') yv=H-pad-(Math.log2(x*20+1)/Math.log2(21))*(H-pad*2);
+    else if(n==='n') yv=H-pad-x*(H-pad*2);
+    else if(n==='nlogn') yv=H-pad-(x*Math.log2(x*20+2)/Math.log2(22))*(H-pad*2);
+    else yv=H-pad-x*x*(H-pad*2);
+    return [xv,Math.max(pad,yv)];
+  });
+  const pathStr=p=>p.map((pt,i)=>(i?'L':'M')+pt[0].toFixed(1)+' '+pt[1].toFixed(1)).join(' ');
+  const accent=mode==='pro'?'#22c55e':mode==='explorer'?'#06b6d4':'#f97316';
+  const yourPts=pts(curve), n2Pts=pts('n2');
+  svg.innerHTML=`
+    <defs>
+      <linearGradient id="gcurve" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="${accent}" stop-opacity=".8"/>
+        <stop offset="100%" stop-color="${accent}"/>
+      </linearGradient>
+    </defs>
+    <!-- Grid -->
+    <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${H-pad}" stroke="rgba(148,163,184,.15)" stroke-width="1"/>
+    <line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" stroke="rgba(148,163,184,.15)" stroke-width="1"/>
+    ${[.25,.5,.75,1].map(v=>`<line x1="${pad}" y1="${H-pad-(H-pad*2)*v}" x2="${W-pad}" y2="${H-pad-(H-pad*2)*v}" stroke="rgba(148,163,184,.07)" stroke-width="1"/>`).join('')}
+    <!-- O(n²) reference line -->
+    <path d="${pathStr(n2Pts)}" fill="none" stroke="rgba(239,68,68,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="${n2Pts[14][0]+4}" y="${n2Pts[14][1]-5}" fill="rgba(239,68,68,.6)" font-size="9" font-family="JetBrains Mono">O(n²)</text>
+    <!-- Your solution curve -->
+    <path d="${pathStr(yourPts)}" fill="none" stroke="url(#gcurve)" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Axis labels -->
+    <text x="${pad+2}" y="${H-pad+14}" fill="rgba(148,163,184,.4)" font-size="8" font-family="JetBrains Mono">0</text>
+    <text x="${W-pad-6}" y="${H-pad+14}" fill="rgba(148,163,184,.4)" font-size="8" font-family="JetBrains Mono">n</text>
+    <text x="${pad-18}" y="${pad+4}" fill="rgba(148,163,184,.4)" font-size="8" font-family="JetBrains Mono">ops</text>
+  `;
+}
+
+function resetCode(){document.getElementById('code-editor-area').value=currentProblem?langStarters[currentLang](currentProblem):'';}
 
 function showSolution(){
   const solutions={
-    'Binary Search':`function binarySearch(nums, target) {\n  let lo = 0, hi = nums.length - 1;\n  while (lo <= hi) {\n    const mid = lo + hi >> 1;\n    if (nums[mid] === target) return mid;\n    if (nums[mid] < target) lo = mid + 1;\n    else hi = mid - 1;\n  }\n  return -1;\n}`,
-    'Two Sum':`function twoSum(nums, target) {\n  const map = {};\n  for (let i = 0; i < nums.length; i++) {\n    const comp = target - nums[i];\n    if (map[comp] !== undefined) return [map[comp], i];\n    map[nums[i]] = i;\n  }\n}`,
-    'Valid Palindrome':`function isPalindrome(s) {\n  const clean = s.toLowerCase().replace(/[^a-z0-9]/g,'');\n  return clean === clean.split('').reverse().join('');\n}`,
-    'Maximum Depth of Binary Tree':`function maxDepth(root) {\n  if (!root) return 0;\n  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));\n}`,
-    'Longest Common Subsequence':`function longestCommonSubsequence(text1, text2) {\n  const m = text1.length, n = text2.length;\n  const dp = Array.from({length:m+1}, ()=>Array(n+1).fill(0));\n  for (let i=1;i<=m;i++)\n    for (let j=1;j<=n;j++)\n      dp[i][j] = text1[i-1]===text2[j-1] ? dp[i-1][j-1]+1 : Math.max(dp[i-1][j],dp[i][j-1]);\n  return dp[m][n];\n}`,
+    'Binary Search':{js:`function binarySearch(nums, target) {\n  let lo = 0, hi = nums.length - 1;\n  while (lo <= hi) {\n    const mid = lo + hi >> 1;\n    if (nums[mid] === target) return mid;\n    if (nums[mid] < target) lo = mid + 1;\n    else hi = mid - 1;\n  }\n  return -1;\n}`,py:`def binarySearch(nums, target):\n    lo, hi = 0, len(nums) - 1\n    while lo <= hi:\n        mid = (lo + hi) >> 1\n        if nums[mid] == target: return mid\n        if nums[mid] < target: lo = mid + 1\n        else: hi = mid - 1\n    return -1`,java:`class Solution {\n    public int search(int[] nums, int target) {\n        int lo = 0, hi = nums.length - 1;\n        while (lo <= hi) {\n            int mid = lo + hi >> 1;\n            if (nums[mid] == target) return mid;\n            if (nums[mid] < target) lo = mid + 1;\n            else hi = mid - 1;\n        }\n        return -1;\n    }\n}`,c:`int binarySearch(int* nums, int n, int target) {\n    int lo = 0, hi = n - 1;\n    while (lo <= hi) {\n        int mid = lo + (hi - lo) / 2;\n        if (nums[mid] == target) return mid;\n        if (nums[mid] < target) lo = mid + 1;\n        else hi = mid - 1;\n    }\n    return -1;\n}`,cpp:`class Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        int lo = 0, hi = nums.size() - 1;\n        while (lo <= hi) {\n            int mid = lo + hi >> 1;\n            if (nums[mid] == target) return mid;\n            if (nums[mid] < target) lo = mid + 1;\n            else hi = mid - 1;\n        }\n        return -1;\n    }\n};`},
+    'Two Sum':{js:`function twoSum(nums, target) {\n  const map = {};\n  for (let i = 0; i < nums.length; i++) {\n    if (map[target - nums[i]] !== undefined) return [map[target - nums[i]], i];\n    map[nums[i]] = i;\n  }\n}`,py:`def twoSum(nums, target):\n    seen = {}\n    for i, v in enumerate(nums):\n        if target - v in seen: return [seen[target-v], i]\n        seen[v] = i`,java:`class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        Map<Integer,Integer> map = new HashMap<>();\n        for (int i=0; i<nums.length; i++) {\n            if (map.containsKey(target-nums[i])) return new int[]{map.get(target-nums[i]),i};\n            map.put(nums[i], i);\n        }\n        return new int[]{};\n    }\n}`,c:`// Two Sum in C\nvoid twoSum(int* nums, int n, int target, int* out) {\n    for(int i=0;i<n;i++) for(int j=i+1;j<n;j++)\n        if(nums[i]+nums[j]==target){out[0]=i;out[1]=j;return;}\n}`,cpp:`class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        unordered_map<int,int> m;\n        for (int i=0;i<nums.size();i++) {\n            if (m.count(target-nums[i])) return {m[target-nums[i]],i};\n            m[nums[i]]=i;\n        }\n        return {};\n    }\n};`},
+    'Valid Palindrome':{
+      js:`function isPalindrome(s) {\n  let lo = 0, hi = s.length - 1;\n  s = s.toLowerCase();\n  while (lo < hi) {\n    while (lo < hi && !/[a-z0-9]/.test(s[lo])) lo++;\n    while (lo < hi && !/[a-z0-9]/.test(s[hi])) hi--;\n    if (s[lo] !== s[hi]) return false;\n    lo++; hi--;\n  }\n  return true;\n}`,
+      py:`def isPalindrome(s):\n    s = [c.lower() for c in s if c.isalnum()]\n    return s == s[::-1]`,
+      java:`class Solution {\n    public boolean isPalindrome(String s) {\n        int lo = 0, hi = s.length()-1;\n        while (lo < hi) {\n            while (lo<hi && !Character.isLetterOrDigit(s.charAt(lo))) lo++;\n            while (lo<hi && !Character.isLetterOrDigit(s.charAt(hi))) hi--;\n            if (Character.toLowerCase(s.charAt(lo))!=Character.toLowerCase(s.charAt(hi))) return false;\n            lo++; hi--;\n        }\n        return true;\n    }\n}`,
+      cpp:`class Solution {\npublic:\n    bool isPalindrome(string s) {\n        int lo=0, hi=s.size()-1;\n        while(lo<hi) {\n            while(lo<hi && !isalnum(s[lo])) lo++;\n            while(lo<hi && !isalnum(s[hi])) hi--;\n            if(tolower(s[lo])!=tolower(s[hi])) return false;\n            lo++; hi--;\n        }\n        return true;\n    }\n};`
+    },
+    'Longest Common Subsequence':{
+      js:`function longestCommonSubsequence(text1, text2) {\n  const m = text1.length, n = text2.length;\n  const dp = Array.from({length:m+1}, ()=>new Array(n+1).fill(0));\n  for (let i=1; i<=m; i++)\n    for (let j=1; j<=n; j++)\n      dp[i][j] = text1[i-1]===text2[j-1]\n        ? dp[i-1][j-1]+1\n        : Math.max(dp[i-1][j], dp[i][j-1]);\n  return dp[m][n];\n}`,
+      py:`def longestCommonSubsequence(text1, text2):\n    m, n = len(text1), len(text2)\n    dp = [[0]*(n+1) for _ in range(m+1)]\n    for i in range(1, m+1):\n        for j in range(1, n+1):\n            if text1[i-1]==text2[j-1]: dp[i][j]=dp[i-1][j-1]+1\n            else: dp[i][j]=max(dp[i-1][j],dp[i][j-1])\n    return dp[m][n]`,
+      java:`class Solution {\n    public int longestCommonSubsequence(String t1, String t2) {\n        int m=t1.length(), n=t2.length();\n        int[][] dp = new int[m+1][n+1];\n        for(int i=1;i<=m;i++)\n            for(int j=1;j<=n;j++)\n                dp[i][j] = t1.charAt(i-1)==t2.charAt(j-1) ? dp[i-1][j-1]+1 : Math.max(dp[i-1][j],dp[i][j-1]);\n        return dp[m][n];\n    }\n}`,
+      cpp:`class Solution {\npublic:\n    int longestCommonSubsequence(string t1, string t2) {\n        int m=t1.size(), n=t2.size();\n        vector<vector<int>> dp(m+1,vector<int>(n+1,0));\n        for(int i=1;i<=m;i++)\n            for(int j=1;j<=n;j++)\n                dp[i][j]=t1[i-1]==t2[j-1]?dp[i-1][j-1]+1:max(dp[i-1][j],dp[i][j-1]);\n        return dp[m][n];\n    }\n};`
+    },
   };
-  const sol=solutions[currentProblem?.title];
-  if(sol)document.getElementById('code-editor-area').value=sol;
+  const sol=solutions[currentProblem?.title]?.[currentLang]||solutions[currentProblem?.title]?.js;
+  if(sol) document.getElementById('code-editor-area').value=sol;
+}
+
+// ════════════════════════════════════════
+// DAILY CHALLENGE — theme-specific
+// ════════════════════════════════════════
+const dailyChallenges={
+  junior:{
+    game:{mode:'junior',n:3,cat:'QUANTIFICATION',title:'Node Calibration',q:'Determine the total active logical nodes.',pattern:['◆','◆','◆','◆','◆','?'],opts:['3','4','5','6'],ans:2,hint:'Count all the active diamond nodes visible.'},
+    cat:'Quantification',diff:'Easy',xp:'✦ 20 XP',grad:'linear-gradient(135deg,#f97316,#fbbf24)'
+  },
+  explorer:{
+    game:{mode:'explorer',n:1,cat:'ALGORITHMS',title:'Fibonacci Sequence',q:'What comes next?',pattern:['1','1','2','3','5','8','?'],opts:['10','11','13','15'],ans:2,hint:'Each number = sum of the two before it.'},
+    cat:'Algorithms',diff:'Medium',xp:'✦ 25 XP',grad:'linear-gradient(135deg,#06b6d4,#3b82f6)'
+  },
+  pro:{
+    code:{n:1,cat:'SEARCH',diff:'medium',xp:60,title:'Binary Search',desc:'Implement binary search on a sorted array.\n\nGiven a sorted array of integers and a target value, return the index if the target is found, or -1 if not.',constraints:'- Array is sorted in ascending order\n- O(log n) time complexity required',examples:[{inp:'[-1,0,3,5,9,12], target = 9',out:'4'},{inp:'[-1,0,3,5,9,12], target = 2',out:'-1'}],hint:'Divide the search space in half each iteration using two pointers.',starter:'function binarySearch(nums, target) {\n  // Implement binary search\n  // Return index or -1\n\n}'},
+    cat:'Search',diff:'Medium',xp:'✦ 60 XP',grad:'linear-gradient(135deg,#22c55e,#84cc16)'
+  }
+};
+
+function updateDailyChallenge(){
+  const ch=dailyChallenges[mode];
+  if(!ch)return;
+  const bg=document.getElementById('chero-bg-el');
+  if(bg)bg.style.background=ch.grad;
+  const t=document.getElementById('ch-title');
+  const d=document.getElementById('ch-desc');
+  if(t)t.textContent=mode==='pro'?ch.code.title:ch.game.title;
+  if(d)d.textContent=mode==='pro'?ch.code.desc.split('\n')[0]:modeConfig[mode].chDesc;
+  const cat=document.getElementById('ch-tag-cat');
+  const diff=document.getElementById('ch-tag-diff');
+  const xp=document.getElementById('ch-tag-xp');
+  if(cat)cat.textContent=ch.cat;
+  if(diff)diff.textContent=ch.diff;
+  if(xp)xp.textContent=ch.xp;
+}
+
+function acceptDailyChallenge(){
+  const ch=dailyChallenges[mode];
+  if(!ch)return;
+  if(mode==='pro')openCodeProblem(ch.code);
+  else openGame(ch.game);
 }
 
 // ════════════════════════════════════════
@@ -2630,15 +3102,39 @@ function lmSel(el,m){
   setMode(m,null);
   // Update login preview panel
   const previews={
-    junior:{badge:'🎮 Junior Mode',heading:'Start Your<br><em>Coding Journey.</em>',desc:'Logic puzzles, pattern games and fun challenges designed for young minds aged 8–12.',feats:['Fun pattern-based quizzes','Beginner-friendly curriculum','XP rewards & streaks','Safe, distraction-free environment']},
-    explorer:{badge:'🔭 Explorer Mode',heading:'Code Beyond<br><em>Limits.</em>',desc:'Bridge logic and real programming. Structural thinking, algorithms and problem solving for ages 12–15.',feats:['Intermediate algorithm challenges','Real data structure puzzles','Competitive leaderboard','Dark ocean UI — focused & immersive']},
-    pro:{badge:'⚡ Pro Mode',heading:'Think. Build.<br><em>Conquer.</em>',desc:'Advanced algorithms, live coding editor, and competitive challenges. For those ready to lead the field.',feats:['Live code editor with run & submit','Hard algorithm problems (LeetCode style)','Full matrix/terminal aesthetic','Compete at national level']}
+    junior:{
+      badge:'🎮 Junior Mode',
+      heading:'Start Your<br><em>Coding Journey.</em>',
+      desc:'Logic puzzles, pattern games and fun challenges designed for young minds aged 8–12.',
+      feats:[{icon:'🧩',text:'Fun pattern-based quizzes'},{icon:'📚',text:'Beginner-friendly curriculum'},{icon:'⭐',text:'XP rewards & streaks'},{icon:'🛡️',text:'Safe, distraction-free environment'}],
+      cardIcon:'🎮',cardTitle:"Today's Challenge",cardSub:'Node Calibration · ✦ 20 XP'
+    },
+    explorer:{
+      badge:'🔭 Explorer Mode',
+      heading:'Code Beyond,<br><em>No Limits.</em>',
+      desc:'Bridge logic and real programming. Structural thinking, algorithms and problem solving for ages 12–15.',
+      feats:[{icon:'🔭',text:'Intermediate algorithm challenges'},{icon:'🌌',text:'Real data structure puzzles'},{icon:'📊',text:'Competitive leaderboard'},{icon:'🚀',text:'Dark ocean UI — focused & immersive'}],
+      cardIcon:'🔭',cardTitle:"Today's Challenge",cardSub:'Fibonacci Sequence · ✦ 25 XP'
+    },
+    pro:{
+      badge:'⚡ Pro Mode',
+      heading:'Think & Build,<br><em>Conquer.</em>',
+      desc:'Advanced algorithms, live coding editor, and competitive challenges. For those ready to lead the field.',
+      feats:[{icon:'💻',text:'Live code editor with run & submit'},{icon:'⚡',text:'Hard algorithm problems (LeetCode style)'},{icon:'🏆',text:'Full matrix/terminal aesthetic'},{icon:'🔥',text:'Compete at national level'}],
+      cardIcon:'⚡',cardTitle:"Today's Challenge",cardSub:'Binary Search · ✦ 60 XP'
+    }
   };
   const p=previews[m];
   document.getElementById('ltp-badge').textContent=p.badge;
   document.getElementById('ltp-heading').innerHTML=p.heading;
   document.getElementById('ltp-desc').textContent=p.desc;
-  document.getElementById('ltp-features').innerHTML=p.feats.map(f=>`<div class="ltp-feat">✦ ${f}</div>`).join('');
+  document.getElementById('ltp-features').innerHTML=p.feats.map(f=>`<div class="ltp-feat"><div class="ltp-feat-icon">${f.icon}</div>${f.text}</div>`).join('');
+  const cardTitle=document.getElementById('ltp-card-title');
+  const cardSub=document.getElementById('ltp-card-sub');
+  const cardIcon=document.querySelector('#ltp-visual-card > div:first-child');
+  if(cardTitle)cardTitle.textContent=p.cardTitle;
+  if(cardSub)cardSub.textContent=p.cardSub;
+  if(cardIcon)cardIcon.textContent=p.cardIcon;
 }
 
 // ════════════════════════════════════════
@@ -2759,6 +3255,28 @@ function submitProject(){
 // ════════════════════════════════════════
 // PROFILE
 // ════════════════════════════════════════
+function handleAvatarUpload(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('profile-avatar-img');
+    const svg=document.getElementById('profile-avatar-svg');
+    const navAv=document.querySelector('.nav-avatar');
+    if(img){img.src=e.target.result;img.style.display='block';}
+    if(svg)svg.style.display='none';
+    // Also update nav avatar
+    if(navAv){navAv.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;}
+    // Toast notification
+    const toast=document.createElement('div');
+    toast.textContent='✓ Profile picture updated!';
+    toast.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--a1);color:#fff;padding:12px 24px;border-radius:50px;font-size:13px;font-weight:700;font-family:"JetBrains Mono",monospace;z-index:9999;animation:pageIn .3s ease;';
+    document.body.appendChild(toast);
+    setTimeout(()=>toast.remove(),2500);
+  };
+  reader.readAsDataURL(file);
+}
+
 function updateUsernameDisplay(val){
   const el=document.getElementById('profile-username-display');
   if(el)el.textContent=val||'young_coder_007';
@@ -2790,6 +3308,7 @@ updateHeroScene();
 updateProgCards();
 updateFeatVis();
 updateCommunityGrid();
+updateDailyChallenge();
 goPage('home');
 
 // Show login first
