@@ -30,6 +30,7 @@
   --p-glow: rgba(34,197,94,0.3);
   /* Active theme vars */
   --bg1: var(--j-bg1); --bg2: var(--j-bg2); --bg3: var(--j-bg3);
+  --a1-rgb: 249,115,22;
   --a1: var(--j-a1); --a2: var(--j-a2); --a3: var(--j-a3);
   --text: var(--j-text); --muted: var(--j-muted);
   --card: var(--j-card); --bdr: var(--j-bdr); --glow: var(--j-glow);
@@ -39,12 +40,14 @@
   --a1:var(--e-a1);--a2:var(--e-a2);--a3:var(--e-a3);
   --text:var(--e-text);--muted:var(--e-muted);
   --card:var(--e-card);--bdr:var(--e-bdr);--glow:var(--e-glow);
+  --a1-rgb:6,182,212;
 }
 [data-mode="pro"] {
   --bg1:var(--p-bg1);--bg2:var(--p-bg2);--bg3:var(--p-bg3);
   --a1:var(--p-a1);--a2:var(--p-a2);--a3:var(--p-a3);
   --text:var(--p-text);--muted:var(--p-muted);
   --card:var(--p-card);--bdr:var(--p-bdr);--glow:var(--p-glow);
+  --a1-rgb:34,197,94;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -348,15 +351,44 @@ nav{
 ════════════════════════════════════════ */
 /* HERO */
 .hero{
-  min-height:calc(100vh - 62px);display:grid;
-  grid-template-columns:55fr 45fr;
+  height:calc(100vh - 62px);
+  min-height:600px;max-height:880px;
+  display:grid;
+  grid-template-columns:42fr 22fr 36fr;
   padding-top:62px;position:relative;z-index:2;
-  max-height:860px;
+  overflow:hidden;
 }
 .hero-l{
   display:flex;flex-direction:column;justify-content:center;
-  padding:60px 40px 60px 80px;
+  padding:60px 20px 60px 72px;overflow:hidden;
+  z-index:2;
 }
+/* HERO MIDDLE — floating feature cards */
+.hero-m{
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  gap:14px;padding:80px 8px;position:relative;z-index:2;overflow:hidden;
+}
+.hm-card{
+  width:100%;border-radius:18px;padding:16px 18px;
+  backdrop-filter:blur(20px);
+  border:1px solid var(--bdr);
+  background:var(--card);
+  transition:all .5s;
+  cursor:default;
+}
+.hm-card:hover{transform:translateY(-3px) scale(1.02);border-color:var(--a1);box-shadow:0 12px 32px -8px var(--a1);}
+.hm-card-lbl{font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;transition:color .4s;}
+.hm-card-val{font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);line-height:1;transition:color .4s;}
+.hm-card-sub{font-size:11px;color:var(--muted);margin-top:3px;transition:color .4s;}
+.hm-pbar{height:3px;background:var(--bdr);border-radius:3px;margin-top:10px;overflow:hidden;}
+.hm-pfill{height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:3px;transition:background .5s;}
+.hm-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;}
+.hm-mini{border-radius:12px;padding:8px 10px;background:rgba(var(--a1-rgb,249,115,22),.07);border:1px solid var(--bdr);text-align:center;transition:all .4s;}
+.hm-mini-icon{font-size:18px;margin-bottom:3px;}
+.hm-mini-txt{font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);transition:color .4s;}
+@keyframes hmFloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes hmFloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes hmFloat3{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:8px;
   background:var(--card);border:1px solid var(--bdr);
@@ -369,7 +401,7 @@ nav{
 .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--a1);animation:logopulse 2s infinite;}
 .hero-h{
   font-family:'Clash Display',sans-serif;
-  font-size:clamp(52px,6.5vw,88px);font-weight:700;
+  font-size:clamp(44px,5.5vw,78px);font-weight:700;
   color:var(--text);line-height:.95;letter-spacing:-3px;
   margin-bottom:22px;animation:fadeSlideDown .7s .1s ease both;
   transition:color .4s;
@@ -396,21 +428,10 @@ nav{
 /* HERO RIGHT */
 .hero-r{
   position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:flex-start;
-  padding:80px 48px 80px 20px;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px 16px 16px 4px;
 }
-.hero-r-scene{position:absolute;inset:0;z-index:0;}
-.hero-r-fade{
-  position:absolute;inset:0;
-  background:linear-gradient(90deg, var(--bg1) 0%, transparent 30%);
-  z-index:2;pointer-events:none;transition:background .8s;
-}
-.hero-r-content{
-  position:relative;z-index:3;
-  width:100%;max-width:560px;
-  display:flex;flex-direction:column;
-  gap:12px;
-}
+.hero-r svg{width:100%;height:100%;max-height:100%;display:block;}
 /* theme-panel cards inside hero-r */
 .hp-top{display:flex;gap:14px;width:100%;align-items:stretch;}
 .hp-code{
@@ -865,11 +886,113 @@ nav{
 .com-acts{display:flex;gap:12px;font-size:12px;color:var(--muted);transition:color .4s;}
 
 /* FOOTER */
-footer{
-  position:relative;z-index:2;border-top:1px solid var(--bdr);
-  padding:24px 60px;display:flex;justify-content:space-between;align-items:center;
-  max-width:1260px;margin:0 auto;font-size:12px;color:var(--muted);transition:all .4s;
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+.site-footer{
+  position:relative;z-index:2;
+  border-top:1px solid var(--bdr);
+  background:var(--bg2);
+  transition:all .5s;
 }
+.footer-main{
+  max-width:1260px;margin:0 auto;
+  padding:72px 60px 48px;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1.6fr;
+  gap:48px;
+}
+.footer-brand{}
+.footer-logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;
+  color:var(--a1);margin-bottom:18px;cursor:pointer;
+}
+.footer-logo-icon{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--a1);display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:#fff;flex-shrink:0;
+}
+.footer-tagline{
+  font-size:14px;color:var(--muted);line-height:1.7;
+  max-width:260px;margin-bottom:28px;transition:color .4s;
+}
+.footer-socials{display:flex;gap:10px;flex-wrap:wrap;}
+.footer-social{
+  width:38px;height:38px;border-radius:12px;
+  border:1px solid var(--bdr);background:var(--card);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;transition:all .3s;
+  backdrop-filter:blur(8px);text-decoration:none;
+}
+.footer-social:hover{border-color:var(--a1);background:rgba(var(--a1-rgb,249,115,22),.1);transform:translateY(-3px);}
+.footer-col-title{
+  font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  color:var(--a1);text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:20px;transition:color .4s;
+}
+.footer-links{display:flex;flex-direction:column;gap:11px;}
+.footer-link{
+  font-size:13.5px;color:var(--muted);cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;gap:7px;
+  text-decoration:none;width:fit-content;
+}
+.footer-link:hover{color:var(--a1);transform:translateX(4px);}
+.footer-link-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--bdr);flex-shrink:0;transition:background .2s;
+}
+.footer-link:hover .footer-link-dot{background:var(--a1);}
+
+/* Contact form inside footer */
+.footer-contact-form{display:flex;flex-direction:column;gap:10px;}
+.footer-input{
+  width:100%;padding:11px 14px;border-radius:10px;
+  background:rgba(var(--a1-rgb,249,115,22),.04);
+  border:1.5px solid var(--bdr);
+  color:var(--text);font-size:13px;font-family:'Satoshi',sans-serif;
+  transition:all .3s;outline:none;
+}
+.footer-input:focus{border-color:var(--a1);box-shadow:0 0 0 3px var(--glow);}
+.footer-input::placeholder{color:var(--muted);opacity:.6;}
+.footer-textarea{resize:vertical;min-height:80px;font-family:'Satoshi',sans-serif;}
+.footer-submit{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 20px;border-radius:10px;
+  background:var(--a1);color:#fff;border:none;
+  font-size:12px;font-weight:700;font-family:'Satoshi',sans-serif;
+  text-transform:uppercase;letter-spacing:.5px;cursor:pointer;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 4px 16px -6px var(--a1);
+}
+.footer-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px -6px var(--a1);}
+
+/* Footer bottom bar */
+.footer-bottom{
+  max-width:1260px;margin:0 auto;
+  padding:20px 60px;
+  border-top:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+  transition:all .4s;
+}
+.footer-copy{font-size:12px;color:var(--muted);transition:color .4s;}
+.footer-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.footer-badge{
+  font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  color:var(--a1);padding:3px 10px;border-radius:20px;
+  border:1px solid var(--bdr);background:var(--card);
+  transition:all .4s;
+}
+@media(max-width:1100px){
+  .footer-main{grid-template-columns:1fr 1fr;gap:36px;padding:48px 32px 36px;}
+  .footer-bottom{padding:18px 32px;}
+}
+@media(max-width:720px){
+  .footer-main{grid-template-columns:1fr;gap:32px;padding:40px 24px 28px;}
+  .footer-bottom{padding:16px 24px;flex-direction:column;align-items:flex-start;}
+}
+
 
 /* ════════════════════════════════════════
    PROJECTS PAGE
@@ -941,8 +1064,11 @@ footer{
 }
 
 /* RESPONSIVE */
+@media(max-width:1200px){
+  .hero{grid-template-columns:45fr 55fr;}.hero-m{display:none;}
+}
 @media(max-width:1100px){
-  .hero{grid-template-columns:1fr;}.hero-r{display:none;}
+  .hero{grid-template-columns:1fr;}.hero-r{display:none;}.hero-m{display:none;}
   .prog-grid,.feat-grid,.com-grid,.proj-tier-grid{grid-template-columns:1fr 1fr;}
   .wrap{padding:0 32px;}.section{padding:60px 0;}
   nav{padding:0 24px;}.stats-row{grid-template-columns:1fr 1fr;}
@@ -1114,7 +1240,7 @@ footer{
   <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
     <button class="btn btn-fill" onclick="goPage('dashboard')">📊 Dashboard</button>
     <button class="btn btn-outline" onclick="goPage('home')">← Back to Home</button>
-    <button class="btn btn-outline" style="margin-left:auto;color:#ef4444;border-color:rgba(239,68,68,.3)" onclick="goPage('login')">Sign Out</button>
+    <button class="btn btn-outline" style="margin-left:auto;color:#ef4444;border-color:rgba(239,68,68,.3)" onclick="signOut()">Sign Out</button>
   </div>
 </div>
 </div>
@@ -1270,7 +1396,10 @@ footer{
       </div>
     </div>
 
-    <div class="hero-r" id="hero-r-panel" style="position:relative;overflow:hidden;display:flex;align-items:center;justify-content:flex-start;padding:80px 48px 80px 20px;">
+    <!-- HERO MIDDLE — rendered by updateHeroMid() JS -->
+    <div class="hero-m" id="hero-m-panel"></div>
+
+    <div class="hero-r" id="hero-r-panel">
       <!-- Fully rendered by updateHeroPanel() JS — theme-specific rich content -->
     </div>
   </section>
@@ -1297,7 +1426,8 @@ footer{
     <h2 class="shead">Pick Your <em>Tier</em></h2>
     <p class="sdesc">Three perfectly crafted learning paths — each with a unique world, aesthetic, and curriculum.</p>
     <div class="prog-grid">
-      <div class="prog-card rv d1" onclick="setMode('junior',null);goPage('courses')">
+      <div class="prog-card rv d1" onclick="enterTier('junior')" style="position:relative;">
+        <div id="prog-unlock-junior" style="display:none;position:absolute;top:14px;left:14px;z-index:5;background:#22c55e;color:#fff;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:20px;letter-spacing:1px;">✓ UNLOCKED</div>
         <div class="prog-img" id="prog-j"><!-- SVG injected --></div>
         <div class="prog-arrow">→</div>
         <div class="prog-body">
@@ -1306,7 +1436,8 @@ footer{
           <p class="prog-desc">Deeply engaging logic puzzles and pattern recognition without the noise. Algorithmic thinking made effortless.</p>
         </div>
       </div>
-      <div class="prog-card rv d2" onclick="setMode('explorer',null);goPage('courses')">
+      <div class="prog-card rv d2" onclick="enterTier('explorer')" style="position:relative;">
+        <div id="prog-unlock-explorer" style="display:none;position:absolute;top:14px;left:14px;z-index:5;background:#22c55e;color:#fff;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:20px;letter-spacing:1px;">✓ UNLOCKED</div>
         <div class="prog-img" id="prog-e"><!-- SVG injected --></div>
         <div class="prog-arrow">→</div>
         <div class="prog-body">
@@ -1315,7 +1446,8 @@ footer{
           <p class="prog-desc">Structural thinking and real problem solving. Bridge the gap between logic and real code elegantly.</p>
         </div>
       </div>
-      <div class="prog-card rv d3" onclick="setMode('pro',null);goPage('courses')">
+      <div class="prog-card rv d3" onclick="enterTier('pro')" style="position:relative;">
+        <div id="prog-unlock-pro" style="display:none;position:absolute;top:14px;left:14px;z-index:5;background:#22c55e;color:#fff;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:20px;letter-spacing:1px;">✓ UNLOCKED</div>
         <div class="prog-img" id="prog-p"><!-- SVG injected --></div>
         <div class="prog-arrow">→</div>
         <div class="prog-body">
@@ -1356,7 +1488,90 @@ footer{
       </div>
     </div>
   </div>
-  <footer><span>© 2026 TheCodeKid. Premium Learning.</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px">Made with precision in India.</span></footer>
+  <footer class="site-footer">
+    <div class="footer-main">
+
+      <!-- Brand column -->
+      <div class="footer-brand">
+        <div class="footer-logo" onclick="goPage('home')">
+          <div class="footer-logo-icon">✦</div>
+          TheCodeKid_
+        </div>
+        <p class="footer-tagline">India's most aesthetic coding platform for young minds. Learn logic, build projects and compete — all in one place.</p>
+        <div class="footer-socials">
+          <a class="footer-social" title="Instagram" href="#" onclick="return false;">📸</a>
+          <a class="footer-social" title="YouTube" href="#" onclick="return false;">▶️</a>
+          <a class="footer-social" title="Twitter / X" href="#" onclick="return false;">🐦</a>
+          <a class="footer-social" title="LinkedIn" href="#" onclick="return false;">💼</a>
+          <a class="footer-social" title="Discord" href="#" onclick="return false;">💬</a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <div class="footer-links">
+          <span class="footer-link" onclick="goPage('home')"><span class="footer-link-dot"></span>Home</span>
+          <span class="footer-link" onclick="goPage('courses')"><span class="footer-link-dot"></span>Courses</span>
+          <span class="footer-link" onclick="goPage('projects')"><span class="footer-link-dot"></span>Projects</span>
+          <span class="footer-link" onclick="goPage('challenges')"><span class="footer-link-dot"></span>Challenges</span>
+          <span class="footer-link" onclick="goPage('leaderboard')"><span class="footer-link-dot"></span>Leaderboard</span>
+          <span class="footer-link" onclick="goPage('community')"><span class="footer-link-dot"></span>Community</span>
+        </div>
+      </div>
+
+      <!-- About / Company -->
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-links">
+          <span class="footer-link" onclick="openFooterModal('about')"><span class="footer-link-dot"></span>About Us</span>
+          <span class="footer-link" onclick="openFooterModal('mission')"><span class="footer-link-dot"></span>Our Mission</span>
+          <span class="footer-link" onclick="openFooterModal('team')"><span class="footer-link-dot"></span>The Team</span>
+          <span class="footer-link" onclick="openFooterModal('privacy')"><span class="footer-link-dot"></span>Privacy Policy</span>
+          <span class="footer-link" onclick="openFooterModal('terms')"><span class="footer-link-dot"></span>Terms of Use</span>
+          <span class="footer-link" onclick="openFooterModal('schools')"><span class="footer-link-dot"></span>Schools Program</span>
+        </div>
+      </div>
+
+      <!-- Contact Us -->
+      <div>
+        <div class="footer-col-title">Contact Us</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;transition:color .4s;">Have a question, complaint or suggestion? We read every message.</div>
+        <div class="footer-contact-form">
+          <input type="text" class="footer-input" id="fc-name" placeholder="Your full name" autocomplete="off">
+          <input type="email" class="footer-input" id="fc-email" placeholder="your@email.com" autocomplete="off">
+          <textarea class="footer-input footer-textarea" id="fc-concern" placeholder="Describe your concern or question in detail..."></textarea>
+          <button class="footer-submit" onclick="submitContact()">Send Message →</button>
+        </div>
+        <div style="margin-top:14px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;transition:color .4s;">
+          📧 hello@thecodekid.in<br>
+          📍 Bengaluru, India
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 TheCodeKid Technologies Pvt. Ltd. · Made with precision in India 🇮🇳</span>
+      <div class="footer-badges">
+        <span class="footer-badge">450+ Students</span>
+        <span class="footer-badge">3 Learning Tiers</span>
+        <span class="footer-badge">#1 in India</span>
+        <span class="footer-badge">CBSE Aligned</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Footer info modal -->
+  <div id="footer-modal" style="display:none;position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;padding:20px;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);" onclick="closeFooterModal()"></div>
+    <div style="position:relative;z-index:1;background:var(--card);border:1px solid var(--bdr);border-radius:24px;padding:40px;max-width:560px;width:100%;backdrop-filter:blur(30px);animation:pageIn .3s ease both;max-height:80vh;overflow-y:auto;">
+      <button onclick="closeFooterModal()" style="position:absolute;top:16px;right:16px;background:var(--bg3);border:1px solid var(--bdr);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;">✕</button>
+      <div id="footer-modal-content"></div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ════════════════ DASHBOARD ════════════════ -->
@@ -1412,13 +1627,7 @@ footer{
   <h2 class="shead" id="course-heading">Fun <em>Logic Games</em></h2>
   <p class="sdesc" id="course-desc">Build strong logic through fun games and puzzles — structured for every level.</p>
 
-  <div class="course-tabs">
-    <div class="ctab active" id="ctab-j" onclick="switchCourseTab('junior',this)">🎮 Junior (1–5)</div>
-    <div class="ctab" id="ctab-e" onclick="switchCourseTab('explorer',this)">🔭 Explorer (6–8)</div>
-    <div class="ctab" id="ctab-p" onclick="switchCourseTab('pro',this)">⚡ Pro (9–12)</div>
-  </div>
-
-  <button class="btn btn-fill" style="margin-bottom:28px">▶ Play All</button>
+  <button class="btn btn-fill" style="margin-bottom:28px" id="courses-play-btn">▶ Play All</button>
 
   <!-- JUNIOR courses -->
   <div id="courses-junior" class="course-track">
@@ -1470,23 +1679,23 @@ footer{
 
   <!-- PRO courses (coding) -->
   <div id="courses-pro" class="course-track" style="display:none">
-    <div class="citem rv" onclick="openCodeProblem({n:1,cat:'SEARCH',diff:'medium',xp:60,title:'Binary Search',desc:'Implement binary search on a sorted array.\n\nGiven a sorted array of integers and a target value, return the index if the target is found, or -1 if not.',constraints:'- Array is sorted in ascending order\n- O(log n) time complexity required',examples:[{inp:'[-1,0,3,5,9,12], target = 9',out:'4'},{inp:'[-1,0,3,5,9,12], target = 2',out:'-1'}],hint:'Divide the search space in half each iteration using two pointers.',starter:'function binarySearch(nums, target) {\n  // Implement binary search\n  // Return index or -1\n\n}'})">
+    <div class="citem rv" onclick="openProProblem(1)">
       <div class="cnum cdone">✓</div><div style="flex:1"><div class="ctitle">Binary Search</div><div class="cdesc">Implement binary search on a sorted array. O(log n) required.</div></div>
       <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 60 XP</span><span class="ctag" style="color:#f59e0b;background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2)">medium</span><span class="ctag">Search</span></div>
     </div>
-    <div class="citem rv d1" onclick="openCodeProblem({n:2,cat:'ARRAYS',diff:'easy',xp:40,title:'Two Sum',desc:'Given an array of integers and a target sum, return the indices of the two numbers that add up to target.',constraints:'- Each input has exactly one solution\n- You may not use the same element twice',examples:[{inp:'[2,7,11,15], target = 9',out:'[0, 1]'},{inp:'[3,2,4], target = 6',out:'[1, 2]'}],hint:'Use a hash map for O(n) solution.',starter:'function twoSum(nums, target) {\n  // Return [index1, index2]\n\n}'})">
+    <div class="citem rv d1" onclick="openProProblem(2)">
       <div class="cnum">2</div><div style="flex:1"><div class="ctitle">Two Sum</div><div class="cdesc">Find two numbers that add up to a target. Classic interview question.</div></div>
       <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 40 XP</span><span class="ctag ctag-easy">easy</span><span class="ctag">Arrays</span></div>
     </div>
-    <div class="citem rv d2" onclick="openCodeProblem({n:3,cat:'STRINGS',diff:'medium',xp:55,title:'Valid Palindrome',desc:'A phrase is a palindrome if it reads the same forwards and backwards, ignoring non-alphanumeric characters.',constraints:'- Only consider alphanumeric characters\n- Case insensitive comparison',examples:[{inp:'"A man, a plan, a canal: Panama"',out:'true'},{inp:'"race a car"',out:'false'}],hint:'Two pointer approach: one at start, one at end.',starter:'function isPalindrome(s) {\n  // Return true or false\n\n}'})">
+    <div class="citem rv d2" onclick="openProProblem(3)">
       <div class="cnum">3</div><div style="flex:1"><div class="ctitle">Valid Palindrome</div><div class="cdesc">Check if a phrase is a palindrome ignoring special characters.</div></div>
       <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 55 XP</span><span class="ctag" style="color:#f59e0b;background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2)">medium</span><span class="ctag">Strings</span></div>
     </div>
-    <div class="citem rv d3" onclick="openCodeProblem({n:4,cat:'TREES',diff:'medium',xp:70,title:'Maximum Depth of Binary Tree',desc:'Given the root of a binary tree, return its maximum depth. Maximum depth is the number of nodes along the longest path from root to leaf.',constraints:'- Number of nodes: [0, 10⁴]\n- Node values: [-100, 100]',examples:[{inp:'root = [3,9,20,null,null,15,7]',out:'3'},{inp:'root = [1,null,2]',out:'2'}],hint:'Use recursion: depth = 1 + max(left depth, right depth)',starter:'function maxDepth(root) {\n  // Return max depth\n\n}'})">
+    <div class="citem rv d3" onclick="openProProblem(4)">
       <div class="cnum">4</div><div style="flex:1"><div class="ctitle">Max Depth of Binary Tree</div><div class="cdesc">Find the longest path from root to leaf node using recursion.</div></div>
       <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 70 XP</span><span class="ctag" style="color:#f59e0b;background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2)">medium</span><span class="ctag">Trees</span></div>
     </div>
-    <div class="citem rv d4" onclick="openCodeProblem({n:5,cat:'DP',diff:'hard',xp:100,title:'Longest Common Subsequence',desc:'Given two strings, return the length of their longest common subsequence.',constraints:'- 1 ≤ text1.length, text2.length ≤ 1000\n- Strings contain only lowercase English letters',examples:[{inp:'"abcde", "ace"',out:'3'},{inp:'"abc", "abc"',out:'3'}],hint:'Classic 2D DP: dp[i][j] = LCS of first i chars of s1 and first j chars of s2.',starter:'function longestCommonSubsequence(text1, text2) {\n  // Return length of LCS\n\n}'})">
+    <div class="citem rv d4" onclick="openProProblem(5)">
       <div class="cnum">5</div><div style="flex:1"><div class="ctitle">Longest Common Subsequence</div><div class="cdesc">Classic dynamic programming — find the LCS of two strings.</div></div>
       <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 100 XP</span><span class="ctag" style="color:#ef4444;background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.2)">hard</span><span class="ctag">DP</span></div>
     </div>
@@ -1562,224 +1771,222 @@ footer{
 <div class="page" id="page-projects">
 <div class="wrap section" style="padding-top:90px;position:relative;z-index:2;">
   <div class="stag">Build Something Real</div>
-  <h2 class="shead">Projects by <em>Tier</em></h2>
-  <p class="sdesc">Step-by-step guided projects tailored for your level. Pick your tier and start building something awesome.</p>
+  <h2 class="shead">Guided <em>Projects</em></h2>
+  <p class="sdesc">Step-by-step projects for every tier. Each one teaches real concepts through hands-on building.</p>
 
-  <!-- Tier tabs -->
-  <div class="course-tabs" style="margin-bottom:40px;">
-    <div class="ctab active" id="ptab-j" onclick="switchProjTab('junior',this)">🎮 Junior (Class 1–5)</div>
-    <div class="ctab" id="ptab-e" onclick="switchProjTab('explorer',this)">🔭 Explorer (Class 6–8)</div>
-    <div class="ctab" id="ptab-p" onclick="switchProjTab('pro',this)">⚡ Pro (Class 9–12)</div>
-  </div>
+
 
   <!-- JUNIOR projects -->
   <div id="projs-junior" class="proj-tier-grid">
+
     <div class="proj-card rv">
       <div class="proj-card-header" style="background:linear-gradient(135deg,#fbbf24,#f97316)">
-        <div class="proj-icon">🎨</div>
-        <div class="proj-num">Project 01</div>
+        <div class="proj-icon">🎨</div><div class="proj-num">Project 01</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">🎮 Junior · Class 1–3</div>
-        <div class="proj-name">My Colour Mixer</div>
-        <p class="proj-desc">Build a fun colour mixing app! Click red, blue and yellow circles to mix them and see what new colour appears. Learn about variables and if-statements.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Variables</span>
-          <span class="proj-skill">If-Else</span>
-          <span class="proj-skill">Colours</span>
-        </div>
+        <div class="proj-level-tag">🎮 Junior · Beginner</div>
+        <div class="proj-name">Colour Mixer App</div>
+        <p class="proj-desc">Tap any two primary colour buttons to see what colour they make together. Builds intuition for variables, conditions and user interaction.</p>
+        <div class="proj-skills"><span class="proj-skill">Variables</span><span class="proj-skill">If-Else</span><span class="proj-skill">Buttons</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Create 3 colour buttons (Red, Blue, Yellow)</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Use if-else to detect which two are clicked</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Show the mixed colour result in a big circle</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Create Red, Blue and Yellow clickable circles</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Use if-else logic to detect which pair is selected</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Display the mixed colour result with a fun animation</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>Add a Reset button and a colour name label</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~1 hour</span>
+        </div>
       </div>
     </div>
+
     <div class="proj-card rv d1">
-      <div class="proj-card-header" style="background:linear-gradient(135deg,#fb923c,#f97316)">
-        <div class="proj-icon">🐾</div>
-        <div class="proj-num">Project 02</div>
+      <div class="proj-card-header" style="background:linear-gradient(135deg,#fb923c,#ef4444)">
+        <div class="proj-icon">🐾</div><div class="proj-num">Project 02</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">🎮 Junior · Class 3–4</div>
-        <div class="proj-name">Animal Quiz Game</div>
-        <p class="proj-desc">Make a quiz that shows an animal emoji and asks "What sound does this animal make?" Use lists and random numbers to pick animals each round.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Lists/Arrays</span>
-          <span class="proj-skill">Random</span>
-          <span class="proj-skill">Loops</span>
-        </div>
+        <div class="proj-level-tag">🎮 Junior · Intermediate</div>
+        <div class="proj-name">Animal Sound Quiz</div>
+        <p class="proj-desc">A 10-round quiz game that shows a random animal emoji and asks for its sound. Tracks score, shows streaks and celebrates with confetti at 100%.</p>
+        <div class="proj-skills"><span class="proj-skill">Arrays</span><span class="proj-skill">Random</span><span class="proj-skill">Score Tracker</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Store animals and sounds in two matching lists</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Randomly pick an animal to quiz on each turn</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Check the answer and show ✓ or ✗ with score</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Store animals and answers in two matching arrays</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Pick a random animal each round, show 4 choices</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Check answer, update score and show feedback</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>End screen showing final score and play-again button</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~1.5 hours</span>
+        </div>
       </div>
     </div>
+
     <div class="proj-card rv d2">
       <div class="proj-card-header" style="background:linear-gradient(135deg,#fde68a,#f97316)">
-        <div class="proj-icon">⏱️</div>
-        <div class="proj-num">Project 03</div>
+        <div class="proj-icon">🧮</div><div class="proj-num">Project 03</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">🎮 Junior · Class 4–5</div>
+        <div class="proj-level-tag">🎮 Junior · Advanced</div>
         <div class="proj-name">Times Table Trainer</div>
-        <p class="proj-desc">Build a maths trainer that asks multiplication questions, tracks your score, and shows a "Well done!" message when you get 5 in a row correct.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Math Ops</span>
-          <span class="proj-skill">Counters</span>
-          <span class="proj-skill">Functions</span>
-        </div>
+        <p class="proj-desc">A maths trainer that fires random multiplication questions, races against a 10-second timer, tracks streaks and unlocks a "Speed Star" badge at 10 correct in a row.</p>
+        <div class="proj-skills"><span class="proj-skill">Functions</span><span class="proj-skill">Timers</span><span class="proj-skill">Loops</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Generate random multiplication questions</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Keep a score counter and a streak counter</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Show celebration animation on 5-streak!</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Generate random multiplication questions (1-12 tables)</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Add a countdown timer that resets each question</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Track streak and score — show progress bar</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>Award Speed Star badge on 10-streak + leaderboard</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~2 hours</span>
+        </div>
       </div>
     </div>
+
   </div>
 
   <!-- EXPLORER projects -->
   <div id="projs-explorer" class="proj-tier-grid" style="display:none">
+
     <div class="proj-card rv">
       <div class="proj-card-header" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">
-        <div class="proj-icon">🌡️</div>
-        <div class="proj-num">Project 01</div>
+        <div class="proj-icon">🌦️</div><div class="proj-num">Project 01</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">🔭 Explorer · Class 6</div>
+        <div class="proj-level-tag">🔭 Explorer · Beginner</div>
         <div class="proj-name">Weather Dashboard</div>
-        <p class="proj-desc">Build a simple weather app that converts temperature between Celsius and Fahrenheit, shows an appropriate weather icon, and stores last 5 readings.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Functions</span>
-          <span class="proj-skill">Arrays</span>
-          <span class="proj-skill">DOM</span>
-        </div>
+        <p class="proj-desc">Build a temperature converter and weather card that switches icons based on conditions, stores the last 5 readings in an array and charts them as a simple graph.</p>
+        <div class="proj-skills"><span class="proj-skill">Functions</span><span class="proj-skill">Arrays</span><span class="proj-skill">DOM API</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Write C↔F conversion functions</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Display matching weather icon (sunny/cloudy/rainy)</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Store last 5 inputs in an array and display them</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Write C to F and F to C conversion functions</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Map temperature ranges to weather icons dynamically</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Push each reading to an array (max 5, oldest drops off)</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>Render a mini bar chart of the 5 readings using CSS</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~2 hours</span>
+        </div>
       </div>
     </div>
+
     <div class="proj-card rv d1">
-      <div class="proj-card-header" style="background:linear-gradient(135deg,#3b82f6,#06b6d4)">
-        <div class="proj-icon">📝</div>
-        <div class="proj-num">Project 02</div>
+      <div class="proj-card-header" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6)">
+        <div class="proj-icon">📋</div><div class="proj-num">Project 02</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">🔭 Explorer · Class 7</div>
-        <div class="proj-name">To-Do List App</div>
-        <p class="proj-desc">Create a fully working to-do list where you can add, tick off, and delete tasks. Tasks are sorted by priority and the list persists as a data structure.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Objects</span>
-          <span class="proj-skill">Sorting</span>
-          <span class="proj-skill">Events</span>
-        </div>
+        <div class="proj-level-tag">🔭 Explorer · Intermediate</div>
+        <div class="proj-name">Smart To-Do List</div>
+        <p class="proj-desc">A priority-based task manager with add, complete and delete. Tasks are stored as objects with priority levels, sorted automatically and filtered by status.</p>
+        <div class="proj-skills"><span class="proj-skill">Objects</span><span class="proj-skill">Sort/Filter</span><span class="proj-skill">Events</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Store each task as an object {text, done, priority}</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Sort tasks by priority and render the list</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Add tick/delete buttons with event listeners</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Model each task as an object with title, priority, done</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Sort tasks by priority (High / Medium / Low)</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Filter view: All | Active | Completed tabs</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>Add due-date support and overdue highlighting</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~2.5 hours</span>
+        </div>
       </div>
     </div>
+
     <div class="proj-card rv d2">
       <div class="proj-card-header" style="background:linear-gradient(135deg,#67e8f9,#06b6d4)">
-        <div class="proj-icon">🎲</div>
-        <div class="proj-num">Project 03</div>
+        <div class="proj-icon">🎯</div><div class="proj-num">Project 03</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">🔭 Explorer · Class 8</div>
+        <div class="proj-level-tag">🔭 Explorer · Advanced</div>
         <div class="proj-name">Number Guessing Game</div>
-        <p class="proj-desc">Build a smart number guessing game that gives "too high / too low" hints, tracks how many guesses you used, and shows a difficulty selector.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Logic</span>
-          <span class="proj-skill">Loops</span>
-          <span class="proj-skill">Recursion</span>
-        </div>
+        <p class="proj-desc">A smart guessing game with difficulty levels, Higher/Lower hints, guess counter and a replay screen that reveals the optimal binary search strategy used.</p>
+        <div class="proj-skills"><span class="proj-skill">Binary Search</span><span class="proj-skill">Recursion</span><span class="proj-skill">Logic</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Generate a secret number within chosen difficulty range</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Give "Higher" / "Lower" hints after each guess</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Show guess count and optimal binary search solution</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Generate a secret number in a range set by difficulty</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Give "Higher" / "Lower" feedback after each guess</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Count guesses and compare to binary search minimum</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>Show a replay of the optimal binary search path</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~3 hours</span>
+        </div>
       </div>
     </div>
+
   </div>
 
   <!-- PRO projects -->
   <div id="projs-pro" class="proj-tier-grid" style="display:none">
+
     <div class="proj-card rv">
       <div class="proj-card-header" style="background:linear-gradient(135deg,#22c55e,#16a34a)">
-        <div class="proj-icon">🔍</div>
-        <div class="proj-num">Project 01</div>
+        <div class="proj-icon">🔍</div><div class="proj-num">Project 01</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">⚡ Pro · Class 9–10</div>
-        <div class="proj-name">Search Algorithm Visualiser</div>
-        <p class="proj-desc">Build an interactive tool that animates Linear Search vs Binary Search on an array. Show step count, time complexity, and let users compare side-by-side.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Algorithms</span>
-          <span class="proj-skill">Animation</span>
-          <span class="proj-skill">Big-O</span>
-        </div>
+        <div class="proj-level-tag">⚡ Pro · Intermediate</div>
+        <div class="proj-name">Algorithm Visualiser</div>
+        <p class="proj-desc">Animate Linear Search vs Binary Search on a live array. Highlight each comparison step-by-step, show the step counter and render a real-time O(n) vs O(log n) complexity graph.</p>
+        <div class="proj-skills"><span class="proj-skill">Algorithms</span><span class="proj-skill">SVG/Canvas</span><span class="proj-skill">Big-O</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Implement both linear and binary search</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Animate each step with highlighted array cells</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Show step counter and O(n) vs O(log n) comparison</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Build animated array renderer with highlighted cells</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Implement both search algorithms with step callbacks</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Plot live comparison count on an SVG complexity graph</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>Add speed control slider and custom array input</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~3 hours</span>
+        </div>
       </div>
     </div>
+
     <div class="proj-card rv d1">
-      <div class="proj-card-header" style="background:linear-gradient(135deg,#4ade80,#22c55e)">
-        <div class="proj-icon">📊</div>
-        <div class="proj-num">Project 02</div>
+      <div class="proj-card-header" style="background:linear-gradient(135deg,#4ade80,#06b6d4)">
+        <div class="proj-icon">📊</div><div class="proj-num">Project 02</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">⚡ Pro · Class 10–11</div>
-        <div class="proj-name">Grade Calculator + Chart</div>
-        <p class="proj-desc">Build a marks entry system that calculates GPA, plots a bar chart of subjects, identifies strongest and weakest subjects using array methods.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Data Structures</span>
-          <span class="proj-skill">Map/Filter</span>
-          <span class="proj-skill">Graphs</span>
-        </div>
+        <div class="proj-level-tag">⚡ Pro · Intermediate</div>
+        <div class="proj-name">Student Grade Analyser</div>
+        <p class="proj-desc">Enter marks for multiple subjects. The app computes GPA using reduce(), plots a bar chart with SVG, identifies top and weakest subjects and exports a report card as text.</p>
+        <div class="proj-skills"><span class="proj-skill">Map/Filter/Reduce</span><span class="proj-skill">SVG Charts</span><span class="proj-skill">OOP</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Store subject marks as an array of objects</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Use map/filter/reduce to compute GPA and stats</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Render a bar chart using canvas or SVG</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Model a Student class with subjects array and GPA method</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Use map/reduce to compute average, max, min grades</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Render a proportional SVG bar chart with labels</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>Generate a plain-text report card and copy to clipboard</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~3.5 hours</span>
+        </div>
       </div>
     </div>
+
     <div class="proj-card rv d2">
       <div class="proj-card-header" style="background:linear-gradient(135deg,#86efac,#22c55e)">
-        <div class="proj-icon">💬</div>
-        <div class="proj-num">Project 03</div>
+        <div class="proj-icon">💬</div><div class="proj-num">Project 03</div>
       </div>
       <div class="proj-card-body">
-        <div class="proj-level-tag">⚡ Pro · Class 11–12</div>
-        <div class="proj-name">Mini Chat App</div>
-        <p class="proj-desc">Build a real-time style chat interface with message history, timestamps, user avatars, and a simple message queue data structure under the hood.</p>
-        <div class="proj-skills">
-          <span class="proj-skill">Queues</span>
-          <span class="proj-skill">OOP</span>
-          <span class="proj-skill">DOM Events</span>
-        </div>
+        <div class="proj-level-tag">⚡ Pro · Advanced</div>
+        <div class="proj-name">Real-Time Chat Interface</div>
+        <p class="proj-desc">A fully OOP chat app with a Message class, circular queue for history (max 50 messages), timestamp formatting, read receipts and a simulated "typing..." indicator.</p>
+        <div class="proj-skills"><span class="proj-skill">OOP / Classes</span><span class="proj-skill">Queues</span><span class="proj-skill">Async/Timers</span></div>
         <div class="proj-steps">
-          <div class="proj-step"><span class="proj-step-n">1</span><span>Build a Message class with sender, text, timestamp</span></div>
-          <div class="proj-step"><span class="proj-step-n">2</span><span>Implement a queue to store message history</span></div>
-          <div class="proj-step"><span class="proj-step-n">3</span><span>Render chat bubbles and handle Enter-key submit</span></div>
+          <div class="proj-step"><span class="proj-step-n">1</span><span>Design Message class: sender, text, timestamp, read</span></div>
+          <div class="proj-step"><span class="proj-step-n">2</span><span>Implement a CircularQueue (max 50) for message history</span></div>
+          <div class="proj-step"><span class="proj-step-n">3</span><span>Render chat bubbles, avatars and relative timestamps</span></div>
+          <div class="proj-step"><span class="proj-step-n">4</span><span>Add simulated bot replies with typing indicator delay</span></div>
         </div>
-        <button class="btn btn-fill btn-sm" style="margin-top:18px" onclick="goPage('courses')">▶ Start Building</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:18px;">
+          <button class="btn btn-fill btn-sm" onclick="goPage('courses')">▶ Start Building</button>
+          <span style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)">~4 hours</span>
+        </div>
       </div>
     </div>
+
   </div>
 
 </div>
@@ -1793,13 +2000,7 @@ footer{
   <p class="sdesc">Projects built by students across India — share yours, explore theirs, leave a comment.</p>
 
   <!-- Upload button -->
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
-    <div style="display:flex;gap:8px;">
-      <button class="ctab active" onclick="this.parentElement.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));this.classList.add('active')">All Projects</button>
-      <button class="ctab" onclick="this.parentElement.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));this.classList.add('active')">🎮 Junior</button>
-      <button class="ctab" onclick="this.parentElement.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));this.classList.add('active')">🔭 Explorer</button>
-      <button class="ctab" onclick="this.parentElement.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));this.classList.add('active')">⚡ Pro</button>
-    </div>
+  <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:28px;">
     <button class="btn btn-fill" onclick="toggleUploadModal()">+ Upload Project</button>
   </div>
 
@@ -1807,13 +2008,8 @@ footer{
   <div id="upload-modal" style="display:none;background:var(--card);border:1px solid var(--bdr);border-radius:24px;padding:36px;margin-bottom:36px;backdrop-filter:blur(20px);animation:pageIn .3s ease both;">
     <div style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;">Share Your Project</div>
     <div style="font-size:13px;color:var(--muted);margin-bottom:24px;">Upload your creation and inspire the community!</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-      <div class="form-group" style="margin:0"><label class="form-label">Project Title</label><input type="text" class="form-input" placeholder="My Awesome Calculator"></div>
-      <div class="form-group" style="margin:0"><label class="form-label">Tier</label>
-        <select class="form-input" style="cursor:pointer"><option>🎮 Junior</option><option>🔭 Explorer</option><option>⚡ Pro</option></select>
-      </div>
-    </div>
-    <div class="form-group" style="margin-top:14px;"><label class="form-label">Description</label><textarea class="form-input" rows="3" placeholder="Tell us what your project does and how you built it..." style="resize:vertical;font-family:'Satoshi',sans-serif;"></textarea></div>
+    <div class="form-group"><label class="form-label">Project Title</label><input type="text" class="form-input" placeholder="My Awesome Calculator"></div>
+    <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" rows="3" placeholder="Tell us what your project does and how you built it..." style="resize:vertical;font-family:'Satoshi',sans-serif;"></textarea></div>
     <div style="border:2px dashed var(--bdr);border-radius:16px;padding:32px;text-align:center;margin:14px 0;cursor:pointer;transition:border-color .3s;" onmouseenter="this.style.borderColor='var(--a1)'" onmouseleave="this.style.borderColor='var(--bdr)'">
       <div style="font-size:32px;margin-bottom:8px;">📁</div>
       <div style="font-size:13px;font-weight:700;color:var(--text)">Drop files here or click to browse</div>
@@ -1979,7 +2175,7 @@ footer{
         </div>
         <!-- SVG complexity graph -->
         <div style="background:rgba(0,0,0,.2);border:1px solid var(--bdr);border-radius:14px;padding:16px;">
-          <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-bottom:10px;">Growth Curve — Your Solution vs O(n²)</div>
+          <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-bottom:10px;">Growth Curve — Your Solution vs O(n^2)</div>
           <svg id="crp-graph" viewBox="0 0 500 140" style="width:100%;height:auto;display:block;"></svg>
           <div id="crp-complexity-label" style="text-align:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-top:8px;color:var(--a1);transition:color .4s;"></div>
         </div>
@@ -2124,6 +2320,7 @@ function setMode(m,btn){
   document.documentElement.setAttribute('data-mode',m);
   makeParticles();
   updateHeroScene();
+  updateHeroMid();
   updateProgCards();
   updateFeatVis();
   updateCommunityGrid();
@@ -2331,333 +2528,527 @@ function heroScenePro(){
   </svg>`;
 }
 
-function updateHeroScene(){updateHeroPanel();}
+function updateHeroScene(){updateHeroPanel();updateHeroMid();}
+
+function updateHeroMid(){
+  const panel=document.getElementById('hero-m-panel');
+  if(!panel)return;
+
+  const configs={
+    junior:{
+      cards:[
+        {anim:'hmFloat1 6s ease-in-out infinite',delay:'0s',
+         html:`<div class="hm-card-lbl">⚡ TODAY'S XP</div>
+               <div class="hm-card-val">+45 XP</div>
+               <div class="hm-card-sub">55 more to Level 6</div>
+               <div class="hm-pbar"><div class="hm-pfill" style="width:82%"></div></div>`
+        },
+        {anim:'hmFloat2 5s ease-in-out infinite .8s',delay:'.8s',
+         html:`<div class="hm-card-lbl">🔥 Day Streak</div>
+               <div class="hm-card-val">3 Days</div>
+               <div class="hm-card-sub">Keep it going every day!</div>`
+        },
+        {anim:'hmFloat3 7s ease-in-out infinite 1.4s',delay:'1.4s',
+         html:`<div class="hm-card-lbl">🏅 Unlocked Badges</div>
+               <div class="hm-mini-grid">
+                 <div class="hm-mini"><div class="hm-mini-icon">🐍</div><div class="hm-mini-txt">Python</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">🔧</div><div class="hm-mini-txt">Debug</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">💯</div><div class="hm-mini-txt">Century</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">🏆</div><div class="hm-mini-txt">Top 10</div></div>
+               </div>`
+        },
+        {anim:'hmFloat1 8s ease-in-out infinite 2s',delay:'2s',
+         html:`<div class="hm-card-lbl">🎯 Next Goal</div>
+               <div class="hm-card-val" style="font-size:18px">Reach Level 6</div>
+               <div class="hm-card-sub">95 / 150 XP · 63% there</div>
+               <div class="hm-pbar"><div class="hm-pfill" style="width:63%"></div></div>`
+        }
+      ]
+    },
+    explorer:{
+      cards:[
+        {anim:'hmFloat2 6s ease-in-out infinite',delay:'0s',
+         html:`<div class="hm-card-lbl">⚡ TODAY'S XP</div>
+               <div class="hm-card-val">+80 XP</div>
+               <div class="hm-card-sub">20 more to Level 8</div>
+               <div class="hm-pbar"><div class="hm-pfill" style="width:92%"></div></div>`
+        },
+        {anim:'hmFloat1 5s ease-in-out infinite .6s',delay:'.6s',
+         html:`<div class="hm-card-lbl">🔥 Day Streak</div>
+               <div class="hm-card-val">7 Days</div>
+               <div class="hm-card-sub">Legend incoming! 🌌</div>`
+        },
+        {anim:'hmFloat3 7s ease-in-out infinite 1.2s',delay:'1.2s',
+         html:`<div class="hm-card-lbl">🌌 Explorer Badges</div>
+               <div class="hm-mini-grid">
+                 <div class="hm-mini"><div class="hm-mini-icon">🔭</div><div class="hm-mini-txt">Scout</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">🌌</div><div class="hm-mini-txt">Cosmos</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">⭐</div><div class="hm-mini-txt">Star</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">🚀</div><div class="hm-mini-txt">Rocket</div></div>
+               </div>`
+        },
+        {anim:'hmFloat2 8s ease-in-out infinite 1.8s',delay:'1.8s',
+         html:`<div class="hm-card-lbl">📊 Algorithms Solved</div>
+               <div class="hm-card-val">24 Problems</div>
+               <div class="hm-card-sub">O(n), O(log n), O(n^2) mastered</div>`
+        }
+      ]
+    },
+    pro:{
+      cards:[
+        {anim:'hmFloat1 6s ease-in-out infinite',delay:'0s',
+         html:`<div class="hm-card-lbl">⚡ XP TODAY</div>
+               <div class="hm-card-val">+120 XP</div>
+               <div class="hm-card-sub">Level 8 unlocked! 🏆</div>
+               <div class="hm-pbar"><div class="hm-pfill" style="width:100%"></div></div>`
+        },
+        {anim:'hmFloat3 5s ease-in-out infinite .7s',delay:'.7s',
+         html:`<div class="hm-card-lbl">🔥 Day Streak</div>
+               <div class="hm-card-val">14 Days</div>
+               <div class="hm-card-sub">Legend badge earned! ⚡</div>`
+        },
+        {anim:'hmFloat2 7s ease-in-out infinite 1.3s',delay:'1.3s',
+         html:`<div class="hm-card-lbl">💻 Pro Badges</div>
+               <div class="hm-mini-grid">
+                 <div class="hm-mini"><div class="hm-mini-icon">⚡</div><div class="hm-mini-txt">Speed</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">🏆</div><div class="hm-mini-txt">Elite</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">🔥</div><div class="hm-mini-txt">Streak</div></div>
+                 <div class="hm-mini"><div class="hm-mini-icon">💻</div><div class="hm-mini-txt">Coder</div></div>
+               </div>`
+        },
+        {anim:'hmFloat1 9s ease-in-out infinite 2s',delay:'2s',
+         html:`<div class="hm-card-lbl">📈 Complexity Rating</div>
+               <div class="hm-card-val" style="font-size:18px;font-family:'JetBrains Mono',monospace">O(log n)</div>
+               <div class="hm-card-sub">Avg solution complexity · Top 6%</div>`
+        }
+      ]
+    }
+  };
+
+  const cfg=configs[mode]||configs.junior;
+  panel.innerHTML=cfg.cards.map((c,i)=>
+    `<div class="hm-card rv on" style="animation:${c.anim};">${c.html}</div>`
+  ).join('');
+}
 
 function updateHeroPanel(){
   const panel=document.getElementById('hero-r-panel');
   if(!panel)return;
 
-  // Per-theme config
-  const T={
-    junior:{
-      panelBg:'radial-gradient(ellipse at 70% 30%,#ffe0c4 0%,#fff8f2 55%,#fff1e6 100%)',
-      leftFade:'linear-gradient(90deg,#fff8f2 0%,#fff8f2 5%,rgba(255,248,242,.7) 22%,transparent 42%)',
-      codeBg:'rgba(10,16,28,0.90)', codeFile:'puzzle.js', codeBorder:'rgba(249,115,22,0.22)',
-      codeGlow:'0 16px 48px rgba(249,115,22,.15)',
-      lines:[
-        ['c-cm','// Logic Pattern Solver 🎮'],
-        ['c-kw','function ','c-fn','findNext','c-txt','(sequence) {'],
-        ['c-txt','  ','c-kw','const ','c-txt','diffs = sequence.','c-fn','slice','c-txt','(1)'],
-        ['c-txt','    .','c-fn','map','c-txt','((v, i) => v - sequence[i]);'],
-        ['c-txt','  ','c-kw','const ','c-txt','step = diffs[diffs.length-','c-num','1','];'],
-        ['c-txt','  ','c-kw','return ','c-txt','sequence[sequence.length-','c-num','1','] + step;'],
-        ['c-txt','}'],
-        ['c-cm','// ▲ ▲ ● ▲ ▲ ','c-ans','? → ●',' ✓'],
-      ],
-      stat1lbl:'⚡ Today\'s XP', stat1val:'+45 XP', stat1sub:'55 more to level up', stat1bar:82,
-      stat2lbl:'🔥 Streak', stat2val:'3 Days', stat2sub:'Keep going!',
-      rankTitle:'🏆 Leaderboard', rankColor:'#f97316',
-      ranks:[
-        {av:'KN',n:'Kavya Nair',xp:'3,159',medal:'🥇'},
-        {av:'SS',n:'Sneha Singh',xp:'2,643',medal:'🥈'},
-        {av:'★',n:'You  ','xp':'445',me:true,medal:'#10'},
-      ],
-      badges:['🐍','🔧','💯','🧩'],
-      xp:445, xpPct:63, lv:'5→6',
-      accentRgb:'249,115,22', accent:'#f97316', accent2:'#fbbf24',
-    },
-    explorer:{
-      panelBg:'radial-gradient(ellipse at 60% 20%,#0b2240 0%,#040e21 45%,#020917 100%)',
-      leftFade:'linear-gradient(90deg,#020917 0%,#020917 5%,rgba(2,9,23,.75) 22%,transparent 44%)',
-      codeBg:'rgba(2,8,20,0.96)', codeFile:'algorithms.js', codeBorder:'rgba(6,182,212,0.25)',
-      codeGlow:'0 16px 48px rgba(6,182,212,.12)',
-      lines:[
-        ['c-cm','// Fibonacci — Explorer 🔭'],
-        ['c-kw','function ','c-fn','fibonacci','c-txt','(n) {'],
-        ['c-txt','  ','c-kw','const ','c-txt','dp = [','c-num','0',', ','c-num','1','];'],
-        ['c-txt','  ','c-kw','for','c-txt','(','c-kw','let ','c-txt','i=','c-num','2','; i<=n; i++)'],
-        ['c-txt','    dp[i] = dp[i-','c-num','1',']+dp[i-','c-num','2','];'],
-        ['c-txt','  ','c-kw','return ','c-txt','dp[n];'],
-        ['c-txt','}'],
-        ['c-cm','// 1 1 2 3 5 8 ','c-ans','13',' ✓ O(n)'],
-      ],
-      stat1lbl:'⚡ Today\'s XP', stat1val:'+80 XP', stat1sub:'20 more to level up', stat1bar:92,
-      stat2lbl:'🔥 Streak', stat2val:'7 Days', stat2sub:'Legend incoming!',
-      rankTitle:'🌌 Explorer Board', rankColor:'#06b6d4',
-      ranks:[
-        {av:'AN',n:'Ananya Reddy',xp:'2,481',medal:'🥇'},
-        {av:'IV',n:'Isha Verma',xp:'2,258',medal:'🥈'},
-        {av:'★',n:'You  ','xp':'1,890',me:true,medal:'#5'},
-      ],
-      badges:['🔭','🌌','⭐','🔢'],
-      xp:1890, xpPct:78, lv:'7→8',
-      accentRgb:'6,182,212', accent:'#06b6d4', accent2:'#3b82f6',
-    },
-    pro:{
-      panelBg:'radial-gradient(ellipse at 55% 25%,#051a0d 0%,#030f06 45%,#010804 100%)',
-      leftFade:'linear-gradient(90deg,#010804 0%,#010804 5%,rgba(1,8,4,.75) 22%,transparent 44%)',
-      codeBg:'rgba(1,6,3,0.97)', codeFile:'solution.js', codeBorder:'rgba(34,197,94,0.22)',
-      codeGlow:'0 16px 48px rgba(34,197,94,.10)',
-      lines:[
-        ['c-cm','// Binary Search O(log n) ⚡'],
-        ['c-kw','function ','c-fn','binarySearch','c-txt','(arr, t) {'],
-        ['c-txt','  ','c-kw','let ','c-txt','lo=','c-num','0',', hi=arr.length-','c-num','1',';'],
-        ['c-txt','  ','c-kw','while','c-txt','(lo <= hi) {'],
-        ['c-txt','    ','c-kw','const ','c-txt','mid = lo+hi>>','c-num','1',';'],
-        ['c-txt','    ','c-kw','if','c-txt','(arr[mid]===t) ','c-kw','return ','c-txt','mid;'],
-        ['c-txt','    lo = arr[mid]<t ? mid+','c-num','1',' : lo;'],
-        ['c-txt','  }; ','c-kw','return ','-','c-num','1',';'],
-        ['c-txt','}'],
-      ],
-      stat1lbl:'⚡ XP Today', stat1val:'+120 XP', stat1sub:'Level 8 unlocked! 🏆', stat1bar:100,
-      stat2lbl:'🔥 Streak', stat2val:'14 Days', stat2sub:'Legend badge earned!',
-      rankTitle:'⚡ Pro Rankings', rankColor:'#22c55e',
-      ranks:[
-        {av:'KN',n:'Kavya Nair',xp:'3,159',medal:'🥇'},
-        {av:'★',n:'You  ','xp':'2,980',me:true,medal:'#2'},
-        {av:'SS',n:'Sneha Singh',xp:'2,643',medal:'🥉'},
-      ],
-      badges:['⚡','🏆','🔥','💻'],
-      xp:2980, xpPct:88, lv:'8→9',
-      accentRgb:'34,197,94', accent:'#22c55e', accent2:'#86efac',
-    },
+  const svgs={
+    junior:`
+      <svg viewBox="0 0 560 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;max-height:600px;display:block;">
+        <defs>
+          <radialGradient id="hj-bg" cx="65%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ffe0c4"/>
+            <stop offset="60%" stop-color="#fff4ec"/>
+            <stop offset="100%" stop-color="#fff8f4"/>
+          </radialGradient>
+          <filter id="hj-shadow"><feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="rgba(249,115,22,.18)"/></filter>
+          <filter id="hj-shadow2"><feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="rgba(0,0,0,.12)"/></filter>
+        </defs>
+        <rect width="580" height="640" fill="url(#hj-bg)"/>
+        <!-- Decorative blobs -->
+        <circle cx="490" cy="80" r="90" fill="#fbbf24" opacity=".15"/>
+        <circle cx="60" cy="540" r="60" fill="#f97316" opacity=".1"/>
+        <circle cx="520" cy="480" r="50" fill="#fb923c" opacity=".08"/>
+        <!-- Grid dots -->
+        <g fill="#f97316" opacity=".12">
+          ${Array.from({length:5},(_,r)=>Array.from({length:6},(_,c)=>`<circle cx="${380+c*26}" cy="${140+r*30}" r="2.2"/>`).join('')).join('')}
+        </g>
+
+        <!-- Main code editor card -->
+        <g filter="url(#hj-shadow)">
+          <rect x="32" y="60" width="310" height="310" rx="20" fill="#1a2035"/>
+          <rect x="32" y="60" width="310" height="38" rx="20" fill="#141929"/>
+          <rect x="32" y="78" width="310" height="20" fill="#141929"/>
+          <!-- traffic lights -->
+          <circle cx="58" cy="79" r="6" fill="#ef4444" opacity=".85"/>
+          <circle cx="78" cy="79" r="6" fill="#f59e0b" opacity=".85"/>
+          <circle cx="98" cy="79" r="6" fill="#22c55e" opacity=".85"/>
+          <text x="320" y="84" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(148,163,184,.5)" font-weight="600">puzzle.js</text>
+          <!-- line numbers + code -->
+          <text x="52" y="122" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">1</text>
+          <text x="70" y="122" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#6b7280" font-style="italic">// Logic Pattern Solver 🎮</text>
+          <text x="52" y="143" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">2</text>
+          <text x="70" y="143" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="700">function </text>
+          <text x="160" y="143" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#60a5fa">findNext</text>
+          <text x="238" y="143" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">(seq) {</text>
+          <text x="52" y="164" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">3</text>
+          <text x="70" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">  </text>
+          <text x="84" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="700">const </text>
+          <text x="134" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">diffs = seq.</text>
+          <text x="234" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#60a5fa">map</text>
+          <text x="262" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">(…);</text>
+          <text x="52" y="185" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">4</text>
+          <text x="70" y="185" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="700">  const </text>
+          <text x="130" y="185" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">step = diffs[diffs.length-</text>
+          <text x="52" y="206" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">5</text>
+          <text x="70" y="206" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#a78bfa">1</text>
+          <text x="82" y="206" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">];</text>
+          <text x="52" y="227" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">6</text>
+          <text x="70" y="227" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="700">  return </text>
+          <text x="136" y="227" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">seq[seq.length-</text>
+          <text x="52" y="248" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">7</text>
+          <text x="70" y="248" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#a78bfa">1</text>
+          <text x="82" y="248" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">] + step;</text>
+          <text x="52" y="269" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">8</text>
+          <text x="70" y="269" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">}</text>
+          <text x="52" y="290" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">9</text>
+          <text x="70" y="290" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#6b7280" font-style="italic">// ▲ ▲ ● ▲ ▲ </text>
+          <text x="216" y="290" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="900">? → ●</text>
+          <text x="258" y="290" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#22c55e"> ✓</text>
+          <!-- blinking cursor -->
+          <rect x="70" y="304" width="7" height="13" rx="1" fill="#f97316" opacity=".9">
+            <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+          </rect>
+        </g>
+
+        <!-- XP Card -->
+        <g filter="url(#hj-shadow2)">
+          <rect x="355" y="52" width="190" height="100" rx="16" fill="rgba(255,255,255,0.92)"/>
+          <text x="372" y="80" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700" text-transform="uppercase" letter-spacing="1">⚡ TODAY'S XP</text>
+          <text x="372" y="108" font-family="Clash Display,sans-serif" font-size="30" fill="#1a0f00" font-weight="700">+45 XP</text>
+          <text x="372" y="126" font-family="JetBrains Mono,monospace" font-size="10" fill="#7c5c3a">55 more to level up</text>
+          <rect x="372" y="135" width="155" height="4" rx="2" fill="rgba(249,115,22,.12)"/>
+          <rect x="372" y="135" width="127" height="4" rx="2" fill="#f97316"/>
+        </g>
+
+        <!-- Streak Card -->
+        <g filter="url(#hj-shadow2)">
+          <rect x="355" y="168" width="190" height="90" rx="16" fill="rgba(255,255,255,0.92)"/>
+          <text x="372" y="194" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">🔥 STREAK</text>
+          <text x="372" y="224" font-family="Clash Display,sans-serif" font-size="26" fill="#1a0f00" font-weight="700">3 Days</text>
+          <text x="372" y="244" font-family="JetBrains Mono,monospace" font-size="10" fill="#7c5c3a">Keep going!</text>
+        </g>
+
+        <!-- Badges Card -->
+        <g filter="url(#hj-shadow2)">
+          <rect x="355" y="274" width="190" height="100" rx="16" fill="rgba(255,255,255,0.92)"/>
+          <text x="372" y="298" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">🏅 BADGES</text>
+          <rect x="372" y="307" width="38" height="38" rx="10" fill="rgba(249,115,22,.1)"/><text x="391" y="332" text-anchor="middle" font-size="18">🐍</text>
+          <rect x="418" y="307" width="38" height="38" rx="10" fill="rgba(249,115,22,.1)"/><text x="437" y="332" text-anchor="middle" font-size="18">🔧</text>
+          <rect x="464" y="307" width="38" height="38" rx="10" fill="rgba(249,115,22,.1)"/><text x="483" y="332" text-anchor="middle" font-size="18">💯</text>
+          <rect x="372" y="351" width="38" height="38" rx="10" fill="rgba(249,115,22,.06)" stroke="rgba(249,115,22,.2)" stroke-width="1"/><text x="391" y="376" text-anchor="middle" font-size="18" opacity=".35">🧩</text>
+          <rect x="418" y="351" width="38" height="38" rx="10" fill="rgba(249,115,22,.06)" stroke="rgba(249,115,22,.2)" stroke-width="1"/><text x="437" y="376" text-anchor="middle" font-size="18" opacity=".35">📊</text>
+          <rect x="464" y="351" width="38" height="38" rx="10" fill="rgba(249,115,22,.06)" stroke="rgba(249,115,22,.2)" stroke-width="1"/><text x="483" y="376" text-anchor="middle" font-size="18" opacity=".35">⚡</text>
+        </g>
+
+        <!-- Leaderboard Card -->
+        <g filter="url(#hj-shadow2)">
+          <rect x="32" y="388" width="225" height="140" rx="16" fill="rgba(255,255,255,0.92)"/>
+          <text x="50" y="412" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">🏆 LEADERBOARD</text>
+          <!-- row 1 -->
+          <circle cx="62" cy="438" r="13" fill="linear-gradient(135deg,#f97316,#fbbf24)"/><rect x="49" y="425" width="26" height="26" rx="13" fill="#fbbf24"/><text x="62" y="434" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fff" font-weight="700">KN</text>
+          <text x="80" y="436" font-family="Satoshi,sans-serif" font-size="12" fill="#1a0f00" font-weight="700">Kavya Nair</text>
+          <text x="232" y="436" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#f97316" font-weight="700">+3,159</text>
+          <!-- row 2 -->
+          <rect x="49" y="450" width="26" height="26" rx="13" fill="rgba(249,115,22,.15)"/><text x="62" y="466" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">SS</text>
+          <text x="80" y="468" font-family="Satoshi,sans-serif" font-size="12" fill="#1a0f00" font-weight="700">Sneha Singh</text>
+          <text x="232" y="468" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#f97316" font-weight="700">+2,643</text>
+          <!-- row YOU -->
+          <rect x="36" y="483" width="213" height="34" rx="10" fill="rgba(249,115,22,.1)"/>
+          <rect x="49" y="487" width="26" height="26" rx="13" fill="#f97316"/><text x="62" y="503" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fff" font-weight="700">★</text>
+          <text x="80" y="501" font-family="Satoshi,sans-serif" font-size="12" fill="#1a0f00" font-weight="700">You</text>
+          <rect x="105" y="492" width="24" height="14" rx="4" fill="#f97316"/><text x="117" y="503" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#fff" font-weight="700">YOU</text>
+          <text x="232" y="501" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#f97316" font-weight="700">+445</text>
+        </g>
+
+        <!-- XP Level Ring -->
+        <g filter="url(#hj-shadow2)">
+          <rect x="270" y="388" width="275" height="140" rx="16" fill="rgba(255,255,255,0.92)"/>
+          <text x="288" y="412" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">LEVEL PROGRESS</text>
+          <!-- ring -->
+          <circle cx="360" cy="478" r="44" fill="none" stroke="rgba(249,115,22,.12)" stroke-width="8"/>
+          <circle cx="360" cy="478" r="44" fill="none" stroke="#f97316" stroke-width="8" stroke-linecap="round"
+            stroke-dasharray="276" stroke-dashoffset="102"
+            transform="rotate(-90 360 478)" style="filter:drop-shadow(0 0 4px #f97316)"/>
+          <text x="360" y="473" text-anchor="middle" font-family="Clash Display,sans-serif" font-size="20" fill="#1a0f00" font-weight="700">63%</text>
+          <text x="360" y="490" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7c5c3a">Lv 5→6</text>
+          <!-- right stats -->
+          <text x="420" y="448" font-family="Clash Display,sans-serif" font-size="22" fill="#f97316" font-weight="700">445 XP</text>
+          <text x="420" y="466" font-family="JetBrains Mono,monospace" font-size="9" fill="#7c5c3a">Logic Master</text>
+          <rect x="420" y="480" width="105" height="34" rx="10" fill="rgba(249,115,22,.1)" stroke="rgba(249,115,22,.25)" stroke-width="1"/>
+          <text x="472" y="502" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#f97316" font-weight="700">#10 Rank</text>
+          <text x="472" y="516" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7c5c3a">↑ 2 this week</text>
+        </g>
+      </svg>`,
+
+    explorer:`
+      <svg viewBox="0 0 560 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;max-height:600px;display:block;">
+        <defs>
+          <radialGradient id="he-bg" cx="60%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#0d2044"/>
+            <stop offset="50%" stop-color="#060e22"/>
+            <stop offset="100%" stop-color="#020917"/>
+          </radialGradient>
+          <radialGradient id="he-nebula" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="rgba(6,182,212,.1)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="he-glow"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(6,182,212,.3)"/></filter>
+          <filter id="he-shadow"><feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="rgba(0,0,0,.5)"/></filter>
+        </defs>
+        <rect width="580" height="640" fill="url(#he-bg)"/>
+        <rect width="580" height="640" fill="url(#he-nebula)"/>
+        <!-- Stars -->
+        ${Array.from({length:60},()=>{const x=(Math.random()*580).toFixed(0),y=(Math.random()*640).toFixed(0),r=(Math.random()*1.6+.3).toFixed(1),a=(Math.random()*.8+.1).toFixed(2);return `<circle cx="${x}" cy="${y}" r="${r}" fill="white" opacity="${a}"/>`;}).join('')}
+
+        <!-- Main terminal card -->
+        <g filter="url(#he-shadow)">
+          <rect x="28" y="55" width="315" height="320" rx="18" fill="#030d1e" stroke="rgba(6,182,212,.2)" stroke-width="1"/>
+          <rect x="28" y="55" width="315" height="36" rx="18" fill="#060e22"/>
+          <rect x="28" y="73" width="315" height="18" fill="#060e22"/>
+          <circle cx="53" cy="73" r="6" fill="#ef4444" opacity=".8"/>
+          <circle cx="72" cy="73" r="6" fill="#f59e0b" opacity=".8"/>
+          <circle cx="91" cy="73" r="6" fill="#22c55e" opacity=".8"/>
+          <text x="322" y="78" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(148,163,184,.4)" font-weight="600">algorithms.js</text>
+          <!-- code -->
+          <text x="46" y="116" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">1</text>
+          <text x="64" y="116" font-family="JetBrains Mono,monospace" font-size="12" fill="#4b5563" font-style="italic">// Fibonacci — Explorer 🔭</text>
+          <text x="46" y="137" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">2</text>
+          <text x="64" y="137" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="700">function </text>
+          <text x="149" y="137" font-family="JetBrains Mono,monospace" font-size="12" fill="#93c5fd">fibonacci</text>
+          <text x="226" y="137" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">(n) {</text>
+          <text x="46" y="158" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">3</text>
+          <text x="64" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="700">  const </text>
+          <text x="120" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">dp = [</text>
+          <text x="172" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">0</text>
+          <text x="182" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">, </text>
+          <text x="196" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
+          <text x="206" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">];</text>
+          <text x="46" y="179" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">4</text>
+          <text x="64" y="179" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="700">  for</text>
+          <text x="96" y="179" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">(let i=</text>
+          <text x="152" y="179" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">2</text>
+          <text x="162" y="179" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">; i&lt;=n; i++)</text>
+          <text x="46" y="200" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">5</text>
+          <text x="64" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">    dp[i] = dp[i-</text>
+          <text x="198" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
+          <text x="208" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">]+dp[i-</text>
+          <text x="254" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">2</text>
+          <text x="264" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">];</text>
+          <text x="46" y="221" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">6</text>
+          <text x="64" y="221" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="700">  return </text>
+          <text x="128" y="221" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">dp[n];</text>
+          <text x="46" y="242" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">7</text>
+          <text x="64" y="242" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">}</text>
+          <text x="46" y="263" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">8</text>
+          <text x="64" y="263" font-family="JetBrains Mono,monospace" font-size="12" fill="#4b5563" font-style="italic">// 1 1 2 3 5 8 </text>
+          <text x="196" y="263" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="900">13</text>
+          <text x="218" y="263" font-family="JetBrains Mono,monospace" font-size="12" fill="#22c55e"> ✓ O(n)</text>
+          <rect x="64" y="275" width="7" height="12" rx="1" fill="#06b6d4" opacity=".9">
+            <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+          </rect>
+        </g>
+
+        <!-- XP Card -->
+        <g filter="url(#he-shadow)">
+          <rect x="356" y="46" width="196" height="105" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
+          <text x="374" y="74" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">⚡ TODAY'S XP</text>
+          <text x="374" y="104" font-family="Clash Display,sans-serif" font-size="28" fill="#e0f2fe" font-weight="700">+80 XP</text>
+          <text x="374" y="122" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e7a9e">20 more to level up</text>
+          <rect x="374" y="130" width="158" height="4" rx="2" fill="rgba(6,182,212,.12)"/>
+          <rect x="374" y="130" width="146" height="4" rx="2" fill="#06b6d4"/>
+        </g>
+
+        <!-- Streak Card -->
+        <g filter="url(#he-shadow)">
+          <rect x="356" y="166" width="196" height="90" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
+          <text x="374" y="192" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">🔥 STREAK</text>
+          <text x="374" y="222" font-family="Clash Display,sans-serif" font-size="26" fill="#e0f2fe" font-weight="700">7 Days</text>
+          <text x="374" y="242" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e7a9e">Legend incoming!</text>
+        </g>
+
+        <!-- Badges Card -->
+        <g filter="url(#he-shadow)">
+          <rect x="356" y="272" width="196" height="105" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
+          <text x="374" y="296" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">🏅 BADGES</text>
+          <rect x="374" y="305" width="38" height="38" rx="10" fill="rgba(6,182,212,.12)" stroke="rgba(6,182,212,.2)" stroke-width="1"/><text x="393" y="330" text-anchor="middle" font-size="18">🔭</text>
+          <rect x="420" y="305" width="38" height="38" rx="10" fill="rgba(6,182,212,.12)" stroke="rgba(6,182,212,.2)" stroke-width="1"/><text x="439" y="330" text-anchor="middle" font-size="18">🌌</text>
+          <rect x="466" y="305" width="38" height="38" rx="10" fill="rgba(6,182,212,.12)" stroke="rgba(6,182,212,.2)" stroke-width="1"/><text x="485" y="330" text-anchor="middle" font-size="18">⭐</text>
+          <rect x="374" y="349" width="38" height="38" rx="10" fill="rgba(6,182,212,.05)" stroke="rgba(6,182,212,.15)" stroke-width="1"/><text x="393" y="374" text-anchor="middle" font-size="18" opacity=".3">🔢</text>
+          <rect x="420" y="349" width="38" height="38" rx="10" fill="rgba(6,182,212,.05)" stroke="rgba(6,182,212,.15)" stroke-width="1"/><text x="439" y="374" text-anchor="middle" font-size="18" opacity=".3">🚀</text>
+          <rect x="466" y="349" width="38" height="38" rx="10" fill="rgba(6,182,212,.05)" stroke="rgba(6,182,212,.15)" stroke-width="1"/><text x="485" y="374" text-anchor="middle" font-size="18" opacity=".3">⚡</text>
+        </g>
+
+        <!-- Leaderboard -->
+        <g filter="url(#he-shadow)">
+          <rect x="28" y="394" width="228" height="142" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
+          <text x="46" y="418" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">🌌 EXPLORER BOARD</text>
+          <rect x="36" y="423" width="26" height="26" rx="13" fill="rgba(6,182,212,.2)"/><text x="49" y="440" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">AN</text>
+          <text x="68" y="440" font-family="Satoshi,sans-serif" font-size="12" fill="#e0f2fe" font-weight="700">Ananya Reddy</text>
+          <text x="238" y="440" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#06b6d4" font-weight="700">+2,481</text>
+          <rect x="36" y="453" width="26" height="26" rx="13" fill="rgba(6,182,212,.1)"/><text x="49" y="470" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">IV</text>
+          <text x="68" y="470" font-family="Satoshi,sans-serif" font-size="12" fill="#e0f2fe" font-weight="700">Isha Verma</text>
+          <text x="238" y="470" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#06b6d4" font-weight="700">+2,258</text>
+          <rect x="30" y="485" width="218" height="38" rx="10" fill="rgba(6,182,212,.1)" stroke="rgba(6,182,212,.25)" stroke-width="1"/>
+          <rect x="38" y="491" width="26" height="26" rx="13" fill="#06b6d4"/><text x="51" y="508" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fff" font-weight="700">★</text>
+          <text x="70" y="506" font-family="Satoshi,sans-serif" font-size="12" fill="#e0f2fe" font-weight="700">You</text>
+          <rect x="96" y="496" width="24" height="14" rx="4" fill="#06b6d4"/><text x="108" y="507" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#fff" font-weight="700">YOU</text>
+          <text x="238" y="506" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#06b6d4" font-weight="700">+1,890</text>
+        </g>
+
+        <!-- Level Ring -->
+        <g filter="url(#he-shadow)">
+          <rect x="268" y="394" width="284" height="142" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
+          <text x="286" y="418" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">LEVEL PROGRESS</text>
+          <circle cx="358" cy="484" r="44" fill="none" stroke="rgba(6,182,212,.12)" stroke-width="8"/>
+          <circle cx="358" cy="484" r="44" fill="none" stroke="#06b6d4" stroke-width="8" stroke-linecap="round"
+            stroke-dasharray="276" stroke-dashoffset="61"
+            transform="rotate(-90 358 484)" style="filter:drop-shadow(0 0 5px #06b6d4)"/>
+          <text x="358" y="479" text-anchor="middle" font-family="Clash Display,sans-serif" font-size="20" fill="#e0f2fe" font-weight="700">78%</text>
+          <text x="358" y="496" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e7a9e">Lv 7→8</text>
+          <text x="418" y="454" font-family="Clash Display,sans-serif" font-size="20" fill="#06b6d4" font-weight="700">1,890 XP</text>
+          <text x="418" y="472" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e7a9e">Explorer Elite</text>
+          <rect x="418" y="484" width="110" height="36" rx="10" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.2)" stroke-width="1"/>
+          <text x="473" y="506" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#06b6d4" font-weight="700">#5 Rank</text>
+          <text x="473" y="520" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e7a9e">↑ 3 this week</text>
+        </g>
+      </svg>`,
+
+    pro:`
+      <svg viewBox="0 0 560 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;max-height:600px;display:block;">
+        <defs>
+          <radialGradient id="hp-bg" cx="55%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#051a0d"/>
+            <stop offset="55%" stop-color="#030f06"/>
+            <stop offset="100%" stop-color="#010804"/>
+          </radialGradient>
+          <radialGradient id="hp-glow" cx="55%" cy="35%" r="55%">
+            <stop offset="0%" stop-color="rgba(34,197,94,.08)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="hp-shadow"><feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="rgba(0,0,0,.6)"/></filter>
+        </defs>
+        <rect width="580" height="640" fill="url(#hp-bg)"/>
+        <rect width="580" height="640" fill="url(#hp-glow)"/>
+        <!-- Matrix rain -->
+        ${Array.from({length:14},(_,i)=>{const x=i*42+10;return Array.from({length:6},(_,j)=>`<text x="${x}" y="${j*44+40}" fill="#22c55e" font-family="JetBrains Mono,monospace" font-size="14" opacity="${(0.03+Math.random()*.12).toFixed(2)}">${String.fromCharCode(0x30A0+Math.floor(Math.random()*96))}</text>`).join('');}).join('')}
+
+        <!-- Code editor -->
+        <g filter="url(#hp-shadow)">
+          <rect x="28" y="52" width="316" height="326" rx="18" fill="rgba(2,8,4,.97)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
+          <rect x="28" y="52" width="316" height="36" rx="18" fill="rgba(34,197,94,.07)"/>
+          <rect x="28" y="68" width="316" height="20" fill="rgba(34,197,94,.07)"/>
+          <circle cx="52" cy="70" r="6" fill="#ef4444" opacity=".8"/>
+          <circle cx="71" cy="70" r="6" fill="#f59e0b" opacity=".8"/>
+          <circle cx="90" cy="70" r="6" fill="#22c55e" opacity=".8"/>
+          <text x="322" y="75" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.4)" font-weight="600">solution.js</text>
+          <!-- code lines -->
+          <text x="46" y="113" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">1</text>
+          <text x="64" y="113" font-family="JetBrains Mono,monospace" font-size="12" fill="#2d6a4f" font-style="italic">// Binary Search O(log n) ⚡</text>
+          <text x="46" y="133" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">2</text>
+          <text x="64" y="133" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">function </text>
+          <text x="148" y="133" font-family="JetBrains Mono,monospace" font-size="12" fill="#86efac">binarySearch</text>
+          <text x="258" y="133" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">(arr, t) {</text>
+          <text x="46" y="153" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">3</text>
+          <text x="64" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">  let </text>
+          <text x="104" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">lo=</text>
+          <text x="130" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">0</text>
+          <text x="140" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">, hi=arr.length-</text>
+          <text x="278" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
+          <text x="288" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">;</text>
+          <text x="46" y="173" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">4</text>
+          <text x="64" y="173" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">  while</text>
+          <text x="116" y="173" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">(lo &lt;= hi) {</text>
+          <text x="46" y="193" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">5</text>
+          <text x="64" y="193" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">    const </text>
+          <text x="128" y="193" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">mid = lo+hi&gt;&gt;</text>
+          <text x="238" y="193" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
+          <text x="248" y="193" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">;</text>
+          <text x="46" y="213" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">6</text>
+          <text x="64" y="213" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">    if</text>
+          <text x="94" y="213" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">(arr[mid]===t) </text>
+          <text x="218" y="213" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">return </text>
+          <text x="274" y="213" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">mid;</text>
+          <text x="46" y="233" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">7</text>
+          <text x="64" y="233" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">    lo = arr[mid]&lt;t ? mid+</text>
+          <text x="258" y="233" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
+          <text x="268" y="233" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7"> : lo;</text>
+          <text x="46" y="253" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">8</text>
+          <text x="64" y="253" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">  }; </text>
+          <text x="100" y="253" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">return </text>
+          <text x="156" y="253" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">-1</text>
+          <text x="174" y="253" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">;</text>
+          <text x="46" y="273" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">9</text>
+          <text x="64" y="273" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">}</text>
+          <rect x="64" y="282" width="7" height="12" rx="1" fill="#22c55e" opacity=".9">
+            <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+          </rect>
+          <!-- Output bar -->
+          <rect x="28" y="348" width="316" height="30" rx="10" fill="rgba(34,197,94,.06)" stroke="rgba(34,197,94,.12)" stroke-width="1"/>
+          <text x="46" y="367" font-family="JetBrains Mono,monospace" font-size="11" fill="#22c55e">✓ All tests passed · Runtime: 3ms · O(log n)</text>
+        </g>
+
+        <!-- XP Card -->
+        <g filter="url(#hp-shadow)">
+          <rect x="356" y="44" width="198" height="108" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
+          <text x="374" y="72" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">⚡ XP TODAY</text>
+          <text x="374" y="104" font-family="Clash Display,sans-serif" font-size="28" fill="#dcfce7" font-weight="700">+120 XP</text>
+          <text x="374" y="122" font-family="JetBrains Mono,monospace" font-size="10" fill="#1e6640">Level 8 unlocked! 🏆</text>
+          <rect x="374" y="131" width="160" height="4" rx="2" fill="rgba(34,197,94,.12)"/>
+          <rect x="374" y="131" width="160" height="4" rx="2" fill="#22c55e"/>
+        </g>
+
+        <!-- Streak Card -->
+        <g filter="url(#hp-shadow)">
+          <rect x="356" y="168" width="198" height="92" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
+          <text x="374" y="194" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">🔥 STREAK</text>
+          <text x="374" y="224" font-family="Clash Display,sans-serif" font-size="26" fill="#dcfce7" font-weight="700">14 Days</text>
+          <text x="374" y="244" font-family="JetBrains Mono,monospace" font-size="10" fill="#1e6640">Legend badge earned!</text>
+        </g>
+
+        <!-- Badges Card -->
+        <g filter="url(#hp-shadow)">
+          <rect x="356" y="276" width="198" height="106" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
+          <text x="374" y="300" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">🏅 BADGES</text>
+          <rect x="374" y="309" width="38" height="38" rx="10" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.2)" stroke-width="1"/><text x="393" y="334" text-anchor="middle" font-size="18">⚡</text>
+          <rect x="420" y="309" width="38" height="38" rx="10" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.2)" stroke-width="1"/><text x="439" y="334" text-anchor="middle" font-size="18">🏆</text>
+          <rect x="466" y="309" width="38" height="38" rx="10" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.2)" stroke-width="1"/><text x="485" y="334" text-anchor="middle" font-size="18">🔥</text>
+          <rect x="374" y="353" width="38" height="38" rx="10" fill="rgba(34,197,94,.05)" stroke="rgba(34,197,94,.15)" stroke-width="1"/><text x="393" y="378" text-anchor="middle" font-size="18" opacity=".3">💻</text>
+          <rect x="420" y="353" width="38" height="38" rx="10" fill="rgba(34,197,94,.05)" stroke="rgba(34,197,94,.15)" stroke-width="1"/><text x="439" y="378" text-anchor="middle" font-size="18" opacity=".3">🌐</text>
+          <rect x="466" y="353" width="38" height="38" rx="10" fill="rgba(34,197,94,.05)" stroke="rgba(34,197,94,.15)" stroke-width="1"/><text x="485" y="378" text-anchor="middle" font-size="18" opacity=".3">🎯</text>
+        </g>
+
+        <!-- Leaderboard -->
+        <g filter="url(#hp-shadow)">
+          <rect x="28" y="397" width="230" height="140" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
+          <text x="46" y="421" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">⚡ PRO RANKINGS</text>
+          <rect x="36" y="427" width="26" height="26" rx="13" fill="rgba(34,197,94,.15)"/><text x="49" y="444" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">KN</text>
+          <text x="68" y="444" font-family="Satoshi,sans-serif" font-size="12" fill="#dcfce7" font-weight="700">Kavya Nair</text>
+          <text x="240" y="444" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#22c55e" font-weight="700">+3,159</text>
+          <rect x="30" y="455" width="220" height="38" rx="10" fill="rgba(34,197,94,.1)" stroke="rgba(34,197,94,.25)" stroke-width="1"/>
+          <rect x="38" y="461" width="26" height="26" rx="13" fill="#22c55e"/><text x="51" y="478" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fff" font-weight="700">★</text>
+          <text x="70" y="476" font-family="Satoshi,sans-serif" font-size="12" fill="#dcfce7" font-weight="700">You</text>
+          <rect x="96" y="466" width="24" height="14" rx="4" fill="#22c55e"/><text x="108" y="477" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#fff" font-weight="700">YOU</text>
+          <text x="240" y="476" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#22c55e" font-weight="700">+2,980</text>
+          <rect x="36" y="500" width="26" height="26" rx="13" fill="rgba(34,197,94,.08)"/><text x="49" y="517" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">SS</text>
+          <text x="68" y="517" font-family="Satoshi,sans-serif" font-size="12" fill="#dcfce7" font-weight="700">Sneha Singh</text>
+          <text x="240" y="517" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#22c55e" font-weight="700">+2,643</text>
+        </g>
+
+        <!-- Level Ring -->
+        <g filter="url(#hp-shadow)">
+          <rect x="270" y="397" width="282" height="140" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
+          <text x="288" y="421" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">LEVEL PROGRESS</text>
+          <circle cx="358" cy="488" r="44" fill="none" stroke="rgba(34,197,94,.1)" stroke-width="8"/>
+          <circle cx="358" cy="488" r="44" fill="none" stroke="#22c55e" stroke-width="8" stroke-linecap="round"
+            stroke-dasharray="276" stroke-dashoffset="33"
+            transform="rotate(-90 358 488)" style="filter:drop-shadow(0 0 6px #22c55e)"/>
+          <text x="358" y="483" text-anchor="middle" font-family="Clash Display,sans-serif" font-size="20" fill="#dcfce7" font-weight="700">88%</text>
+          <text x="358" y="500" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1e6640">Lv 8→9</text>
+          <text x="418" y="458" font-family="Clash Display,sans-serif" font-size="20" fill="#22c55e" font-weight="700">2,980 XP</text>
+          <text x="418" y="476" font-family="JetBrains Mono,monospace" font-size="9" fill="#1e6640">Elite Coder</text>
+          <rect x="418" y="488" width="110" height="36" rx="10" fill="rgba(34,197,94,.08)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
+          <text x="473" y="510" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#22c55e" font-weight="700">#2 Rank</text>
+          <text x="473" y="524" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1e6640">↑ 5 this week</text>
+        </g>
+      </svg>`
   };
 
-  const c=T[mode];
-
-  // Build code lines HTML
-  const codeLineStyles={
-    'c-cm':'color:#4b5563;font-style:italic',
-    'c-kw':'color:'+c.accent+';font-weight:700',
-    'c-fn':'color:'+(mode==='junior'?'#60a5fa':mode==='explorer'?'#93c5fd':'#86efac'),
-    'c-num':'color:#a78bfa',
-    'c-txt':'color:#cbd5e1',
-    'c-ans':'color:'+c.accent+';font-weight:900',
-    'c-str':'color:#34d399',
-  };
-  const buildLine=segs=>{
-    let html='';
-    for(let i=0;i<segs.length;i+=2){
-      const cls=segs[i], text=segs[i+1]||'';
-      html+=`<span style="${codeLineStyles[cls]||'color:#cbd5e1'}">${text}</span>`;
-    }
-    return html;
-  };
-
-  const dashOffset = 226 - 226*(c.xpPct/100);
-
-  // Background overlay on the hero-r cell itself
-  panel.style.background = c.panelBg;
-
-  panel.innerHTML=`
-<!-- Left fade -->
-<div style="position:absolute;inset:0;background:${c.leftFade};z-index:1;pointer-events:none;"></div>
-
-<!-- All content — normal flow, no absolute positioning -->
-<div style="position:relative;z-index:2;width:100%;max-width:560px;display:flex;flex-direction:column;gap:12px;">
-
-  <!-- TOP: Code editor + stat cards -->
-  <div style="display:flex;gap:12px;align-items:flex-start;">
-
-    <!-- Code window -->
-    <div style="flex:1;background:${c.codeBg};border:1px solid ${c.codeBorder};border-radius:20px;overflow:hidden;box-shadow:${c.codeGlow};animation:hpFloat1 7s ease-in-out infinite;">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid ${c.codeBorder};background:rgba(255,255,255,.03);">
-        <div style="display:flex;gap:6px;">
-          <div style="width:11px;height:11px;border-radius:50%;background:#ef4444;opacity:.85"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:#f59e0b;opacity:.85"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:#22c55e;opacity:.85"></div>
-        </div>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:rgba(148,163,184,.5);letter-spacing:.5px">${c.codeFile}</span>
-      </div>
-      <div style="padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.85;">
-        ${c.lines.map((segs,i)=>`
-        <div style="display:flex;gap:0;align-items:baseline;">
-          <span style="color:rgba(100,116,139,.3);user-select:none;width:20px;font-size:10.5px;flex-shrink:0;text-align:right;padding-right:10px">${i+1}</span>
-          <span>${buildLine(segs)}</span>
-        </div>`).join('')}
-        <div style="display:flex;align-items:baseline;gap:0;">
-          <span style="color:rgba(100,116,139,.3);user-select:none;width:20px;font-size:10.5px;flex-shrink:0;text-align:right;padding-right:10px">&nbsp;</span>
-          <span style="display:inline-block;width:7px;height:13px;background:${c.accent};border-radius:1px;animation:blink 1.1s step-end infinite;vertical-align:text-bottom;"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Stat cards column -->
-    <div style="display:flex;flex-direction:column;gap:11px;min-width:146px;">
-      <!-- XP card -->
-      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:14px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 5s ease-in-out infinite .5s;">
-        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;transition:color .4s">${c.stat1lbl}</div>
-        <div style="font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--text);transition:color .4s">${c.stat1val}</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:2px;transition:color .4s">${c.stat1sub}</div>
-        <div style="height:3px;background:var(--bdr);border-radius:3px;margin-top:9px;overflow:hidden;">
-          <div style="height:100%;width:${c.stat1bar}%;background:linear-gradient(90deg,${c.accent},${c.accent2});border-radius:3px;transition:background .5s;"></div>
-        </div>
-      </div>
-      <!-- Streak card -->
-      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:14px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat1 6s ease-in-out infinite 1.2s;">
-        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;transition:color .4s">${c.stat2lbl}</div>
-        <div style="font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--text);transition:color .4s">${c.stat2val}</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:2px;transition:color .4s">${c.stat2sub}</div>
-      </div>
-      <!-- Badges card -->
-      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:13px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 8s ease-in-out infinite .8s;">
-        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:9px;transition:color .4s">🏅 Badges</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-          ${c.badges.map(b=>`<div style="border-radius:10px;background:rgba(${c.accentRgb},.1);border:1px solid rgba(${c.accentRgb},.18);padding:6px;text-align:center;font-size:16px;transition:all .4s;">${b}</div>`).join('')}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- BOTTOM: Leaderboard + XP ring -->
-  <div style="display:flex;gap:14px;align-items:stretch;">
-
-    <!-- Leaderboard card -->
-    <div style="flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:16px 18px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 5.5s ease-in-out infinite .3s;">
-      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;transition:color .4s">${c.rankTitle}</div>
-      ${c.ranks.map(r=>`
-      <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;padding:${r.me?'6px 8px':'2px 0'};border-radius:10px;background:${r.me?`rgba(${c.accentRgb},.1)`:'transparent'};transition:all .3s;">
-        <div style="font-size:11px;width:22px;text-align:center;font-weight:700;font-family:'JetBrains Mono',monospace;color:${r.me?c.accent:'var(--muted)'};">${r.medal}</div>
-        <div style="width:28px;height:28px;border-radius:50%;background:${r.me?`linear-gradient(135deg,${c.accent},${c.accent2})`:`rgba(${c.accentRgb},.2)`};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${r.me?'#fff':c.accent};flex-shrink:0;font-family:'JetBrains Mono',monospace;">${r.av}</div>
-        <div style="flex:1;font-size:12px;font-weight:700;color:var(--text);transition:color .4s;">${r.n}${r.me?`<span style="font-size:8px;background:${c.accent};color:#fff;border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;margin-left:4px">YOU</span>`:''}</div>
-        <div style="font-size:10.5px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};transition:color .4s;">✦${r.xp}</div>
-      </div>`).join('')}
-    </div>
-
-    <!-- XP Level ring -->
-    <div style="flex:0 0 auto;width:148px;background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:16px;backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:all .5s;animation:hpFloat1 7s ease-in-out infinite 2s;">
-      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;transition:color .4s">Level Progress</div>
-      <div style="position:relative;width:88px;height:88px;">
-        <svg viewBox="0 0 88 88" style="width:88px;height:88px;transform:rotate(-90deg)">
-          <circle cx="44" cy="44" r="37" fill="none" stroke="rgba(${c.accentRgb},.12)" stroke-width="7.5"/>
-          <circle cx="44" cy="44" r="37" fill="none" stroke="${c.accent}" stroke-width="7.5" stroke-linecap="round"
-            stroke-dasharray="232" stroke-dashoffset="${232-232*(c.xpPct/100)}"
-            style="filter:drop-shadow(0 0 4px ${c.accent});transition:all .6s"/>
-        </svg>
-        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-          <div style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:var(--text);line-height:1;transition:color .4s">${c.xpPct}%</div>
-          <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.5px;transition:color .4s">Lv ${c.lv}</div>
-        </div>
-      </div>
-      <div style="font-size:18px;font-weight:700;font-family:'Clash Display',sans-serif;color:${c.accent};transition:color .4s">${c.xp.toLocaleString()} XP</div>
-      <div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;transition:color .4s">Logic Master</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- Floating popup cards (absolutely positioned, overlay style) -->
-<div style="position:absolute;top:90px;right:16px;z-index:20;background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:14px 18px;backdrop-filter:blur(22px);min-width:160px;animation:hpFloat1 5s ease-in-out infinite;box-shadow:0 8px 32px rgba(0,0,0,.18);">
-  <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">⚡ Today's XP</div>
-  <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);">${c.stat1val}</div>
-  <div style="font-size:10px;color:var(--muted);margin-top:2px;">${c.stat1sub}</div>
-  <div style="height:3px;background:var(--bdr);border-radius:3px;margin-top:8px;overflow:hidden;"><div style="height:100%;width:${c.stat1bar}%;background:linear-gradient(90deg,${c.accent},${c.accent2});border-radius:3px;"></div></div>
-</div>
-
-<div style="position:absolute;bottom:120px;right:16px;z-index:20;background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:14px 18px;backdrop-filter:blur(22px);min-width:150px;animation:hpFloat2 4.5s ease-in-out infinite;box-shadow:0 8px 32px rgba(0,0,0,.18);">
-  <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">🔥 Streak</div>
-  <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);">${c.stat2val}</div>
-  <div style="font-size:10px;color:var(--muted);margin-top:2px;">${c.stat2sub}</div>
-</div>
-
-<div style="position:absolute;top:45%;left:8px;transform:translateY(-50%);z-index:20;background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:14px 18px;backdrop-filter:blur(22px);min-width:140px;animation:hpFloat1 6s ease-in-out infinite 1.5s;box-shadow:0 8px 32px rgba(0,0,0,.18);">
-  <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">🏆 Your Rank</div>
-  <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);">${c.ranks.find(r=>r.me)?.medal||'#10'}</div>
-  <div style="font-size:10px;color:var(--muted);margin-top:2px;">↑ 2 this week</div>
-</div>
-
-  <!-- TOP: Code editor + stat cards -->
-  <div style="display:flex;gap:14px;align-items:stretch;">
-
-    <!-- Code window -->
-    <div style="flex:1;background:${c.codeBg};border:1px solid ${c.codeBorder};border-radius:20px;overflow:hidden;box-shadow:${c.codeGlow};animation:hpFloat1 7s ease-in-out infinite;">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid ${c.codeBorder};background:rgba(255,255,255,.03);">
-        <div style="display:flex;gap:6px;">
-          <div style="width:11px;height:11px;border-radius:50%;background:#ef4444;opacity:.85"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:#f59e0b;opacity:.85"></div>
-          <div style="width:11px;height:11px;border-radius:50%;background:#22c55e;opacity:.85"></div>
-        </div>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:rgba(148,163,184,.5);letter-spacing:.5px">${c.codeFile}</span>
-      </div>
-      <div style="padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.85;">
-        ${c.lines.map((segs,i)=>`
-        <div style="display:flex;gap:0;align-items:baseline;">
-          <span style="color:rgba(100,116,139,.3);user-select:none;width:20px;font-size:10.5px;flex-shrink:0;text-align:right;padding-right:10px">${i+1}</span>
-          <span>${buildLine(segs)}</span>
-        </div>`).join('')}
-        <div style="display:flex;align-items:baseline;gap:0;">
-          <span style="color:rgba(100,116,139,.3);user-select:none;width:20px;font-size:10.5px;flex-shrink:0;text-align:right;padding-right:10px">&nbsp;</span>
-          <span style="display:inline-block;width:7px;height:13px;background:${c.accent};border-radius:1px;animation:blink 1.1s step-end infinite;vertical-align:text-bottom;"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Stat cards column -->
-    <div style="display:flex;flex-direction:column;gap:11px;min-width:146px;">
-      <!-- XP card -->
-      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:14px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 5s ease-in-out infinite .5s;">
-        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;transition:color .4s">${c.stat1lbl}</div>
-        <div style="font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--text);transition:color .4s">${c.stat1val}</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:2px;transition:color .4s">${c.stat1sub}</div>
-        <div style="height:3px;background:var(--bdr);border-radius:3px;margin-top:9px;overflow:hidden;">
-          <div style="height:100%;width:${c.stat1bar}%;background:linear-gradient(90deg,${c.accent},${c.accent2});border-radius:3px;transition:background .5s;"></div>
-        </div>
-      </div>
-      <!-- Streak card -->
-      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:14px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat1 6s ease-in-out infinite 1.2s;">
-        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;transition:color .4s">${c.stat2lbl}</div>
-        <div style="font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--text);transition:color .4s">${c.stat2val}</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:2px;transition:color .4s">${c.stat2sub}</div>
-      </div>
-      <!-- Badges card -->
-      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:13px 15px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 8s ease-in-out infinite .8s;">
-        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:9px;transition:color .4s">🏅 Badges</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-          ${c.badges.map(b=>`<div style="border-radius:10px;background:rgba(${c.accentRgb},.1);border:1px solid rgba(${c.accentRgb},.18);padding:6px;text-align:center;font-size:16px;transition:all .4s;">${b}</div>`).join('')}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- BOTTOM: Leaderboard + XP ring -->
-  <div style="display:flex;gap:14px;align-items:stretch;">
-
-    <!-- Leaderboard card -->
-    <div style="flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:16px 18px;backdrop-filter:blur(16px);transition:all .5s;animation:hpFloat2 5.5s ease-in-out infinite .3s;">
-      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;transition:color .4s">${c.rankTitle}</div>
-      ${c.ranks.map(r=>`
-      <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;padding:${r.me?'6px 8px':'2px 0'};border-radius:10px;background:${r.me?`rgba(${c.accentRgb},.1)`:'transparent'};transition:all .3s;">
-        <div style="font-size:11px;width:22px;text-align:center;font-weight:700;font-family:'JetBrains Mono',monospace;color:${r.me?c.accent:'var(--muted)'};">${r.medal}</div>
-        <div style="width:28px;height:28px;border-radius:50%;background:${r.me?`linear-gradient(135deg,${c.accent},${c.accent2})`:`rgba(${c.accentRgb},.2)`};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${r.me?'#fff':c.accent};flex-shrink:0;font-family:'JetBrains Mono',monospace;">${r.av}</div>
-        <div style="flex:1;font-size:12px;font-weight:700;color:var(--text);transition:color .4s;">${r.n}${r.me?`<span style="font-size:8px;background:${c.accent};color:#fff;border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;margin-left:4px">YOU</span>`:''}</div>
-        <div style="font-size:10.5px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};transition:color .4s;">✦${r.xp}</div>
-      </div>`).join('')}
-    </div>
-
-    <!-- XP Level ring -->
-    <div style="flex:0 0 auto;width:148px;background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:16px;backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:all .5s;animation:hpFloat1 7s ease-in-out infinite 2s;">
-      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${c.accent};text-transform:uppercase;letter-spacing:1px;transition:color .4s">Level Progress</div>
-      <div style="position:relative;width:88px;height:88px;">
-        <svg viewBox="0 0 88 88" style="width:88px;height:88px;transform:rotate(-90deg)">
-          <circle cx="44" cy="44" r="37" fill="none" stroke="rgba(${c.accentRgb},.12)" stroke-width="7.5"/>
-          <circle cx="44" cy="44" r="37" fill="none" stroke="${c.accent}" stroke-width="7.5" stroke-linecap="round"
-            stroke-dasharray="232" stroke-dashoffset="${232-232*(c.xpPct/100)}"
-            style="filter:drop-shadow(0 0 4px ${c.accent});transition:all .6s"/>
-        </svg>
-        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-          <div style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:var(--text);line-height:1;transition:color .4s">${c.xpPct}%</div>
-          <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.5px;transition:color .4s">Lv ${c.lv}</div>
-        </div>
-      </div>
-      <div style="font-size:18px;font-weight:700;font-family:'Clash Display',sans-serif;color:${c.accent};transition:color .4s">${c.xp.toLocaleString()} XP</div>
-      <div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;transition:color .4s">Logic Master</div>
-    </div>
-
-  </div>
-
-</div>`;
+  panel.innerHTML = svgs[mode] || svgs.junior;
 }
-
 // Program card SVGs
 function progCardSVG(type){
   if(type==='junior')return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pj" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#ffe0c4"/></linearGradient></defs><rect width="400" height="230" fill="url(#pj)"/><circle cx="340" cy="50" r="50" fill="#fbbf24" opacity=".35"/><circle cx="60" cy="180" r="35" fill="#f97316" opacity=".15"/><ellipse cx="90" cy="65" rx="40" ry="22" fill="#fff" opacity=".7"/><ellipse cx="120" cy="54" rx="32" ry="18" fill="#fff" opacity=".6"/><rect y="164" width="400" height="66" fill="#86efac" opacity=".4"/><rect y="178" width="400" height="52" fill="#4ade80" opacity=".25"/><circle cx="220" cy="125" r="30" fill="rgba(249,115,22,.08)" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4,3"/><text x="220" y="130" text-anchor="middle" fill="#f97316" font-size="16" font-family="JetBrains Mono">◆◆◆◆◆?</text><rect x="80" y="78" width="100" height="65" rx="12" fill="#fff" opacity=".85" stroke="#f97316" stroke-width="1"/><rect x="93" y="93" width="55" height="5" rx="2" fill="#f97316"/><rect x="93" y="104" width="74" height="4" rx="2" fill="#3b82f6" opacity=".7"/><rect x="93" y="114" width="44" height="4" rx="2" fill="#22c55e" opacity=".7"/><rect x="93" y="124" width="62" height="4" rx="2" fill="#a78bfa" opacity=".7"/><text x="200" y="210" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#7c5c3a" opacity=".8">LOGIC PUZZLES · PATTERN GAMES</text></svg>`;
@@ -2695,6 +3086,31 @@ function courseHeroSVG(){
 function updateCourseHero(){
   const el=document.getElementById('course-hero-img');
   if(el) el.innerHTML=courseHeroSVG();
+
+  // Show only the correct tier's course track — no tabs, no switching
+  ['junior','explorer','pro'].forEach(t=>{
+    const d=document.getElementById('courses-'+t);
+    if(d) d.style.display = t===mode ? 'flex' : 'none';
+  });
+
+  // Update heading & desc
+  const cfg=modeConfig[mode];
+  if(cfg){
+    const h=document.getElementById('course-heading');
+    const d=document.getElementById('course-desc');
+    if(h) h.innerHTML=cfg.courseH;
+    if(d) d.textContent=cfg.courseP;
+  }
+
+  // Wire Play All button to start first game of current mode
+  const btn=document.getElementById('courses-play-btn');
+  if(btn){
+    btn.onclick = ()=>{
+      if(mode==='pro') openProProblem(1);
+      else if(mode==='explorer') openGame({mode:'explorer',n:1,cat:'ALGORITHMS',title:'Fibonacci Sequence',q:'What comes next?',pattern:['1','1','2','3','5','8','?'],opts:['10','11','13','15'],ans:2,hint:'Each number = sum of the two before it.'});
+      else openGame({mode:'junior',n:1,cat:'STRUCTURE',title:'Sequential Pattern Alpha',q:'What comes next in the sequence?',pattern:['▲','▲','●','▲','▲','?'],opts:['●','▲','■','◆'],ans:0,hint:'Look at every 3rd position.'});
+    };
+  }
 }
 
 // ════════════════════════════════════════
@@ -2710,7 +3126,8 @@ function goPage(p){
   });
   window.scrollTo({top:0,behavior:'smooth'});
   if(p==='courses')updateCourseHero();
-  if(p==='home')updateHeroPanel();
+  if(p==='projects')setTimeout(initProjPage,50);
+  if(p==='home'){updateHeroPanel();updateHeroMid();}
   if(p==='challenges')updateDailyChallenge();
   // Reset hero panel bg if leaving home
   if(p!=='home'){const hp=document.getElementById('hero-r-panel');if(hp)hp.style.background='';}
@@ -2730,26 +3147,19 @@ function initReveal(){
 initReveal();
 
 // ════════════════════════════════════════
-// COURSE TAB SWITCHING
+// COURSE TAB SWITCHING (internal use only — no user tabs shown)
 // ════════════════════════════════════════
 function switchCourseTab(tab,el){
-  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active'));
-  if(el)el.classList.add('active');
+  // Now only called internally by setMode — just show correct track
   ['junior','explorer','pro'].forEach(t=>{
     const d=document.getElementById('courses-'+t);
     if(d)d.style.display=t===tab?'flex':'none';
   });
-  // Update heading
-  const m=modeConfig[tab==='junior'?'junior':tab==='explorer'?'explorer':'pro'];
-  document.getElementById('course-heading').innerHTML=m.courseH;
-  document.getElementById('course-desc').textContent=m.courseP;
-  // Change theme to match the selected course tier
-  if(tab!==mode){
-    mode=tab;
-    document.documentElement.setAttribute('data-mode',tab);
-    makeParticles();
-    updateHeroPanel&&updateHeroPanel();
-  }
+  const m=modeConfig[tab]||modeConfig['junior'];
+  const h=document.getElementById('course-heading');
+  const d=document.getElementById('course-desc');
+  if(h)h.innerHTML=m.courseH;
+  if(d)d.textContent=m.courseP;
 }
 
 // ════════════════════════════════════════
@@ -2869,6 +3279,80 @@ const complexityMap={
   'Longest Common Subsequence':{time:'O(n·m)',space:'O(n·m)',runtime:'18ms',curve:'n2'},
 };
 
+
+// ════════════════════════════════════════
+// PRO PROBLEMS DATA — kept in JS, not inline HTML attrs
+// ════════════════════════════════════════
+const PRO_PROBLEMS = [
+  null, // index 0 unused — problems are 1-indexed
+  {
+    n:1, cat:'SEARCH', diff:'medium', xp:60,
+    title:'Binary Search',
+    desc:'Implement binary search on a sorted array.\n\nGiven a sorted array of integers and a target value, return the index if the target is found, or -1 if not.',
+    constraints:'- Array is sorted in ascending order\n- O(log n) time complexity required',
+    examples:[
+      {inp:'[-1,0,3,5,9,12], target = 9', out:'4'},
+      {inp:'[-1,0,3,5,9,12], target = 2', out:'-1'}
+    ],
+    hint:'Divide the search space in half each iteration using two pointers.',
+    starter:'function binarySearch(nums, target) {\n  // Implement binary search\n  // Return index or -1\n\n}'
+  },
+  {
+    n:2, cat:'ARRAYS', diff:'easy', xp:40,
+    title:'Two Sum',
+    desc:'Given an array of integers and a target sum, return the indices of the two numbers that add up to target.',
+    constraints:'- Each input has exactly one solution\n- You may not use the same element twice',
+    examples:[
+      {inp:'[2,7,11,15], target = 9', out:'[0, 1]'},
+      {inp:'[3,2,4], target = 6',     out:'[1, 2]'}
+    ],
+    hint:'Use a hash map for O(n) solution.',
+    starter:'function twoSum(nums, target) {\n  // Return [index1, index2]\n\n}'
+  },
+  {
+    n:3, cat:'STRINGS', diff:'medium', xp:55,
+    title:'Valid Palindrome',
+    desc:'A phrase is a palindrome if, after converting all uppercase letters to lowercase and removing all non-alphanumeric characters, it reads the same forward and backward.',
+    constraints:'- Only consider alphanumeric characters\n- Case insensitive comparison',
+    examples:[
+      {inp:'"A man, a plan, a canal: Panama"', out:'true'},
+      {inp:'"race a car"',                    out:'false'}
+    ],
+    hint:'Two pointer approach: one at start, one at end. Skip non-alphanumeric chars.',
+    starter:'function isPalindrome(s) {\n  // Return true or false\n\n}'
+  },
+  {
+    n:4, cat:'TREES', diff:'medium', xp:70,
+    title:'Maximum Depth of Binary Tree',
+    desc:'Given the root of a binary tree, return its maximum depth. Maximum depth is the number of nodes along the longest path from root node down to the farthest leaf node.',
+    constraints:'- Number of nodes: [0, 10000]\n- Node values: [-100, 100]',
+    examples:[
+      {inp:'root = [3,9,20,null,null,15,7]', out:'3'},
+      {inp:'root = [1,null,2]',              out:'2'}
+    ],
+    hint:'Use recursion: maxDepth = 1 + max(depth of left subtree, depth of right subtree).',
+    starter:'function maxDepth(root) {\n  // Return max depth\n\n}'
+  },
+  {
+    n:5, cat:'DP', diff:'hard', xp:100,
+    title:'Longest Common Subsequence',
+    desc:'Given two strings text1 and text2, return the length of their longest common subsequence. A subsequence is a sequence derived by deleting some characters without changing the relative order.',
+    constraints:'- 1 <= text1.length, text2.length <= 1000\n- Strings contain only lowercase English letters',
+    examples:[
+      {inp:'"abcde", "ace"', out:'3'},
+      {inp:'"abc", "abc"',   out:'3'}
+    ],
+    hint:'Classic 2D DP: dp[i][j] = LCS of first i chars of s1 and first j chars of s2.',
+    starter:'function longestCommonSubsequence(text1, text2) {\n  // Return length of LCS\n\n}'
+  }
+];
+
+function openProProblem(n) {
+  const prob = PRO_PROBLEMS[n];
+  if (!prob) { console.error('Problem not found:', n); return; }
+  openCodeProblem(prob);
+}
+
 function openCodeProblem(cfg){
   currentProblem=cfg; currentLang='js';
   document.getElementById('code-screen').style.display='flex';
@@ -2928,14 +3412,7 @@ function closeResult(){
 function nextCodeProblem(){
   document.getElementById('code-result-panel').style.display='none';
   if(!currentProblem)return;
-  const proProblems=[
-    {n:1,cat:'SEARCH',diff:'medium',xp:60,title:'Binary Search',desc:'Implement binary search on a sorted array.\n\nGiven a sorted array of integers and a target value, return the index if the target is found, or -1 if not.',constraints:'- Array is sorted in ascending order\n- O(log n) time complexity required',examples:[{inp:'[-1,0,3,5,9,12], target = 9',out:'4'},{inp:'[-1,0,3,5,9,12], target = 2',out:'-1'}],hint:'Divide the search space in half each iteration using two pointers.',starter:'function binarySearch(nums, target) {\n  // Implement binary search\n  // Return index or -1\n\n}'},
-    {n:2,cat:'ARRAYS',diff:'easy',xp:40,title:'Two Sum',desc:'Given an array of integers and a target sum, return the indices of the two numbers that add up to target.',constraints:'- Each input has exactly one solution\n- You may not use the same element twice',examples:[{inp:'[2,7,11,15], target = 9',out:'[0, 1]'},{inp:'[3,2,4], target = 6',out:'[1, 2]'}],hint:'Use a hash map for O(n) solution.',starter:'function twoSum(nums, target) {\n  // Return [index1, index2]\n\n}'},
-    {n:3,cat:'STRINGS',diff:'medium',xp:55,title:'Valid Palindrome',desc:'A phrase is a palindrome if it reads the same forwards and backwards, ignoring non-alphanumeric characters.',constraints:'- Only consider alphanumeric characters\n- Case insensitive comparison',examples:[{inp:'"A man, a plan, a canal: Panama"',out:'true'},{inp:'"race a car"',out:'false'}],hint:'Two pointer approach: one at start, one at end.',starter:'function isPalindrome(s) {\n  // Return true or false\n\n}'},
-    {n:4,cat:'TREES',diff:'medium',xp:70,title:'Maximum Depth of Binary Tree',desc:'Given the root of a binary tree, return its maximum depth. Maximum depth is the number of nodes along the longest path from root to leaf.',constraints:'- Number of nodes: [0, 10⁴]\n- Node values: [-100, 100]',examples:[{inp:'root = [3,9,20,null,null,15,7]',out:'3'},{inp:'root = [1,null,2]',out:'2'}],hint:'Use recursion: depth = 1 + max(left depth, right depth)',starter:'function maxDepth(root) {\n  // Return max depth\n\n}'},
-    {n:5,cat:'DP',diff:'hard',xp:100,title:'Longest Common Subsequence',desc:'Given two strings, return the length of their longest common subsequence.',constraints:'- 1 ≤ text1.length, text2.length ≤ 1000\n- Strings contain only lowercase English letters',examples:[{inp:'"abcde", "ace"',out:'3'},{inp:'"abc", "abc"',out:'3'}],hint:'Classic 2D DP: dp[i][j] = LCS of first i chars of s1 and first j chars of s2.',starter:'function longestCommonSubsequence(text1, text2) {\n  // Return length of LCS\n\n}'}
-  ];
-  const next=proProblems.find(p=>p.n===currentProblem.n+1);
+  const next = PRO_PROBLEMS[currentProblem.n + 1];
   if(next){openCodeProblem(next);}
   else{closeCode();}
 }
@@ -3007,9 +3484,9 @@ function drawComplexityGraph(curve){
     <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${H-pad}" stroke="rgba(148,163,184,.15)" stroke-width="1"/>
     <line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" stroke="rgba(148,163,184,.15)" stroke-width="1"/>
     ${[.25,.5,.75,1].map(v=>`<line x1="${pad}" y1="${H-pad-(H-pad*2)*v}" x2="${W-pad}" y2="${H-pad-(H-pad*2)*v}" stroke="rgba(148,163,184,.07)" stroke-width="1"/>`).join('')}
-    <!-- O(n²) reference line -->
+    <!-- O(n2) reference line -->
     <path d="${pathStr(n2Pts)}" fill="none" stroke="rgba(239,68,68,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="${n2Pts[14][0]+4}" y="${n2Pts[14][1]-5}" fill="rgba(239,68,68,.6)" font-size="9" font-family="JetBrains Mono">O(n²)</text>
+    <text x="${n2Pts[14][0]+4}" y="${n2Pts[14][1]-5}" fill="rgba(239,68,68,.6)" font-size="9" font-family="JetBrains Mono">O(n^2)</text>
     <!-- Your solution curve -->
     <path d="${pathStr(yourPts)}" fill="none" stroke="url(#gcurve)" stroke-width="2.5" stroke-linecap="round"/>
     <!-- Axis labels -->
@@ -3055,7 +3532,7 @@ const dailyChallenges={
     cat:'Algorithms',diff:'Medium',xp:'✦ 25 XP',grad:'linear-gradient(135deg,#06b6d4,#3b82f6)'
   },
   pro:{
-    code:{n:1,cat:'SEARCH',diff:'medium',xp:60,title:'Binary Search',desc:'Implement binary search on a sorted array.\n\nGiven a sorted array of integers and a target value, return the index if the target is found, or -1 if not.',constraints:'- Array is sorted in ascending order\n- O(log n) time complexity required',examples:[{inp:'[-1,0,3,5,9,12], target = 9',out:'4'},{inp:'[-1,0,3,5,9,12], target = 2',out:'-1'}],hint:'Divide the search space in half each iteration using two pointers.',starter:'function binarySearch(nums, target) {\n  // Implement binary search\n  // Return index or -1\n\n}'},
+    get code(){ return PRO_PROBLEMS[1]; },
     cat:'Search',diff:'Medium',xp:'✦ 60 XP',grad:'linear-gradient(135deg,#22c55e,#84cc16)'
   }
 };
@@ -3087,14 +3564,90 @@ function acceptDailyChallenge(){
 // ════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════
-function doLogin(){
-  // Animate and go home
-  const btn=event.currentTarget;
-  btn.textContent='Signing in...';
-  setTimeout(()=>{goPage('home');},800);
+// ════════════════════════════════════════
+// TIER ACCESS SYSTEM
+// ════════════════════════════════════════
+// Tracks which tiers this user has signed into
+// In a real app this would be server-side; here we use sessionStorage
+let unlockedTiers, currentSignedInTier;
+try {
+  unlockedTiers = new Set(JSON.parse(sessionStorage.getItem('tck_unlocked') || '[]'));
+  currentSignedInTier = sessionStorage.getItem('tck_current') || null;
+} catch(e) {
+  unlockedTiers = new Set();
+  currentSignedInTier = null;
 }
 
-let loginMode='junior';
+function saveTierState() {
+  try {
+    sessionStorage.setItem('tck_unlocked', JSON.stringify([...unlockedTiers]));
+    sessionStorage.setItem('tck_current', currentSignedInTier || '');
+  } catch(e) {}
+}
+
+function isTierUnlocked(tier) {
+  return unlockedTiers.has(tier);
+}
+
+function unlockTier(tier) {
+  unlockedTiers.add(tier);
+  currentSignedInTier = tier;
+  saveTierState();
+  updateNavTierBadge();
+}
+
+function updateNavTierBadge() {
+  // Show small unlock indicators on prog cards
+  ['junior','explorer','pro'].forEach(t => {
+    const el = document.getElementById('prog-unlock-' + t);
+    if (el) el.style.display = unlockedTiers.has(t) ? 'flex' : 'none';
+  });
+}
+
+function doLogin(){
+  const btn = event.currentTarget;
+  const originalText = btn.textContent;
+  btn.textContent = 'Signing in...';
+  btn.style.opacity = '.7';
+
+  setTimeout(() => {
+    // Mark this tier as unlocked
+    unlockTier(loginMode);
+    btn.textContent = originalText;
+    btn.style.opacity = '';
+
+    // Close overlay if it was open from enterTier
+    const ov = document.getElementById('tier-overlay');
+    if (ov && ov.style.display !== 'none') {
+      ov.style.animation = 'tierSlideOut .4s ease forwards';
+      setTimeout(() => {
+        ov.style.display = 'none';
+        ov.style.animation = '';
+        document.body.style.overflow = '';
+      }, 400);
+    }
+
+    // Apply theme and go to home (themed landing)
+    setMode(loginMode, null);
+    goPage('home');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    // Show welcome toast
+    showTierToast(loginMode);
+  }, 700);
+}
+
+function showTierToast(tier) {
+  const labels = { junior: '🎮 Junior World Unlocked!', explorer: '🔭 Explorer World Unlocked!', pro: '⚡ Pro World Unlocked!' };
+  const colors = { junior: '#f97316', explorer: '#06b6d4', pro: '#22c55e' };
+  const toast = document.createElement('div');
+  toast.style.cssText = `position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:${colors[tier]};color:#fff;padding:14px 28px;border-radius:50px;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;z-index:9999;box-shadow:0 8px 32px -8px ${colors[tier]};animation:pageIn .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;`;
+  toast.textContent = labels[tier] || 'Welcome!';
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity .4s'; setTimeout(() => toast.remove(), 400); }, 2800);
+}
+
+let loginMode = 'junior';
 function lmSel(el,m){
   loginMode=m;
   el.closest('.login-mode-sel').querySelectorAll('.lms-btn').forEach(b=>b.classList.remove('sel'));
@@ -3142,11 +3695,18 @@ function lmSel(el,m){
 // ════════════════════════════════════════
 function switchProjTab(tier,el){
   document.querySelectorAll('#ptab-j,#ptab-e,#ptab-p').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
+  if(el)el.classList.add('active');
   ['junior','explorer','pro'].forEach(t=>{
     const el2=document.getElementById('projs-'+t);
     if(el2)el2.style.display=t===tier?'grid':'none';
   });
+}
+
+function initProjPage(){
+  // Auto-open the tab matching current mode when projects page is visited
+  const tabMap={junior:'ptab-j',explorer:'ptab-e',pro:'ptab-p'};
+  const tabEl=document.getElementById(tabMap[mode]||'ptab-j');
+  switchProjTab(mode, tabEl);
 }
 
 // ════════════════════════════════════════
@@ -3302,17 +3862,341 @@ function switchProfileTier(tier,el){
 }
 
 // ════════════════════════════════════════
+// FOOTER — CONTACT + INFO MODALS
+// ════════════════════════════════════════
+function submitContact(){
+  const name  = document.getElementById('fc-name').value.trim();
+  const email = document.getElementById('fc-email').value.trim();
+  const concern = document.getElementById('fc-concern').value.trim();
+
+  if(!name){ alert('Please enter your name.'); return; }
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ alert('Please enter a valid email address.'); return; }
+  if(!concern){ alert('Please describe your concern.'); return; }
+
+  // Clear fields
+  document.getElementById('fc-name').value = '';
+  document.getElementById('fc-email').value = '';
+  document.getElementById('fc-concern').value = '';
+
+  // Toast
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--a1);color:#fff;padding:14px 28px;border-radius:50px;font-size:13px;font-weight:700;font-family:"JetBrains Mono",monospace;z-index:9999;box-shadow:0 8px 32px -8px var(--a1);animation:pageIn .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;';
+  toast.textContent = '✓ Message sent! We\'ll reply within 24 hours.';
+  document.body.appendChild(toast);
+  setTimeout(()=>{ toast.style.opacity='0'; toast.style.transition='opacity .4s'; setTimeout(()=>toast.remove(), 400); }, 3500);
+}
+
+const footerContent = {
+  about: {
+    title: 'About TheCodeKid',
+    body: `<p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">TheCodeKid is India's most aesthetically crafted coding education platform for young learners aged 8–18. We believe coding education should be beautiful, focused and deeply engaging — not cluttered or overwhelming.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">Founded in 2024 in Bengaluru, we've built three distinct learning worlds — Junior, Explorer and Pro — each with its own aesthetic, curriculum and challenge style, tailored precisely to the age and skill level of the learner.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.75;">Our platform is used by 450+ students across schools in Delhi, Mumbai, Bengaluru, Pune and Gurgaon.</p>`
+  },
+  mission: {
+    title: 'Our Mission',
+    body: `<p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">To make every young coder feel like they belong in the world of technology — regardless of their school, city or background.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">We reject the idea that learning to code has to be boring, generic or one-size-fits-all. Every pixel, animation and challenge on TheCodeKid is designed with intention.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);"><span style="font-size:18px;">🧠</span><span style="font-size:13px;color:var(--text);font-weight:600;">Build logical thinking from an early age</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);"><span style="font-size:18px;">🎨</span><span style="font-size:13px;color:var(--text);font-weight:600;">Make learning beautiful and distraction-free</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);"><span style="font-size:18px;">🏆</span><span style="font-size:13px;color:var(--text);font-weight:600;">Celebrate every win with XP, badges and rankings</span></div>
+    </div>`
+  },
+  team: {
+    title: 'The Team',
+    body: `<p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:24px;">We're a small, passionate team of educators, designers and engineers who believe the future of India runs on code.</p>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:14px;"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👨‍💻</div><div><div style="font-size:14px;font-weight:700;color:var(--text);">Aryan Mehta</div><div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;">Co-Founder & CEO</div></div></div>
+      <div style="display:flex;align-items:center;gap:14px;"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👩‍🎨</div><div><div style="font-size:14px;font-weight:700;color:var(--text);">Priya Nair</div><div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;">Head of Design</div></div></div>
+      <div style="display:flex;align-items:center;gap:14px;"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👨‍🏫</div><div><div style="font-size:14px;font-weight:700;color:var(--text);">Rohan Sharma</div><div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;">Curriculum Director</div></div></div>
+    </div>`
+  },
+  privacy: {
+    title: 'Privacy Policy',
+    body: `<p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;"><strong style="color:var(--text);">Data We Collect:</strong> Username, email address, school name, learning progress and XP earned. We never collect sensitive personal data.</p>
+    <p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;"><strong style="color:var(--text);">How We Use It:</strong> To personalise your learning experience, track progress and maintain leaderboards. We do not sell data to any third party.</p>
+    <p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;"><strong style="color:var(--text);">Children's Privacy:</strong> TheCodeKid is designed for users under 18. Parental consent is required for users under 13. All data is stored securely and never shared.</p>
+    <p style="color:var(--muted);font-size:13px;line-height:1.75;"><strong style="color:var(--text);">Contact:</strong> privacy@thecodekid.in</p>`
+  },
+  terms: {
+    title: 'Terms of Use',
+    body: `<p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;">By using TheCodeKid, you agree to use the platform respectfully and only for educational purposes.</p>
+    <p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;"><strong style="color:var(--text);">Accounts:</strong> One account per student. Sharing accounts or impersonating others is not permitted.</p>
+    <p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;"><strong style="color:var(--text);">Content:</strong> Projects uploaded to the community must be your own original work and must be appropriate for all ages.</p>
+    <p style="color:var(--muted);font-size:13px;line-height:1.75;"><strong style="color:var(--text);">Changes:</strong> We reserve the right to update these terms. Continued use means acceptance.</p>`
+  },
+  schools: {
+    title: 'Schools Program',
+    body: `<p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">TheCodeKid partners with CBSE and ICSE schools across India to bring structured coding education into the classroom.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);"><span style="font-size:18px;">🏫</span><span style="font-size:13px;color:var(--text);font-weight:600;">Bulk student accounts with school dashboard</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);"><span style="font-size:18px;">📊</span><span style="font-size:13px;color:var(--text);font-weight:600;">Teacher analytics and progress tracking</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);"><span style="font-size:18px;">🎓</span><span style="font-size:13px;color:var(--text);font-weight:600;">CBSE-aligned curriculum for Classes 1–12</span></div>
+    </div>
+    <p style="color:var(--muted);font-size:13px;">Interested? Email us at <strong style="color:var(--a1);">schools@thecodekid.in</strong></p>`
+  }
+};
+
+function openFooterModal(key){
+  const data = footerContent[key];
+  if(!data) return;
+  const modal = document.getElementById('footer-modal');
+  document.getElementById('footer-modal-content').innerHTML = `
+    <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.5px;margin-bottom:20px;">${data.title}</div>
+    ${data.body}
+  `;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFooterModal(){
+  document.getElementById('footer-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ════════════════════════════════════════
+// SIGN OUT
+// ════════════════════════════════════════
+function signOut(){
+  // Clear all tier access
+  unlockedTiers.clear();
+  currentSignedInTier = null;
+  saveTierState();
+  setMode('junior', null);
+  goPage('login');
+}
+
+// ════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════
 updateHeroScene();
+updateHeroMid();
 updateProgCards();
+updateNavTierBadge();
 updateFeatVis();
 updateCommunityGrid();
 updateDailyChallenge();
 goPage('home');
 
-// Show login first
-setTimeout(()=>{goPage('login');},100);
+// Show login first — unless already has an unlocked tier (returning user in same session)
+setTimeout(()=>{
+  if(currentSignedInTier && unlockedTiers.size > 0){
+    // Returning user — restore their last active tier and go to home
+    setMode(currentSignedInTier, null);
+    goPage('home');
+  } else {
+    goPage('login');
+  }
+},100);
 </script>
+<!-- ════════════════ TIER LANDING OVERLAY ════════════════ -->
+<div id="tier-overlay" style="display:none;position:fixed;inset:0;z-index:2000;overflow:hidden;">
+  <!-- Animated background -->
+  <div id="tier-ov-bg" style="position:absolute;inset:0;transition:background 0s;"></div>
+  <!-- Noise grain -->
+  <div style="position:absolute;inset:0;background-image:url('data:image/svg+xml,%3Csvg viewBox=%220 0 512 512%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.04%22/%3E%3C/svg%3E');opacity:.25;pointer-events:none;"></div>
+  <!-- Center content -->
+  <div id="tier-ov-content" style="position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;">
+    <div id="tier-ov-icon" style="font-size:72px;animation:tierIconPop .5s cubic-bezier(.34,1.56,.64,1) both;"></div>
+    <div id="tier-ov-badge" style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:3px;opacity:.7;animation:tierFadeUp .5s .1s ease both;"></div>
+    <div id="tier-ov-title" style="font-family:'Clash Display',sans-serif;font-size:clamp(52px,7vw,96px);font-weight:700;letter-spacing:-3px;line-height:.9;text-align:center;animation:tierFadeUp .5s .15s ease both;"></div>
+    <div id="tier-ov-desc" style="font-size:18px;max-width:480px;text-align:center;line-height:1.6;opacity:.75;animation:tierFadeUp .5s .22s ease both;font-family:'Satoshi',sans-serif;"></div>
+    <div id="tier-ov-features" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:tierFadeUp .5s .3s ease both;"></div>
+    <div style="animation:tierFadeUp .5s .4s ease both;">
+      <div id="tier-ov-btn" style="cursor:pointer;display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:50px;font-size:14px;font-weight:700;font-family:'Satoshi',sans-serif;text-transform:uppercase;letter-spacing:.5px;transition:all .3s cubic-bezier(.34,1.56,.64,1);" onclick="confirmTierEntry('login')">
+        Sign In to Enter →
+      </div>
+    </div>
+    <div style="position:absolute;top:28px;right:28px;animation:tierFadeUp .3s ease both;">
+      <button onclick="closeTierOverlay()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:8px 18px;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;">✕ Back</button>
+    </div>
+  </div>
+  <!-- Decorative floating shapes -->
+  <div id="tier-ov-deco1" style="position:absolute;width:400px;height:400px;border-radius:50%;opacity:.06;pointer-events:none;animation:tierDeco1 8s ease-in-out infinite;"></div>
+  <div id="tier-ov-deco2" style="position:absolute;width:250px;height:250px;border-radius:50%;opacity:.05;pointer-events:none;animation:tierDeco2 6s ease-in-out infinite 2s;"></div>
+  <div id="tier-ov-deco3" style="position:absolute;border-radius:50%;opacity:.04;pointer-events:none;animation:tierDeco3 10s ease-in-out infinite 1s;"></div>
+</div>
+
+<style>
+@keyframes tierIconPop{from{opacity:0;transform:scale(.3) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes tierFadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tierDeco1{0%,100%{transform:translate(-120px,-80px) scale(1)}50%{transform:translate(-80px,-120px) scale(1.1)}}
+@keyframes tierDeco2{0%,100%{transform:translate(80px,120px)}50%{transform:translate(120px,60px)}}
+@keyframes tierDeco3{0%,100%{transform:translate(60vw,20vh) scale(1)}50%{transform:translate(65vw,25vh) scale(1.2)}}
+@keyframes tierSlideOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.05)}}
+</style>
+
+<script>
+// ════════════════════════════════════════
+// TIER LANDING SYSTEM
+// ════════════════════════════════════════
+let pendingTier = null;
+
+const tierData = {
+  junior: {
+    icon: '🎮',
+    badge: '// Ages 8–12 · Logic & Patterns',
+    title: 'Junior\nCoders',
+    desc: 'Discover the joy of code through engaging logic puzzles, pattern games and fun challenges — built for young minds.',
+    features: ['🧩 Pattern Puzzles','⭐ XP & Streaks','🏆 Leaderboard','🎯 Daily Challenges'],
+    bg: 'radial-gradient(ellipse at 30% 30%, #ff9a3c 0%, #f97316 25%, #ea580c 55%, #7c2d12 100%)',
+    btnBg: '#fff', btnColor: '#f97316',
+    deco1: '#fbbf24', deco2: '#fb923c', deco3Color: '#fff',
+    textColor: '#fff', badgeColor: 'rgba(255,255,255,.8)',
+  },
+  explorer: {
+    icon: '🔭',
+    badge: '// Intermediate · Algorithms & Logic',
+    title: 'Explorer\nMode',
+    desc: 'Bridge the gap between logic puzzles and real code. Master algorithms, data structures and structural thinking.',
+    features: ['🌌 Deep Algorithms','📊 Data Structures','🚀 Code Challenges','🔢 Pattern Analysis'],
+    bg: 'radial-gradient(ellipse at 60% 25%, #0e4272 0%, #0b2a5a 25%, #061429 60%, #020917 100%)',
+    btnBg: '#06b6d4', btnColor: '#fff',
+    deco1: '#06b6d4', deco2: '#3b82f6', deco3Color: '#67e8f9',
+    textColor: '#e0f2fe', badgeColor: '#67e8f9',
+  },
+  pro: {
+    icon: '⚡',
+    badge: '// Advanced · Competitive Coding',
+    title: 'Pro\nCoders',
+    desc: 'Raw algorithms, live code editor and competitive challenges. Write real code, optimise complexity, lead the field.',
+    features: ['💻 Live Code Editor','⚡ LeetCode Problems','📈 Complexity Analysis','🏆 National Ranking'],
+    bg: 'radial-gradient(ellipse at 40% 30%, #052e12 0%, #041509 30%, #030f06 60%, #010804 100%)',
+    btnBg: '#22c55e', btnColor: '#fff',
+    deco1: '#22c55e', deco2: '#86efac', deco3Color: '#4ade80',
+    textColor: '#dcfce7', badgeColor: '#4ade80',
+  }
+};
+
+function enterTier(tier) {
+  pendingTier = tier;
+  const d = tierData[tier];
+  if (!d) return;
+
+  // ── ACCESS CHECK ──────────────────────────────────────────────
+  // If this tier is already unlocked → skip overlay, go directly to themed landing
+  if (isTierUnlocked(tier)) {
+    setMode(tier, null);
+    goPage('home');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Subtle toast to confirm switch
+    const labels = { junior: '🎮 Switched to Junior', explorer: '🔭 Switched to Explorer', pro: '⚡ Switched to Pro' };
+    const colors = { junior: '#f97316', explorer: '#06b6d4', pro: '#22c55e' };
+    const toast = document.createElement('div');
+    toast.style.cssText = `position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:${colors[tier]};color:#fff;padding:12px 24px;border-radius:50px;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;z-index:9999;box-shadow:0 8px 32px -8px ${colors[tier]};animation:pageIn .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;`;
+    toast.textContent = labels[tier];
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity .4s'; setTimeout(()=>toast.remove(),400); }, 2000);
+    return;
+  }
+
+  // ── NOT UNLOCKED → Show tier preview overlay with Sign In option ──
+  _showTierOverlay(tier, d);
+}
+
+function _showTierOverlay(tier, d) {
+  const ov = document.getElementById('tier-overlay');
+  const bg = document.getElementById('tier-ov-bg');
+  const icon = document.getElementById('tier-ov-icon');
+  const badge = document.getElementById('tier-ov-badge');
+  const title = document.getElementById('tier-ov-title');
+  const desc = document.getElementById('tier-ov-desc');
+  const feats = document.getElementById('tier-ov-features');
+  const btn = document.getElementById('tier-ov-btn');
+  const deco1 = document.getElementById('tier-ov-deco1');
+  const deco2 = document.getElementById('tier-ov-deco2');
+  const deco3 = document.getElementById('tier-ov-deco3');
+
+  bg.style.background = d.bg;
+  icon.textContent = d.icon;
+  badge.textContent = d.badge;
+  badge.style.color = d.badgeColor;
+  title.innerHTML = d.title.replace('\n','<br>');
+  title.style.color = d.textColor;
+  desc.textContent = d.desc;
+  desc.style.color = d.textColor;
+
+  feats.innerHTML = d.features.map(f =>
+    `<div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:50px;padding:8px 18px;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${d.textColor};letter-spacing:.5px;">${f}</div>`
+  ).join('');
+
+  // Button shows Sign In / Sign Up (since tier is locked)
+  btn.innerHTML = `<span style="font-size:16px">${d.icon}</span> Sign in to ${tier.charAt(0).toUpperCase()+tier.slice(1)} →`;
+  btn.style.background = d.btnBg;
+  btn.style.color = d.btnColor;
+  btn.onmouseover = () => { btn.style.transform='translateY(-3px) scale(1.04)'; btn.style.boxShadow=`0 16px 40px -8px ${d.btnBg}`; };
+  btn.onmouseout  = () => { btn.style.transform=''; btn.style.boxShadow=''; };
+
+  // Show "already have account" sub-link
+  let subLink = document.getElementById('tier-ov-sublink');
+  if (!subLink) {
+    subLink = document.createElement('div');
+    subLink.id = 'tier-ov-sublink';
+    subLink.style.cssText = 'animation:tierFadeUp .5s .45s ease both;text-align:center;';
+    btn.parentElement.after(subLink);
+  }
+  subLink.innerHTML = `<span style="font-size:12px;color:rgba(255,255,255,.5);font-family:'JetBrains Mono',monospace;">New here? <span onclick="confirmTierEntry('signup')" style="color:rgba(255,255,255,.85);cursor:pointer;font-weight:700;text-decoration:underline;">Create free account →</span></span>`;
+  subLink.style.display = 'block';
+
+  // Decorative orbs
+  deco1.style.background = d.deco1;
+  deco1.style.top = '-100px'; deco1.style.left = '-100px';
+  deco2.style.background = d.deco2;
+  deco2.style.bottom = '-60px'; deco2.style.right = '-60px';
+  deco3.style.background = d.deco3Color;
+  deco3.style.width = '180px'; deco3.style.height = '180px';
+
+  // Reset animations
+  [icon, badge, title, desc, feats, btn.parentElement].forEach(el => {
+    el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
+  });
+
+  ov.style.display = 'block';
+  ov.style.animation = 'none';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTierOverlay() {
+  const ov = document.getElementById('tier-overlay');
+  ov.style.animation = 'tierSlideOut .3s ease forwards';
+  setTimeout(() => {
+    ov.style.display = 'none';
+    ov.style.animation = '';
+    document.body.style.overflow = '';
+    pendingTier = null;
+  }, 300);
+}
+
+function confirmTierEntry(flow) {
+  // flow = 'login' (default) or 'signup'
+  if (!pendingTier) return;
+  const tier = pendingTier;
+  const ov = document.getElementById('tier-overlay');
+
+  ov.style.animation = 'tierSlideOut .35s ease forwards';
+  setTimeout(() => {
+    ov.style.display = 'none';
+    ov.style.animation = '';
+    document.body.style.overflow = '';
+
+    // Pre-select the correct tier in the login/signup form
+    loginMode = tier;
+    setMode(tier, null);
+
+    // Navigate to login or signup
+    const dest = (flow === 'signup') ? 'signup' : 'login';
+    goPage(dest);
+
+    // Auto-select the tier button in the form
+    setTimeout(() => {
+      const sel = document.querySelector(`.login-mode-sel .lms-btn[onclick*="${tier}"]`);
+      if (sel) lmSel(sel, tier);
+    }, 100);
+
+  }, 350);
+}
+</script>
+
 </body>
 </html>
