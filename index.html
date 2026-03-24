@@ -352,40 +352,19 @@ nav{
 /* HERO */
 .hero{
   height:calc(100vh - 62px);
-  min-height:600px;max-height:880px;
+  min-height:600px;max-height:900px;
   display:grid;
-  grid-template-columns:42fr 22fr 36fr;
+  grid-template-columns:48fr 52fr;
   padding-top:62px;position:relative;z-index:2;
   overflow:hidden;
 }
 .hero-l{
   display:flex;flex-direction:column;justify-content:center;
-  padding:60px 20px 60px 72px;overflow:hidden;
+  padding:64px 40px 64px 80px;
   z-index:2;
 }
-/* HERO MIDDLE — floating feature cards */
-.hero-m{
-  display:flex;flex-direction:column;justify-content:center;align-items:center;
-  gap:14px;padding:80px 8px;position:relative;z-index:2;overflow:hidden;
-}
-.hm-card{
-  width:100%;border-radius:18px;padding:16px 18px;
-  backdrop-filter:blur(20px);
-  border:1px solid var(--bdr);
-  background:var(--card);
-  transition:all .5s;
-  cursor:default;
-}
-.hm-card:hover{transform:translateY(-3px) scale(1.02);border-color:var(--a1);box-shadow:0 12px 32px -8px var(--a1);}
-.hm-card-lbl{font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;transition:color .4s;}
-.hm-card-val{font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);line-height:1;transition:color .4s;}
-.hm-card-sub{font-size:11px;color:var(--muted);margin-top:3px;transition:color .4s;}
-.hm-pbar{height:3px;background:var(--bdr);border-radius:3px;margin-top:10px;overflow:hidden;}
-.hm-pfill{height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:3px;transition:background .5s;}
-.hm-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;}
-.hm-mini{border-radius:12px;padding:8px 10px;background:rgba(var(--a1-rgb,249,115,22),.07);border:1px solid var(--bdr);text-align:center;transition:all .4s;}
-.hm-mini-icon{font-size:18px;margin-bottom:3px;}
-.hm-mini-txt{font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);transition:color .4s;}
+/* HERO MIDDLE — removed, merged into right panel */
+.hero-m{display:none;}
 @keyframes hmFloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes hmFloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes hmFloat3{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
@@ -401,7 +380,7 @@ nav{
 .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--a1);animation:logopulse 2s infinite;}
 .hero-h{
   font-family:'Clash Display',sans-serif;
-  font-size:clamp(44px,5.5vw,78px);font-weight:700;
+  font-size:clamp(48px,5.8vw,82px);font-weight:700;
   color:var(--text);line-height:.95;letter-spacing:-3px;
   margin-bottom:22px;animation:fadeSlideDown .7s .1s ease both;
   transition:color .4s;
@@ -428,10 +407,8 @@ nav{
 /* HERO RIGHT */
 .hero-r{
   position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  padding:16px 16px 16px 4px;
+  display:flex;align-items:stretch;
 }
-.hero-r svg{width:100%;height:100%;max-height:100%;display:block;}
 /* theme-panel cards inside hero-r */
 .hp-top{display:flex;gap:14px;width:100%;align-items:stretch;}
 .hp-code{
@@ -1174,26 +1151,6 @@ nav{
         <button class="btn btn-fill btn-sm" style="margin-top:16px;width:100%;justify-content:center;" onclick="saveProfile()">Save Changes →</button>
       </div>
 
-      <!-- Learning tier -->
-      <div class="db-card rv">
-        <div class="db-lbl" style="margin-bottom:14px">🎯 Learning Tier</div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div class="profile-tier-opt sel-tier" id="ptier-j" onclick="switchProfileTier('junior',this)" style="border-color:var(--a1);background:rgba(var(--a1-rgb,249,115,22),.07)">
-            <span style="font-size:18px">🎮</span>
-            <div><div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">Junior · Ages 8–12</div><div style="font-size:11px;color:var(--muted);transition:color .4s">Logic puzzles & pattern games</div></div>
-            <span style="margin-left:auto;color:var(--a1);font-weight:700;font-size:12px;transition:color .4s">Active ✓</span>
-          </div>
-          <div class="profile-tier-opt" id="ptier-e" onclick="switchProfileTier('explorer',this)">
-            <span style="font-size:18px">🔭</span>
-            <div><div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">Explorer · Intermediate</div><div style="font-size:11px;color:var(--muted);transition:color .4s">Algorithms & structural thinking</div></div>
-          </div>
-          <div class="profile-tier-opt" id="ptier-p" onclick="switchProfileTier('pro',this)">
-            <span style="font-size:18px">⚡</span>
-            <div><div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">Pro · Advanced</div><div style="font-size:11px;color:var(--muted);transition:color .4s">Competitive coding & live editor</div></div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
     <!-- Right col -->
@@ -1396,9 +1353,6 @@ nav{
       </div>
     </div>
 
-    <!-- HERO MIDDLE — rendered by updateHeroMid() JS -->
-    <div class="hero-m" id="hero-m-panel"></div>
-
     <div class="hero-r" id="hero-r-panel">
       <!-- Fully rendered by updateHeroPanel() JS — theme-specific rich content -->
     </div>
@@ -1417,46 +1371,7 @@ nav{
     <div class="stat-col"><div class="stat-n">450+</div><div class="stat-l">Active Students</div></div>
     <div class="stat-col"><div class="stat-n">16K+</div><div class="stat-l">Puzzles Solved</div></div>
     <div class="stat-col"><div class="stat-n">98%</div><div class="stat-l">Satisfaction</div></div>
-    <div class="stat-col"><div class="stat-n">3</div><div class="stat-l">Learning Tiers</div></div>
-  </div>
-
-  <!-- PROGRAMS -->
-  <div class="wrap section rv">
-    <div class="stag">Programs</div>
-    <h2 class="shead">Pick Your <em>Tier</em></h2>
-    <p class="sdesc">Three perfectly crafted learning paths — each with a unique world, aesthetic, and curriculum.</p>
-    <div class="prog-grid">
-      <div class="prog-card rv d1" onclick="enterTier('junior')" style="position:relative;">
-        <div id="prog-unlock-junior" style="display:none;position:absolute;top:14px;left:14px;z-index:5;background:#22c55e;color:#fff;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:20px;letter-spacing:1px;">✓ UNLOCKED</div>
-        <div class="prog-img" id="prog-j"><!-- SVG injected --></div>
-        <div class="prog-arrow">→</div>
-        <div class="prog-body">
-          <div class="prog-tag">Ages 8–12 · Warm & Playful</div>
-          <div class="prog-name">Junior Coders</div>
-          <p class="prog-desc">Deeply engaging logic puzzles and pattern recognition without the noise. Algorithmic thinking made effortless.</p>
-        </div>
-      </div>
-      <div class="prog-card rv d2" onclick="enterTier('explorer')" style="position:relative;">
-        <div id="prog-unlock-explorer" style="display:none;position:absolute;top:14px;left:14px;z-index:5;background:#22c55e;color:#fff;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:20px;letter-spacing:1px;">✓ UNLOCKED</div>
-        <div class="prog-img" id="prog-e"><!-- SVG injected --></div>
-        <div class="prog-arrow">→</div>
-        <div class="prog-body">
-          <div class="prog-tag">Intermediate · Dark Ocean</div>
-          <div class="prog-name">Explorer</div>
-          <p class="prog-desc">Structural thinking and real problem solving. Bridge the gap between logic and real code elegantly.</p>
-        </div>
-      </div>
-      <div class="prog-card rv d3" onclick="enterTier('pro')" style="position:relative;">
-        <div id="prog-unlock-pro" style="display:none;position:absolute;top:14px;left:14px;z-index:5;background:#22c55e;color:#fff;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:20px;letter-spacing:1px;">✓ UNLOCKED</div>
-        <div class="prog-img" id="prog-p"><!-- SVG injected --></div>
-        <div class="prog-arrow">→</div>
-        <div class="prog-body">
-          <div class="prog-tag">Advanced · Terminal Green</div>
-          <div class="prog-name">Pro Coders</div>
-          <p class="prog-desc">Advanced algorithms, competitive coding, and raw engineering challenges for those ready to lead.</p>
-        </div>
-      </div>
-    </div>
+    <div class="stat-col"><div class="stat-n">12</div><div class="stat-l">Courses</div></div>
   </div>
 
   <!-- FEATURES -->
@@ -1480,11 +1395,11 @@ nav{
   <!-- CTA -->
   <div class="wrap section rv">
     <div class="cta-box">
-      <h2 class="cta-h">Experience the <em>Difference.</em></h2>
-      <p class="cta-p">Join 450+ students from schools across India in the highest-quality coding environment for young minds.</p>
+      <h2 class="cta-h" id="cta-heading">Experience the <em>Difference.</em></h2>
+      <p class="cta-p" id="cta-desc">Join 450+ students from schools across India in the highest-quality coding environment for young minds.</p>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-fill" onclick="goPage('signup')">Create Free Account →</button>
-        <button class="btn btn-outline" onclick="goPage('courses')">Explore Courses</button>
+        <button class="btn btn-fill" id="cta-primary-btn" onclick="goPage('courses')">▶ Start Today's Challenge</button>
+        <button class="btn btn-outline" onclick="goPage('leaderboard')">🏆 View Leaderboard</button>
       </div>
     </div>
   </div>
@@ -1544,7 +1459,7 @@ nav{
           <button class="footer-submit" onclick="submitContact()">Send Message →</button>
         </div>
         <div style="margin-top:14px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;transition:color .4s;">
-          📧 hello@thecodekid.in<br>
+          📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2d45484141426d5945484e424948464449034443">[email&#160;protected]</a><br>
           📍 Bengaluru, India
         </div>
       </div>
@@ -1556,7 +1471,7 @@ nav{
       <span class="footer-copy">© 2026 TheCodeKid Technologies Pvt. Ltd. · Made with precision in India 🇮🇳</span>
       <div class="footer-badges">
         <span class="footer-badge">450+ Students</span>
-        <span class="footer-badge">3 Learning Tiers</span>
+        <span class="footer-badge">12 Courses</span>
         <span class="footer-badge">#1 in India</span>
         <span class="footer-badge">CBSE Aligned</span>
       </div>
@@ -2189,7 +2104,7 @@ nav{
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ════════════════════════════════════════
 // CURSOR
 // ════════════════════════════════════════
@@ -2338,6 +2253,19 @@ function setMode(m,btn){
   if(m==='junior')switchCourseTab('junior',document.getElementById('ctab-j'));
   else if(m==='explorer')switchCourseTab('explorer',document.getElementById('ctab-e'));
   else switchCourseTab('pro',document.getElementById('ctab-p'));
+  // Update CTA section per tier
+  const ctaCfg={
+    junior:{heading:'Keep the <em>Streak Alive.</em>',desc:"You're on a roll! Jump into today's logic puzzle and earn XP.",btnLabel:'🧩 Play Today\'s Puzzle',btnPage:'challenges'},
+    explorer:{heading:'Push Your <em>Limits.</em>',desc:'New algorithm challenges are waiting. Keep climbing the leaderboard.',btnLabel:'🌌 Tackle Next Challenge',btnPage:'challenges'},
+    pro:{heading:'Write. Run. <em>Conquer.</em>',desc:'Your next hard problem is live. Open the editor and submit your best solution.',btnLabel:'💻 Open Code Editor',btnPage:'courses'},
+  };
+  const cc=ctaCfg[m];
+  const ctaH=document.getElementById('cta-heading');
+  const ctaD=document.getElementById('cta-desc');
+  const ctaBtn=document.getElementById('cta-primary-btn');
+  if(ctaH)ctaH.innerHTML=cc.heading;
+  if(ctaD)ctaD.textContent=cc.desc;
+  if(ctaBtn){ctaBtn.textContent=cc.btnLabel;ctaBtn.onclick=()=>goPage(cc.btnPage);}
 }
 
 // ════════════════════════════════════════
@@ -2635,419 +2563,216 @@ function updateHeroPanel(){
   const panel=document.getElementById('hero-r-panel');
   if(!panel)return;
 
-  const svgs={
-    junior:`
-      <svg viewBox="0 0 560 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;max-height:600px;display:block;">
-        <defs>
-          <radialGradient id="hj-bg" cx="65%" cy="30%" r="70%">
-            <stop offset="0%" stop-color="#ffe0c4"/>
-            <stop offset="60%" stop-color="#fff4ec"/>
-            <stop offset="100%" stop-color="#fff8f4"/>
-          </radialGradient>
-          <filter id="hj-shadow"><feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="rgba(249,115,22,.18)"/></filter>
-          <filter id="hj-shadow2"><feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="rgba(0,0,0,.12)"/></filter>
-        </defs>
-        <rect width="580" height="640" fill="url(#hj-bg)"/>
-        <!-- Decorative blobs -->
-        <circle cx="490" cy="80" r="90" fill="#fbbf24" opacity=".15"/>
-        <circle cx="60" cy="540" r="60" fill="#f97316" opacity=".1"/>
-        <circle cx="520" cy="480" r="50" fill="#fb923c" opacity=".08"/>
-        <!-- Grid dots -->
-        <g fill="#f97316" opacity=".12">
-          ${Array.from({length:5},(_,r)=>Array.from({length:6},(_,c)=>`<circle cx="${380+c*26}" cy="${140+r*30}" r="2.2"/>`).join('')).join('')}
-        </g>
-
-        <!-- Main code editor card -->
-        <g filter="url(#hj-shadow)">
-          <rect x="32" y="60" width="310" height="310" rx="20" fill="#1a2035"/>
-          <rect x="32" y="60" width="310" height="38" rx="20" fill="#141929"/>
-          <rect x="32" y="78" width="310" height="20" fill="#141929"/>
-          <!-- traffic lights -->
-          <circle cx="58" cy="79" r="6" fill="#ef4444" opacity=".85"/>
-          <circle cx="78" cy="79" r="6" fill="#f59e0b" opacity=".85"/>
-          <circle cx="98" cy="79" r="6" fill="#22c55e" opacity=".85"/>
-          <text x="320" y="84" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(148,163,184,.5)" font-weight="600">puzzle.js</text>
-          <!-- line numbers + code -->
-          <text x="52" y="122" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">1</text>
-          <text x="70" y="122" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#6b7280" font-style="italic">// Logic Pattern Solver 🎮</text>
-          <text x="52" y="143" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">2</text>
-          <text x="70" y="143" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="700">function </text>
-          <text x="160" y="143" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#60a5fa">findNext</text>
-          <text x="238" y="143" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">(seq) {</text>
-          <text x="52" y="164" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">3</text>
-          <text x="70" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">  </text>
-          <text x="84" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="700">const </text>
-          <text x="134" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">diffs = seq.</text>
-          <text x="234" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#60a5fa">map</text>
-          <text x="262" y="164" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">(…);</text>
-          <text x="52" y="185" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">4</text>
-          <text x="70" y="185" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="700">  const </text>
-          <text x="130" y="185" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">step = diffs[diffs.length-</text>
-          <text x="52" y="206" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">5</text>
-          <text x="70" y="206" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#a78bfa">1</text>
-          <text x="82" y="206" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">];</text>
-          <text x="52" y="227" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">6</text>
-          <text x="70" y="227" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="700">  return </text>
-          <text x="136" y="227" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">seq[seq.length-</text>
-          <text x="52" y="248" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">7</text>
-          <text x="70" y="248" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#a78bfa">1</text>
-          <text x="82" y="248" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">] + step;</text>
-          <text x="52" y="269" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">8</text>
-          <text x="70" y="269" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#cbd5e1">}</text>
-          <text x="52" y="290" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.4)">9</text>
-          <text x="70" y="290" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#6b7280" font-style="italic">// ▲ ▲ ● ▲ ▲ </text>
-          <text x="216" y="290" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#f97316" font-weight="900">? → ●</text>
-          <text x="258" y="290" font-family="JetBrains Mono,monospace" font-size="12.5" fill="#22c55e"> ✓</text>
-          <!-- blinking cursor -->
-          <rect x="70" y="304" width="7" height="13" rx="1" fill="#f97316" opacity=".9">
-            <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
-          </rect>
-        </g>
-
-        <!-- XP Card -->
-        <g filter="url(#hj-shadow2)">
-          <rect x="355" y="52" width="190" height="100" rx="16" fill="rgba(255,255,255,0.92)"/>
-          <text x="372" y="80" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700" text-transform="uppercase" letter-spacing="1">⚡ TODAY'S XP</text>
-          <text x="372" y="108" font-family="Clash Display,sans-serif" font-size="30" fill="#1a0f00" font-weight="700">+45 XP</text>
-          <text x="372" y="126" font-family="JetBrains Mono,monospace" font-size="10" fill="#7c5c3a">55 more to level up</text>
-          <rect x="372" y="135" width="155" height="4" rx="2" fill="rgba(249,115,22,.12)"/>
-          <rect x="372" y="135" width="127" height="4" rx="2" fill="#f97316"/>
-        </g>
-
-        <!-- Streak Card -->
-        <g filter="url(#hj-shadow2)">
-          <rect x="355" y="168" width="190" height="90" rx="16" fill="rgba(255,255,255,0.92)"/>
-          <text x="372" y="194" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">🔥 STREAK</text>
-          <text x="372" y="224" font-family="Clash Display,sans-serif" font-size="26" fill="#1a0f00" font-weight="700">3 Days</text>
-          <text x="372" y="244" font-family="JetBrains Mono,monospace" font-size="10" fill="#7c5c3a">Keep going!</text>
-        </g>
-
-        <!-- Badges Card -->
-        <g filter="url(#hj-shadow2)">
-          <rect x="355" y="274" width="190" height="100" rx="16" fill="rgba(255,255,255,0.92)"/>
-          <text x="372" y="298" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">🏅 BADGES</text>
-          <rect x="372" y="307" width="38" height="38" rx="10" fill="rgba(249,115,22,.1)"/><text x="391" y="332" text-anchor="middle" font-size="18">🐍</text>
-          <rect x="418" y="307" width="38" height="38" rx="10" fill="rgba(249,115,22,.1)"/><text x="437" y="332" text-anchor="middle" font-size="18">🔧</text>
-          <rect x="464" y="307" width="38" height="38" rx="10" fill="rgba(249,115,22,.1)"/><text x="483" y="332" text-anchor="middle" font-size="18">💯</text>
-          <rect x="372" y="351" width="38" height="38" rx="10" fill="rgba(249,115,22,.06)" stroke="rgba(249,115,22,.2)" stroke-width="1"/><text x="391" y="376" text-anchor="middle" font-size="18" opacity=".35">🧩</text>
-          <rect x="418" y="351" width="38" height="38" rx="10" fill="rgba(249,115,22,.06)" stroke="rgba(249,115,22,.2)" stroke-width="1"/><text x="437" y="376" text-anchor="middle" font-size="18" opacity=".35">📊</text>
-          <rect x="464" y="351" width="38" height="38" rx="10" fill="rgba(249,115,22,.06)" stroke="rgba(249,115,22,.2)" stroke-width="1"/><text x="483" y="376" text-anchor="middle" font-size="18" opacity=".35">⚡</text>
-        </g>
-
-        <!-- Leaderboard Card -->
-        <g filter="url(#hj-shadow2)">
-          <rect x="32" y="388" width="225" height="140" rx="16" fill="rgba(255,255,255,0.92)"/>
-          <text x="50" y="412" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">🏆 LEADERBOARD</text>
-          <!-- row 1 -->
-          <circle cx="62" cy="438" r="13" fill="linear-gradient(135deg,#f97316,#fbbf24)"/><rect x="49" y="425" width="26" height="26" rx="13" fill="#fbbf24"/><text x="62" y="434" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fff" font-weight="700">KN</text>
-          <text x="80" y="436" font-family="Satoshi,sans-serif" font-size="12" fill="#1a0f00" font-weight="700">Kavya Nair</text>
-          <text x="232" y="436" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#f97316" font-weight="700">+3,159</text>
-          <!-- row 2 -->
-          <rect x="49" y="450" width="26" height="26" rx="13" fill="rgba(249,115,22,.15)"/><text x="62" y="466" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">SS</text>
-          <text x="80" y="468" font-family="Satoshi,sans-serif" font-size="12" fill="#1a0f00" font-weight="700">Sneha Singh</text>
-          <text x="232" y="468" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#f97316" font-weight="700">+2,643</text>
-          <!-- row YOU -->
-          <rect x="36" y="483" width="213" height="34" rx="10" fill="rgba(249,115,22,.1)"/>
-          <rect x="49" y="487" width="26" height="26" rx="13" fill="#f97316"/><text x="62" y="503" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fff" font-weight="700">★</text>
-          <text x="80" y="501" font-family="Satoshi,sans-serif" font-size="12" fill="#1a0f00" font-weight="700">You</text>
-          <rect x="105" y="492" width="24" height="14" rx="4" fill="#f97316"/><text x="117" y="503" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#fff" font-weight="700">YOU</text>
-          <text x="232" y="501" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#f97316" font-weight="700">+445</text>
-        </g>
-
-        <!-- XP Level Ring -->
-        <g filter="url(#hj-shadow2)">
-          <rect x="270" y="388" width="275" height="140" rx="16" fill="rgba(255,255,255,0.92)"/>
-          <text x="288" y="412" font-family="JetBrains Mono,monospace" font-size="9" fill="#f97316" font-weight="700">LEVEL PROGRESS</text>
-          <!-- ring -->
-          <circle cx="360" cy="478" r="44" fill="none" stroke="rgba(249,115,22,.12)" stroke-width="8"/>
-          <circle cx="360" cy="478" r="44" fill="none" stroke="#f97316" stroke-width="8" stroke-linecap="round"
-            stroke-dasharray="276" stroke-dashoffset="102"
-            transform="rotate(-90 360 478)" style="filter:drop-shadow(0 0 4px #f97316)"/>
-          <text x="360" y="473" text-anchor="middle" font-family="Clash Display,sans-serif" font-size="20" fill="#1a0f00" font-weight="700">63%</text>
-          <text x="360" y="490" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7c5c3a">Lv 5→6</text>
-          <!-- right stats -->
-          <text x="420" y="448" font-family="Clash Display,sans-serif" font-size="22" fill="#f97316" font-weight="700">445 XP</text>
-          <text x="420" y="466" font-family="JetBrains Mono,monospace" font-size="9" fill="#7c5c3a">Logic Master</text>
-          <rect x="420" y="480" width="105" height="34" rx="10" fill="rgba(249,115,22,.1)" stroke="rgba(249,115,22,.25)" stroke-width="1"/>
-          <text x="472" y="502" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#f97316" font-weight="700">#10 Rank</text>
-          <text x="472" y="516" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7c5c3a">↑ 2 this week</text>
-        </g>
-      </svg>`,
-
-    explorer:`
-      <svg viewBox="0 0 560 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;max-height:600px;display:block;">
-        <defs>
-          <radialGradient id="he-bg" cx="60%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#0d2044"/>
-            <stop offset="50%" stop-color="#060e22"/>
-            <stop offset="100%" stop-color="#020917"/>
-          </radialGradient>
-          <radialGradient id="he-nebula" cx="50%" cy="40%" r="55%">
-            <stop offset="0%" stop-color="rgba(6,182,212,.1)"/>
-            <stop offset="100%" stop-color="transparent"/>
-          </radialGradient>
-          <filter id="he-glow"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(6,182,212,.3)"/></filter>
-          <filter id="he-shadow"><feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="rgba(0,0,0,.5)"/></filter>
-        </defs>
-        <rect width="580" height="640" fill="url(#he-bg)"/>
-        <rect width="580" height="640" fill="url(#he-nebula)"/>
-        <!-- Stars -->
-        ${Array.from({length:60},()=>{const x=(Math.random()*580).toFixed(0),y=(Math.random()*640).toFixed(0),r=(Math.random()*1.6+.3).toFixed(1),a=(Math.random()*.8+.1).toFixed(2);return `<circle cx="${x}" cy="${y}" r="${r}" fill="white" opacity="${a}"/>`;}).join('')}
-
-        <!-- Main terminal card -->
-        <g filter="url(#he-shadow)">
-          <rect x="28" y="55" width="315" height="320" rx="18" fill="#030d1e" stroke="rgba(6,182,212,.2)" stroke-width="1"/>
-          <rect x="28" y="55" width="315" height="36" rx="18" fill="#060e22"/>
-          <rect x="28" y="73" width="315" height="18" fill="#060e22"/>
-          <circle cx="53" cy="73" r="6" fill="#ef4444" opacity=".8"/>
-          <circle cx="72" cy="73" r="6" fill="#f59e0b" opacity=".8"/>
-          <circle cx="91" cy="73" r="6" fill="#22c55e" opacity=".8"/>
-          <text x="322" y="78" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(148,163,184,.4)" font-weight="600">algorithms.js</text>
-          <!-- code -->
-          <text x="46" y="116" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">1</text>
-          <text x="64" y="116" font-family="JetBrains Mono,monospace" font-size="12" fill="#4b5563" font-style="italic">// Fibonacci — Explorer 🔭</text>
-          <text x="46" y="137" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">2</text>
-          <text x="64" y="137" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="700">function </text>
-          <text x="149" y="137" font-family="JetBrains Mono,monospace" font-size="12" fill="#93c5fd">fibonacci</text>
-          <text x="226" y="137" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">(n) {</text>
-          <text x="46" y="158" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">3</text>
-          <text x="64" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="700">  const </text>
-          <text x="120" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">dp = [</text>
-          <text x="172" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">0</text>
-          <text x="182" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">, </text>
-          <text x="196" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
-          <text x="206" y="158" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">];</text>
-          <text x="46" y="179" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">4</text>
-          <text x="64" y="179" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="700">  for</text>
-          <text x="96" y="179" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">(let i=</text>
-          <text x="152" y="179" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">2</text>
-          <text x="162" y="179" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">; i&lt;=n; i++)</text>
-          <text x="46" y="200" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">5</text>
-          <text x="64" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">    dp[i] = dp[i-</text>
-          <text x="198" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
-          <text x="208" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">]+dp[i-</text>
-          <text x="254" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">2</text>
-          <text x="264" y="200" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">];</text>
-          <text x="46" y="221" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">6</text>
-          <text x="64" y="221" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="700">  return </text>
-          <text x="128" y="221" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">dp[n];</text>
-          <text x="46" y="242" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">7</text>
-          <text x="64" y="242" font-family="JetBrains Mono,monospace" font-size="12" fill="#cbd5e1">}</text>
-          <text x="46" y="263" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(100,116,139,.35)">8</text>
-          <text x="64" y="263" font-family="JetBrains Mono,monospace" font-size="12" fill="#4b5563" font-style="italic">// 1 1 2 3 5 8 </text>
-          <text x="196" y="263" font-family="JetBrains Mono,monospace" font-size="12" fill="#67e8f9" font-weight="900">13</text>
-          <text x="218" y="263" font-family="JetBrains Mono,monospace" font-size="12" fill="#22c55e"> ✓ O(n)</text>
-          <rect x="64" y="275" width="7" height="12" rx="1" fill="#06b6d4" opacity=".9">
-            <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
-          </rect>
-        </g>
-
-        <!-- XP Card -->
-        <g filter="url(#he-shadow)">
-          <rect x="356" y="46" width="196" height="105" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
-          <text x="374" y="74" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">⚡ TODAY'S XP</text>
-          <text x="374" y="104" font-family="Clash Display,sans-serif" font-size="28" fill="#e0f2fe" font-weight="700">+80 XP</text>
-          <text x="374" y="122" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e7a9e">20 more to level up</text>
-          <rect x="374" y="130" width="158" height="4" rx="2" fill="rgba(6,182,212,.12)"/>
-          <rect x="374" y="130" width="146" height="4" rx="2" fill="#06b6d4"/>
-        </g>
-
-        <!-- Streak Card -->
-        <g filter="url(#he-shadow)">
-          <rect x="356" y="166" width="196" height="90" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
-          <text x="374" y="192" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">🔥 STREAK</text>
-          <text x="374" y="222" font-family="Clash Display,sans-serif" font-size="26" fill="#e0f2fe" font-weight="700">7 Days</text>
-          <text x="374" y="242" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e7a9e">Legend incoming!</text>
-        </g>
-
-        <!-- Badges Card -->
-        <g filter="url(#he-shadow)">
-          <rect x="356" y="272" width="196" height="105" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
-          <text x="374" y="296" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">🏅 BADGES</text>
-          <rect x="374" y="305" width="38" height="38" rx="10" fill="rgba(6,182,212,.12)" stroke="rgba(6,182,212,.2)" stroke-width="1"/><text x="393" y="330" text-anchor="middle" font-size="18">🔭</text>
-          <rect x="420" y="305" width="38" height="38" rx="10" fill="rgba(6,182,212,.12)" stroke="rgba(6,182,212,.2)" stroke-width="1"/><text x="439" y="330" text-anchor="middle" font-size="18">🌌</text>
-          <rect x="466" y="305" width="38" height="38" rx="10" fill="rgba(6,182,212,.12)" stroke="rgba(6,182,212,.2)" stroke-width="1"/><text x="485" y="330" text-anchor="middle" font-size="18">⭐</text>
-          <rect x="374" y="349" width="38" height="38" rx="10" fill="rgba(6,182,212,.05)" stroke="rgba(6,182,212,.15)" stroke-width="1"/><text x="393" y="374" text-anchor="middle" font-size="18" opacity=".3">🔢</text>
-          <rect x="420" y="349" width="38" height="38" rx="10" fill="rgba(6,182,212,.05)" stroke="rgba(6,182,212,.15)" stroke-width="1"/><text x="439" y="374" text-anchor="middle" font-size="18" opacity=".3">🚀</text>
-          <rect x="466" y="349" width="38" height="38" rx="10" fill="rgba(6,182,212,.05)" stroke="rgba(6,182,212,.15)" stroke-width="1"/><text x="485" y="374" text-anchor="middle" font-size="18" opacity=".3">⚡</text>
-        </g>
-
-        <!-- Leaderboard -->
-        <g filter="url(#he-shadow)">
-          <rect x="28" y="394" width="228" height="142" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
-          <text x="46" y="418" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">🌌 EXPLORER BOARD</text>
-          <rect x="36" y="423" width="26" height="26" rx="13" fill="rgba(6,182,212,.2)"/><text x="49" y="440" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">AN</text>
-          <text x="68" y="440" font-family="Satoshi,sans-serif" font-size="12" fill="#e0f2fe" font-weight="700">Ananya Reddy</text>
-          <text x="238" y="440" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#06b6d4" font-weight="700">+2,481</text>
-          <rect x="36" y="453" width="26" height="26" rx="13" fill="rgba(6,182,212,.1)"/><text x="49" y="470" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">IV</text>
-          <text x="68" y="470" font-family="Satoshi,sans-serif" font-size="12" fill="#e0f2fe" font-weight="700">Isha Verma</text>
-          <text x="238" y="470" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#06b6d4" font-weight="700">+2,258</text>
-          <rect x="30" y="485" width="218" height="38" rx="10" fill="rgba(6,182,212,.1)" stroke="rgba(6,182,212,.25)" stroke-width="1"/>
-          <rect x="38" y="491" width="26" height="26" rx="13" fill="#06b6d4"/><text x="51" y="508" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fff" font-weight="700">★</text>
-          <text x="70" y="506" font-family="Satoshi,sans-serif" font-size="12" fill="#e0f2fe" font-weight="700">You</text>
-          <rect x="96" y="496" width="24" height="14" rx="4" fill="#06b6d4"/><text x="108" y="507" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#fff" font-weight="700">YOU</text>
-          <text x="238" y="506" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#06b6d4" font-weight="700">+1,890</text>
-        </g>
-
-        <!-- Level Ring -->
-        <g filter="url(#he-shadow)">
-          <rect x="268" y="394" width="284" height="142" rx="16" fill="rgba(6,21,46,0.95)" stroke="rgba(6,182,212,.22)" stroke-width="1"/>
-          <text x="286" y="418" font-family="JetBrains Mono,monospace" font-size="9" fill="#06b6d4" font-weight="700">LEVEL PROGRESS</text>
-          <circle cx="358" cy="484" r="44" fill="none" stroke="rgba(6,182,212,.12)" stroke-width="8"/>
-          <circle cx="358" cy="484" r="44" fill="none" stroke="#06b6d4" stroke-width="8" stroke-linecap="round"
-            stroke-dasharray="276" stroke-dashoffset="61"
-            transform="rotate(-90 358 484)" style="filter:drop-shadow(0 0 5px #06b6d4)"/>
-          <text x="358" y="479" text-anchor="middle" font-family="Clash Display,sans-serif" font-size="20" fill="#e0f2fe" font-weight="700">78%</text>
-          <text x="358" y="496" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e7a9e">Lv 7→8</text>
-          <text x="418" y="454" font-family="Clash Display,sans-serif" font-size="20" fill="#06b6d4" font-weight="700">1,890 XP</text>
-          <text x="418" y="472" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e7a9e">Explorer Elite</text>
-          <rect x="418" y="484" width="110" height="36" rx="10" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.2)" stroke-width="1"/>
-          <text x="473" y="506" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#06b6d4" font-weight="700">#5 Rank</text>
-          <text x="473" y="520" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e7a9e">↑ 3 this week</text>
-        </g>
-      </svg>`,
-
-    pro:`
-      <svg viewBox="0 0 560 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;max-height:600px;display:block;">
-        <defs>
-          <radialGradient id="hp-bg" cx="55%" cy="40%" r="60%">
-            <stop offset="0%" stop-color="#051a0d"/>
-            <stop offset="55%" stop-color="#030f06"/>
-            <stop offset="100%" stop-color="#010804"/>
-          </radialGradient>
-          <radialGradient id="hp-glow" cx="55%" cy="35%" r="55%">
-            <stop offset="0%" stop-color="rgba(34,197,94,.08)"/>
-            <stop offset="100%" stop-color="transparent"/>
-          </radialGradient>
-          <filter id="hp-shadow"><feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="rgba(0,0,0,.6)"/></filter>
-        </defs>
-        <rect width="580" height="640" fill="url(#hp-bg)"/>
-        <rect width="580" height="640" fill="url(#hp-glow)"/>
-        <!-- Matrix rain -->
-        ${Array.from({length:14},(_,i)=>{const x=i*42+10;return Array.from({length:6},(_,j)=>`<text x="${x}" y="${j*44+40}" fill="#22c55e" font-family="JetBrains Mono,monospace" font-size="14" opacity="${(0.03+Math.random()*.12).toFixed(2)}">${String.fromCharCode(0x30A0+Math.floor(Math.random()*96))}</text>`).join('');}).join('')}
-
-        <!-- Code editor -->
-        <g filter="url(#hp-shadow)">
-          <rect x="28" y="52" width="316" height="326" rx="18" fill="rgba(2,8,4,.97)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
-          <rect x="28" y="52" width="316" height="36" rx="18" fill="rgba(34,197,94,.07)"/>
-          <rect x="28" y="68" width="316" height="20" fill="rgba(34,197,94,.07)"/>
-          <circle cx="52" cy="70" r="6" fill="#ef4444" opacity=".8"/>
-          <circle cx="71" cy="70" r="6" fill="#f59e0b" opacity=".8"/>
-          <circle cx="90" cy="70" r="6" fill="#22c55e" opacity=".8"/>
-          <text x="322" y="75" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.4)" font-weight="600">solution.js</text>
-          <!-- code lines -->
-          <text x="46" y="113" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">1</text>
-          <text x="64" y="113" font-family="JetBrains Mono,monospace" font-size="12" fill="#2d6a4f" font-style="italic">// Binary Search O(log n) ⚡</text>
-          <text x="46" y="133" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">2</text>
-          <text x="64" y="133" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">function </text>
-          <text x="148" y="133" font-family="JetBrains Mono,monospace" font-size="12" fill="#86efac">binarySearch</text>
-          <text x="258" y="133" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">(arr, t) {</text>
-          <text x="46" y="153" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">3</text>
-          <text x="64" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">  let </text>
-          <text x="104" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">lo=</text>
-          <text x="130" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">0</text>
-          <text x="140" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">, hi=arr.length-</text>
-          <text x="278" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
-          <text x="288" y="153" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">;</text>
-          <text x="46" y="173" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">4</text>
-          <text x="64" y="173" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">  while</text>
-          <text x="116" y="173" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">(lo &lt;= hi) {</text>
-          <text x="46" y="193" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">5</text>
-          <text x="64" y="193" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">    const </text>
-          <text x="128" y="193" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">mid = lo+hi&gt;&gt;</text>
-          <text x="238" y="193" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
-          <text x="248" y="193" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">;</text>
-          <text x="46" y="213" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">6</text>
-          <text x="64" y="213" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">    if</text>
-          <text x="94" y="213" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">(arr[mid]===t) </text>
-          <text x="218" y="213" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">return </text>
-          <text x="274" y="213" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">mid;</text>
-          <text x="46" y="233" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">7</text>
-          <text x="64" y="233" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">    lo = arr[mid]&lt;t ? mid+</text>
-          <text x="258" y="233" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">1</text>
-          <text x="268" y="233" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7"> : lo;</text>
-          <text x="46" y="253" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">8</text>
-          <text x="64" y="253" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">  }; </text>
-          <text x="100" y="253" font-family="JetBrains Mono,monospace" font-size="12" fill="#4ade80" font-weight="700">return </text>
-          <text x="156" y="253" font-family="JetBrains Mono,monospace" font-size="12" fill="#a78bfa">-1</text>
-          <text x="174" y="253" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">;</text>
-          <text x="46" y="273" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(34,197,94,.25)">9</text>
-          <text x="64" y="273" font-family="JetBrains Mono,monospace" font-size="12" fill="#dcfce7">}</text>
-          <rect x="64" y="282" width="7" height="12" rx="1" fill="#22c55e" opacity=".9">
-            <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
-          </rect>
-          <!-- Output bar -->
-          <rect x="28" y="348" width="316" height="30" rx="10" fill="rgba(34,197,94,.06)" stroke="rgba(34,197,94,.12)" stroke-width="1"/>
-          <text x="46" y="367" font-family="JetBrains Mono,monospace" font-size="11" fill="#22c55e">✓ All tests passed · Runtime: 3ms · O(log n)</text>
-        </g>
-
-        <!-- XP Card -->
-        <g filter="url(#hp-shadow)">
-          <rect x="356" y="44" width="198" height="108" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
-          <text x="374" y="72" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">⚡ XP TODAY</text>
-          <text x="374" y="104" font-family="Clash Display,sans-serif" font-size="28" fill="#dcfce7" font-weight="700">+120 XP</text>
-          <text x="374" y="122" font-family="JetBrains Mono,monospace" font-size="10" fill="#1e6640">Level 8 unlocked! 🏆</text>
-          <rect x="374" y="131" width="160" height="4" rx="2" fill="rgba(34,197,94,.12)"/>
-          <rect x="374" y="131" width="160" height="4" rx="2" fill="#22c55e"/>
-        </g>
-
-        <!-- Streak Card -->
-        <g filter="url(#hp-shadow)">
-          <rect x="356" y="168" width="198" height="92" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
-          <text x="374" y="194" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">🔥 STREAK</text>
-          <text x="374" y="224" font-family="Clash Display,sans-serif" font-size="26" fill="#dcfce7" font-weight="700">14 Days</text>
-          <text x="374" y="244" font-family="JetBrains Mono,monospace" font-size="10" fill="#1e6640">Legend badge earned!</text>
-        </g>
-
-        <!-- Badges Card -->
-        <g filter="url(#hp-shadow)">
-          <rect x="356" y="276" width="198" height="106" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
-          <text x="374" y="300" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">🏅 BADGES</text>
-          <rect x="374" y="309" width="38" height="38" rx="10" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.2)" stroke-width="1"/><text x="393" y="334" text-anchor="middle" font-size="18">⚡</text>
-          <rect x="420" y="309" width="38" height="38" rx="10" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.2)" stroke-width="1"/><text x="439" y="334" text-anchor="middle" font-size="18">🏆</text>
-          <rect x="466" y="309" width="38" height="38" rx="10" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.2)" stroke-width="1"/><text x="485" y="334" text-anchor="middle" font-size="18">🔥</text>
-          <rect x="374" y="353" width="38" height="38" rx="10" fill="rgba(34,197,94,.05)" stroke="rgba(34,197,94,.15)" stroke-width="1"/><text x="393" y="378" text-anchor="middle" font-size="18" opacity=".3">💻</text>
-          <rect x="420" y="353" width="38" height="38" rx="10" fill="rgba(34,197,94,.05)" stroke="rgba(34,197,94,.15)" stroke-width="1"/><text x="439" y="378" text-anchor="middle" font-size="18" opacity=".3">🌐</text>
-          <rect x="466" y="353" width="38" height="38" rx="10" fill="rgba(34,197,94,.05)" stroke="rgba(34,197,94,.15)" stroke-width="1"/><text x="485" y="378" text-anchor="middle" font-size="18" opacity=".3">🎯</text>
-        </g>
-
-        <!-- Leaderboard -->
-        <g filter="url(#hp-shadow)">
-          <rect x="28" y="397" width="230" height="140" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
-          <text x="46" y="421" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">⚡ PRO RANKINGS</text>
-          <rect x="36" y="427" width="26" height="26" rx="13" fill="rgba(34,197,94,.15)"/><text x="49" y="444" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">KN</text>
-          <text x="68" y="444" font-family="Satoshi,sans-serif" font-size="12" fill="#dcfce7" font-weight="700">Kavya Nair</text>
-          <text x="240" y="444" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#22c55e" font-weight="700">+3,159</text>
-          <rect x="30" y="455" width="220" height="38" rx="10" fill="rgba(34,197,94,.1)" stroke="rgba(34,197,94,.25)" stroke-width="1"/>
-          <rect x="38" y="461" width="26" height="26" rx="13" fill="#22c55e"/><text x="51" y="478" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fff" font-weight="700">★</text>
-          <text x="70" y="476" font-family="Satoshi,sans-serif" font-size="12" fill="#dcfce7" font-weight="700">You</text>
-          <rect x="96" y="466" width="24" height="14" rx="4" fill="#22c55e"/><text x="108" y="477" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#fff" font-weight="700">YOU</text>
-          <text x="240" y="476" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#22c55e" font-weight="700">+2,980</text>
-          <rect x="36" y="500" width="26" height="26" rx="13" fill="rgba(34,197,94,.08)"/><text x="49" y="517" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">SS</text>
-          <text x="68" y="517" font-family="Satoshi,sans-serif" font-size="12" fill="#dcfce7" font-weight="700">Sneha Singh</text>
-          <text x="240" y="517" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#22c55e" font-weight="700">+2,643</text>
-        </g>
-
-        <!-- Level Ring -->
-        <g filter="url(#hp-shadow)">
-          <rect x="270" y="397" width="282" height="140" rx="16" fill="rgba(4,21,9,.96)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
-          <text x="288" y="421" font-family="JetBrains Mono,monospace" font-size="9" fill="#22c55e" font-weight="700">LEVEL PROGRESS</text>
-          <circle cx="358" cy="488" r="44" fill="none" stroke="rgba(34,197,94,.1)" stroke-width="8"/>
-          <circle cx="358" cy="488" r="44" fill="none" stroke="#22c55e" stroke-width="8" stroke-linecap="round"
-            stroke-dasharray="276" stroke-dashoffset="33"
-            transform="rotate(-90 358 488)" style="filter:drop-shadow(0 0 6px #22c55e)"/>
-          <text x="358" y="483" text-anchor="middle" font-family="Clash Display,sans-serif" font-size="20" fill="#dcfce7" font-weight="700">88%</text>
-          <text x="358" y="500" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1e6640">Lv 8→9</text>
-          <text x="418" y="458" font-family="Clash Display,sans-serif" font-size="20" fill="#22c55e" font-weight="700">2,980 XP</text>
-          <text x="418" y="476" font-family="JetBrains Mono,monospace" font-size="9" fill="#1e6640">Elite Coder</text>
-          <rect x="418" y="488" width="110" height="36" rx="10" fill="rgba(34,197,94,.08)" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
-          <text x="473" y="510" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#22c55e" font-weight="700">#2 Rank</text>
-          <text x="473" y="524" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1e6640">↑ 5 this week</text>
-        </g>
-      </svg>`
+  const themes={
+    junior:{
+      bg:'radial-gradient(ellipse at 70% 20%, #ffe8d4 0%, #fff4ec 45%, #fff8f4 100%)',
+      fade:'linear-gradient(90deg, #fff8f2 0%, rgba(255,248,242,0.4) 30%, transparent 55%)',
+      accent:'#f97316', accent2:'#fbbf24', accentRgb:'249,115,22',
+      dark:'rgba(15,18,30,0.93)', darkBorder:'rgba(249,115,22,0.22)',
+      codeBg:'rgba(10,14,26,0.95)', codeFile:'puzzle.js',
+      codeLang:'JavaScript',
+      codeLines:[
+        {n:'1',t:'// Logic Pattern Solver',c:'#4b5563',i:true},
+        {n:'2',t:'function findNext(seq) {',c:'',parts:[{t:'function ',c:'#f97316',b:true},{t:'findNext',c:'#60a5fa'},{t:'(seq) {',c:'#e2e8f0'}]},
+        {n:'3',t:'  const diffs = seq.map(…);',c:'',parts:[{t:'  const ',c:'#f97316',b:true},{t:'diffs = seq.',c:'#e2e8f0'},{t:'map',c:'#60a5fa'},{t:'(…);',c:'#e2e8f0'}]},
+        {n:'4',t:'  const step = diffs[last];',c:'',parts:[{t:'  const ',c:'#f97316',b:true},{t:'step = diffs[',c:'#e2e8f0'},{t:'last',c:'#a78bfa'},{t:'];',c:'#e2e8f0'}]},
+        {n:'5',t:'  return seq[last] + step;',c:'',parts:[{t:'  return ',c:'#f97316',b:true},{t:'seq[last] + step;',c:'#e2e8f0'}]},
+        {n:'6',t:'}',c:'#e2e8f0'},
+        {n:'7',t:'// ▲ ▲ ● ▲ ▲  ? → ●  ✓',c:'',parts:[{t:'// ▲ ▲ ● ▲ ▲  ',c:'#4b5563',i:true},{t:'? → ●',c:'#f97316',b:true},{t:'  ✓',c:'#22c55e'}]},
+      ],
+      stat1:{lbl:'TODAY\'S XP',val:'+45 XP',sub:'55 more to Level 6',bar:82},
+      stat2:{lbl:'DAY STREAK',val:'7 Days',sub:'Legend incoming! 🔥'},
+      topUsers:[
+        {av:'KN',name:'Kavya Nair',xp:'3,159',you:false},
+        {av:'SS',name:'Sneha Singh',xp:'2,643',you:false},
+        {av:'★',name:'You',xp:'445',you:true},
+      ],
+      xpPct:63, xp:'445', lvFrom:'5',lvTo:'6',
+      challenge:{title:'Node Calibration',cat:'Quantification',xp:'20',diff:'Easy'},
+      badges:['🐍','🔧','💯','🏆'],
+    },
+    explorer:{
+      bg:'radial-gradient(ellipse at 65% 25%, #0d2248 0%, #060e22 50%, #020917 100%)',
+      fade:'linear-gradient(90deg, #020917 0%, rgba(2,9,23,0.5) 25%, transparent 50%)',
+      accent:'#06b6d4', accent2:'#3b82f6', accentRgb:'6,182,212',
+      dark:'rgba(3,8,20,0.95)', darkBorder:'rgba(6,182,212,0.2)',
+      codeBg:'rgba(2,6,18,0.97)', codeFile:'algorithms.js',
+      codeLang:'JavaScript',
+      codeLines:[
+        {n:'1',t:'// Fibonacci — O(n)',c:'#2d4a6b',i:true},
+        {n:'2',t:'function fibonacci(n) {',c:'',parts:[{t:'function ',c:'#67e8f9',b:true},{t:'fibonacci',c:'#93c5fd'},{t:'(n) {',c:'#cbd5e1'}]},
+        {n:'3',t:'  const dp = [0, 1];',c:'',parts:[{t:'  const ',c:'#67e8f9',b:true},{t:'dp = [',c:'#cbd5e1'},{t:'0',c:'#a78bfa'},{t:', ',c:'#cbd5e1'},{t:'1',c:'#a78bfa'},{t:'];',c:'#cbd5e1'}]},
+        {n:'4',t:'  for (let i=2; i<=n; i++)',c:'',parts:[{t:'  for',c:'#67e8f9',b:true},{t:' (let i=',c:'#cbd5e1'},{t:'2',c:'#a78bfa'},{t:'; i<=n; i++)',c:'#cbd5e1'}]},
+        {n:'5',t:'    dp[i] = dp[i-1]+dp[i-2];',c:'',parts:[{t:'    dp[i] = dp[i-',c:'#cbd5e1'},{t:'1',c:'#a78bfa'},{t:']+dp[i-',c:'#cbd5e1'},{t:'2',c:'#a78bfa'},{t:'];',c:'#cbd5e1'}]},
+        {n:'6',t:'  return dp[n];',c:'',parts:[{t:'  return ',c:'#67e8f9',b:true},{t:'dp[n];',c:'#cbd5e1'}]},
+        {n:'7',t:'}  // 1 1 2 3 5 8  13 ✓',c:'',parts:[{t:'}',c:'#cbd5e1'},{t:'  // 1 1 2 3 5 8  ',c:'#2d4a6b',i:true},{t:'13',c:'#67e8f9',b:true},{t:' ✓',c:'#22c55e'}]},
+      ],
+      stat1:{lbl:'TODAY\'S XP',val:'+80 XP',sub:'20 more to Level 8',bar:92},
+      stat2:{lbl:'DAY STREAK',val:'7 Days',sub:'Legend incoming! 🌌'},
+      topUsers:[
+        {av:'AN',name:'Ananya Reddy',xp:'2,481',you:false},
+        {av:'IV',name:'Isha Verma',xp:'2,258',you:false},
+        {av:'★',name:'You',xp:'1,890',you:true},
+      ],
+      xpPct:78, xp:'1,890', lvFrom:'7',lvTo:'8',
+      challenge:{title:'Fibonacci Sequence',cat:'Algorithms',xp:'25',diff:'Medium'},
+      badges:['🔭','🌌','⭐','🚀'],
+    },
+    pro:{
+      bg:'radial-gradient(ellipse at 55% 30%, #062010 0%, #040f08 50%, #010804 100%)',
+      fade:'linear-gradient(90deg, #010804 0%, rgba(1,8,4,0.5) 25%, transparent 50%)',
+      accent:'#22c55e', accent2:'#86efac', accentRgb:'34,197,94',
+      dark:'rgba(1,5,3,0.97)', darkBorder:'rgba(34,197,94,0.2)',
+      codeBg:'rgba(0,4,2,0.98)', codeFile:'solution.js',
+      codeLang:'JavaScript',
+      codeLines:[
+        {n:'1',t:'// Binary Search O(log n)',c:'#1a4a2e',i:true},
+        {n:'2',t:'function binarySearch(arr, t) {',c:'',parts:[{t:'function ',c:'#4ade80',b:true},{t:'binarySearch',c:'#86efac'},{t:'(arr, t) {',c:'#dcfce7'}]},
+        {n:'3',t:'  let lo=0, hi=arr.length-1;',c:'',parts:[{t:'  let ',c:'#4ade80',b:true},{t:'lo=',c:'#dcfce7'},{t:'0',c:'#a78bfa'},{t:', hi=arr.length-',c:'#dcfce7'},{t:'1',c:'#a78bfa'},{t:';',c:'#dcfce7'}]},
+        {n:'4',t:'  while (lo <= hi) {',c:'',parts:[{t:'  while',c:'#4ade80',b:true},{t:' (lo <= hi) {',c:'#dcfce7'}]},
+        {n:'5',t:'    const mid = lo+hi>>1;',c:'',parts:[{t:'    const ',c:'#4ade80',b:true},{t:'mid = lo+hi>>',c:'#dcfce7'},{t:'1',c:'#a78bfa'},{t:';',c:'#dcfce7'}]},
+        {n:'6',t:'    if (arr[mid]===t) return mid;',c:'',parts:[{t:'    if',c:'#4ade80',b:true},{t:' (arr[mid]===t) ',c:'#dcfce7'},{t:'return ',c:'#4ade80',b:true},{t:'mid;',c:'#dcfce7'}]},
+        {n:'7',t:'  }; return -1; }',c:'',parts:[{t:'  }; ',c:'#dcfce7'},{t:'return ',c:'#4ade80',b:true},{t:'-',c:'#dcfce7'},{t:'1',c:'#a78bfa'},{t:'; }',c:'#dcfce7'}]},
+      ],
+      stat1:{lbl:'XP TODAY',val:'+120 XP',sub:'Level 8 unlocked! 🏆',bar:100},
+      stat2:{lbl:'DAY STREAK',val:'14 Days',sub:'Legend badge earned! ⚡'},
+      topUsers:[
+        {av:'KN',name:'Kavya Nair',xp:'3,159',you:false},
+        {av:'★',name:'You',xp:'2,980',you:true},
+        {av:'SS',name:'Sneha Singh',xp:'2,643',you:false},
+      ],
+      xpPct:88, xp:'2,980', lvFrom:'8',lvTo:'9',
+      challenge:{title:'Binary Search',cat:'Search',xp:'60',diff:'Medium'},
+      badges:['⚡','🏆','🔥','💻'],
+    }
   };
 
-  panel.innerHTML = svgs[mode] || svgs.junior;
+  const T = themes[mode] || themes.junior;
+  const isLight = mode === 'junior';
+  const textPrimary = isLight ? '#1a0f00' : '#f1f5f9';
+  const textMuted = isLight ? '#7c5c3a' : '#64748b';
+  const cardBg = isLight ? 'rgba(255,255,255,0.88)' : `rgba(${T.accentRgb},0.05)`;
+  const cardBorder = isLight ? 'rgba(0,0,0,0.07)' : `rgba(${T.accentRgb},0.18)`;
+
+  // Build code lines HTML
+  const buildCodeLine = (line) => {
+    if(line.parts){
+      return line.parts.map(p=>`<span style="color:${p.c};${p.b?'font-weight:700;':''}${p.i?'font-style:italic;':''}">${p.t}</span>`).join('');
+    }
+    return `<span style="color:${line.c};${line.i?'font-style:italic;':''}">${line.t}</span>`;
+  };
+
+  // Build leaderboard rows
+  const lbRows = T.topUsers.map(u=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:${u.you?'7px 10px':'4px 6px'};border-radius:10px;background:${u.you?`rgba(${T.accentRgb},.12)`:'transparent'};transition:all .3s;margin-bottom:4px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:${u.you?T.accent:`rgba(${T.accentRgb},.2)`};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${u.you?'#fff':T.accent};flex-shrink:0;font-family:'JetBrains Mono',monospace;">${u.av}</div>
+      <div style="flex:1;font-size:12px;font-weight:700;color:${textPrimary};">${u.name}${u.you?`<span style="font-size:8px;background:${T.accent};color:#fff;border-radius:4px;padding:1px 5px;margin-left:5px;font-family:'JetBrains Mono',monospace;">YOU</span>`:''}</div>
+      <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};">+${u.xp}</div>
+    </div>`).join('');
+
+  const dashOffset = 276 - 276*(T.xpPct/100);
+
+  panel.innerHTML = `
+<div style="position:absolute;inset:0;background:${T.bg};z-index:0;"></div>
+<div style="position:absolute;inset:0;background:${T.fade};z-index:1;pointer-events:none;"></div>
+
+<div style="position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:72px 32px 72px 20px;gap:14px;">
+
+  <!-- ROW 1: Code editor (full width) -->
+  <div style="border-radius:20px;overflow:hidden;background:${T.codeBg};border:1px solid ${T.darkBorder};box-shadow:0 20px 60px rgba(0,0,0,0.35);animation:hpFloat1 8s ease-in-out infinite;">
+    <!-- Title bar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid ${T.darkBorder};background:rgba(255,255,255,0.03);">
+      <div style="display:flex;gap:6px;"><div style="width:11px;height:11px;border-radius:50%;background:#ef4444;opacity:.85;"></div><div style="width:11px;height:11px;border-radius:50%;background:#f59e0b;opacity:.85;"></div><div style="width:11px;height:11px;border-radius:50%;background:#22c55e;opacity:.85;"></div></div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:rgba(148,163,184,.45);">${T.codeFile}</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(148,163,184,.3);">${T.codeLang}</span>
+    </div>
+    <!-- Code -->
+    <div style="padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.9;">
+      ${T.codeLines.map(l=>`
+      <div style="display:flex;align-items:baseline;gap:0;">
+        <span style="color:rgba(100,116,139,.3);user-select:none;width:22px;font-size:10px;flex-shrink:0;text-align:right;padding-right:12px;">${l.n}</span>
+        <span>${buildCodeLine(l)}</span>
+      </div>`).join('')}
+      <div style="display:flex;align-items:baseline;margin-top:2px;">
+        <span style="width:22px;flex-shrink:0;"></span>
+        <span style="display:inline-block;width:7px;height:13px;background:${T.accent};border-radius:1px;animation:blink 1.1s step-end infinite;vertical-align:text-bottom;"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Three cards side by side -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+
+    <!-- XP Card -->
+    <div style="border-radius:16px;padding:16px;background:${cardBg};border:1px solid ${cardBorder};backdrop-filter:blur(20px);animation:hpFloat2 6s ease-in-out infinite .4s;">
+      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">${T.stat1.lbl}</div>
+      <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:${textPrimary};line-height:1;">${T.stat1.val}</div>
+      <div style="font-size:10px;color:${textMuted};margin-top:3px;margin-bottom:10px;">${T.stat1.sub}</div>
+      <div style="height:3px;border-radius:3px;background:${isLight?'rgba(0,0,0,0.08)':`rgba(${T.accentRgb},.12)`};overflow:hidden;">
+        <div style="height:100%;width:${T.stat1.bar}%;background:linear-gradient(90deg,${T.accent},${T.accent2});border-radius:3px;"></div>
+      </div>
+    </div>
+
+    <!-- Streak Card -->
+    <div style="border-radius:16px;padding:16px;background:${cardBg};border:1px solid ${cardBorder};backdrop-filter:blur(20px);animation:hpFloat1 7s ease-in-out infinite .9s;">
+      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">${T.stat2.lbl}</div>
+      <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:${textPrimary};line-height:1;">${T.stat2.val}</div>
+      <div style="font-size:10px;color:${textMuted};margin-top:3px;">${T.stat2.sub}</div>
+      <div style="display:flex;gap:5px;margin-top:10px;">
+        ${Array.from({length:7},(_,i)=>`<div style="flex:1;height:4px;border-radius:2px;background:${i<parseInt(T.stat2.val)?T.accent:`rgba(${T.accentRgb},.15)`};"></div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Level Ring Card -->
+    <div style="border-radius:16px;padding:16px;background:${cardBg};border:1px solid ${cardBorder};backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;animation:hpFloat2 9s ease-in-out infinite 1.5s;">
+      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">LEVEL</div>
+      <div style="position:relative;width:64px;height:64px;">
+        <svg viewBox="0 0 64 64" style="width:64px;height:64px;transform:rotate(-90deg);">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(${T.accentRgb},.12)" stroke-width="6"/>
+          <circle cx="32" cy="32" r="27" fill="none" stroke="${T.accent}" stroke-width="6" stroke-linecap="round" stroke-dasharray="170" stroke-dashoffset="${170-170*(T.xpPct/100)}" style="filter:drop-shadow(0 0 3px ${T.accent});"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div style="font-family:'Clash Display',sans-serif;font-size:15px;font-weight:700;color:${textPrimary};line-height:1;">${T.xpPct}%</div>
+          <div style="font-size:8px;font-family:'JetBrains Mono',monospace;color:${textMuted};">Lv ${T.lvFrom}</div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};margin-top:6px;">${T.xp} XP</div>
+    </div>
+
+  </div>
+
+  <!-- ROW 3: Leaderboard + Daily Challenge -->
+  <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:12px;">
+
+    <!-- Leaderboard -->
+    <div style="border-radius:16px;padding:16px 18px;background:${cardBg};border:1px solid ${cardBorder};backdrop-filter:blur(20px);animation:hpFloat1 7s ease-in-out infinite .2s;">
+      <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">🏆 Leaderboard</div>
+      ${lbRows}
+    </div>
+
+    <!-- Daily Challenge + Badges -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <!-- Daily Challenge -->
+      <div style="border-radius:16px;padding:14px 16px;background:linear-gradient(135deg,${T.accent},${T.accent2});flex:1;animation:hpFloat2 6s ease-in-out infinite .7s;">
+        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Daily Challenge</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;font-family:'Clash Display',sans-serif;margin-bottom:4px;">${T.challenge.title}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,.18);border-radius:8px;padding:2px 8px;color:#fff;">${T.challenge.cat}</span>
+          <span style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,.18);border-radius:8px;padding:2px 8px;color:#fff;">+${T.challenge.xp} XP</span>
+        </div>
+      </div>
+      <!-- Badges -->
+      <div style="border-radius:16px;padding:12px 14px;background:${cardBg};border:1px solid ${cardBorder};backdrop-filter:blur(20px);animation:hpFloat1 8s ease-in-out infinite 1.2s;">
+        <div style="font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Badges</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">
+          ${T.badges.map(b=>`<div style="aspect-ratio:1;border-radius:10px;background:rgba(${T.accentRgb},.1);border:1px solid ${cardBorder};display:flex;align-items:center;justify-content:center;font-size:16px;">${b}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>`;
 }
 // Program card SVGs
 function progCardSVG(type){
@@ -3854,11 +3579,10 @@ function switchProfileTier(tier,el){
   });
   el.style.borderColor='var(--a1)';
   el.style.background='rgba(var(--a1-rgb,249,115,22),.07)';
-  // Update badge
+  // Update badge only — no UI theme change here
   const badges={junior:'🎮 Junior Coder',explorer:'🔭 Explorer',pro:'⚡ Pro Coder'};
   const badge=document.getElementById('profile-tier-badge');
   if(badge)badge.textContent=badges[tier];
-  setMode(tier,null);
 }
 
 // ════════════════════════════════════════
@@ -4188,15 +3912,4 @@ function confirmTierEntry(flow) {
     const dest = (flow === 'signup') ? 'signup' : 'login';
     goPage(dest);
 
-    // Auto-select the tier button in the form
-    setTimeout(() => {
-      const sel = document.querySelector(`.login-mode-sel .lms-btn[onclick*="${tier}"]`);
-      if (sel) lmSel(sel, tier);
-    }, 100);
-
-  }, 350);
-}
-</script>
-
-</body>
-</html>
+    // Auto-selec
