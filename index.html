@@ -22,12 +22,12 @@
   --e-text: #e0f2fe; --e-muted: #4e7a9e;
   --e-card: rgba(6,21,46,0.85); --e-bdr: rgba(6,182,212,0.15);
   --e-glow: rgba(6,182,212,0.3);
-  /* Pro - Terminal green, elite, raw power */
-  --p-bg1: #010804; --p-bg2: #030f06; --p-bg3: #041509;
-  --p-a1: #22c55e; --p-a2: #86efac; --p-a3: #4ade80;
-  --p-text: #dcfce7; --p-muted: #1e6640;
-  --p-card: rgba(4,21,9,0.9); --p-bdr: rgba(34,197,94,0.15);
-  --p-glow: rgba(34,197,94,0.3);
+  /* Pro - Clean, minimal, CodeChef-inspired light professional */
+  --p-bg1: #f8f9fb; --p-bg2: #f1f3f6; --p-bg3: #e8ecf1;
+  --p-a1: #3b4dd8; --p-a2: #6c75e1; --p-a3: #5a67d8;
+  --p-text: #0f1117; --p-muted: #6b7280;
+  --p-card: rgba(255,255,255,0.92); --p-bdr: rgba(59,77,216,0.12);
+  --p-glow: rgba(59,77,216,0.15);
   /* Active theme vars */
   --bg1: var(--j-bg1); --bg2: var(--j-bg2); --bg3: var(--j-bg3);
   --a1-rgb: 249,115,22;
@@ -47,7 +47,7 @@
   --a1:var(--p-a1);--a2:var(--p-a2);--a3:var(--p-a3);
   --text:var(--p-text);--muted:var(--p-muted);
   --card:var(--p-card);--bdr:var(--p-bdr);--glow:var(--p-glow);
-  --a1-rgb:34,197,94;
+  --a1-rgb:59,77,216;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -87,6 +87,10 @@ nav{
   transition:all .5s;
 }
 [data-mode="junior"] nav{background:rgba(255,248,242,0.82);}
+[data-mode="pro"] nav{background:rgba(248,249,251,0.95);border-bottom:1px solid rgba(59,77,216,0.1);}
+[data-mode="pro"] body::after{opacity:.1;}
+[data-mode="pro"] #cur{mix-blend-mode:normal;background:var(--p-a1);}
+[data-mode="pro"] #cur2{border-color:var(--p-a1);opacity:.25;}
 .logo{
   font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;
   color:var(--a1);cursor:pointer;display:flex;align-items:center;gap:8px;
@@ -431,7 +435,7 @@ nav{
 .hp-ln{color:rgba(148,163,184,.25);user-select:none;display:inline-block;width:18px;margin-right:10px;font-size:11px;}
 .c-kw{color:#f97316;} .c-fn{color:#60a5fa;} .c-str{color:#34d399;} .c-cm{color:#4b5563;} .c-num{color:#a78bfa;} .c-txt{color:#cbd5e1;}
 [data-mode="explorer"] .c-kw{color:#67e8f9;} [data-mode="explorer"] .c-fn{color:#93c5fd;} [data-mode="explorer"] .c-str{color:#34d399;}
-[data-mode="pro"] .c-kw{color:#4ade80;} [data-mode="pro"] .c-fn{color:#86efac;} [data-mode="pro"] .c-str{color:#fbbf24;}
+[data-mode="pro"] .c-kw{color:#3b4dd8;} [data-mode="pro"] .c-fn{color:#7c3aed;} [data-mode="pro"] .c-str{color:#d97706;}
 .hp-cursor{display:inline-block;width:7px;height:13px;background:var(--a1);border-radius:1px;animation:blink 1.1s step-end infinite;vertical-align:text-bottom;margin-left:2px;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 /* right col stat cards */
@@ -1064,6 +1068,89 @@ nav{
   #page-login > div > div{grid-template-columns:1fr!important;}
   .login-tier-preview{display:none;}
 }
+/* ════════════════════════════════════════
+   PAGE: COMPETE
+════════════════════════════════════════ */
+.compete-tab{
+  padding:10px 20px;border-radius:10px 10px 0 0;
+  font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  cursor:pointer;border:none;background:transparent;
+  color:var(--muted);transition:all .25s;
+  border-bottom:2px solid transparent;
+  letter-spacing:.3px;
+}
+.compete-tab:hover{color:var(--a1);}
+.compete-tab.active{color:var(--a1);border-bottom-color:var(--a1);background:rgba(var(--a1-rgb,249,115,22),.06);}
+
+.compete-card{
+  background:var(--card);border:1px solid var(--bdr);
+  border-radius:20px;padding:26px 28px;
+  backdrop-filter:blur(20px);transition:all .35s cubic-bezier(.34,1.2,.64,1);
+  display:flex;flex-direction:column;gap:12px;
+}
+.compete-card:hover{border-color:var(--a1);transform:translateY(-5px);box-shadow:0 18px 48px -14px var(--glow);}
+.compete-card-live{border-color:rgba(var(--a1-rgb,249,115,22),.18);box-shadow:0 0 0 1px rgba(var(--a1-rgb,249,115,22),.06);}
+.compete-card-live:hover{border-color:var(--a1);box-shadow:0 18px 48px -14px var(--glow);}
+
+.cc-type-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9.5px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  text-transform:uppercase;letter-spacing:1.5px;
+  padding:4px 12px;border-radius:20px;width:fit-content;
+  transition:all .4s;
+}
+.cc-live{background:rgba(var(--a1-rgb,249,115,22),.09);border:1px solid rgba(var(--a1-rgb,249,115,22),.22);color:var(--a1);}
+.cc-upcoming{background:rgba(var(--a1-rgb,249,115,22),.1);border:1px solid var(--bdr);color:var(--a1);}
+
+.cc-title{
+  font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;
+  color:var(--text);letter-spacing:-.4px;line-height:1.1;transition:color .4s;
+}
+.cc-meta{font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--muted);transition:color .4s;}
+.cc-desc{font-size:13.5px;color:var(--muted);line-height:1.6;transition:color .4s;}
+.cc-tags{display:flex;gap:7px;flex-wrap:wrap;}
+.cc-tag{
+  font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  padding:4px 10px;border-radius:20px;letter-spacing:.5px;
+  background:rgba(var(--a1-rgb,249,115,22),.08);
+  border:1px solid var(--bdr);color:var(--a1);transition:all .4s;
+}
+.cc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px;flex-wrap:wrap;gap:10px;}
+
+/* Contest table */
+.compete-table-wrap{
+  background:var(--card);border:1px solid var(--bdr);
+  border-radius:20px;overflow:hidden;backdrop-filter:blur(20px);
+}
+.compete-table-head{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;
+  padding:12px 24px;
+  background:rgba(var(--a1-rgb,249,115,22),.06);
+  font-size:9.5px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;
+  border-bottom:1px solid var(--bdr);transition:all .4s;
+}
+.compete-table-row{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;
+  padding:16px 24px;align-items:center;
+  border-bottom:1px solid var(--bdr);
+  font-size:13.5px;font-weight:600;color:var(--text);
+  cursor:default;transition:all .25s;
+}
+.compete-table-row:last-child{border-bottom:none;}
+.compete-table-row:hover{background:rgba(var(--a1-rgb,249,115,22),.04);}
+.compete-table-row-me{background:rgba(var(--a1-rgb,249,115,22),.05);border-left:3px solid var(--a1);}
+
+/* Contest register toast */
+.contest-toast{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
+  background:var(--a1);color:#fff;
+  padding:14px 28px;border-radius:50px;
+  font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  z-index:9999;white-space:nowrap;
+  box-shadow:0 8px 32px -8px var(--a1);
+  animation:pageIn .4s cubic-bezier(.34,1.56,.64,1);
+}
 </style>
 </head>
 <body>
@@ -1089,6 +1176,7 @@ nav{
     <li><a data-p="challenges"  onclick="goPage('challenges')">Challenges</a></li>
     <li><a data-p="leaderboard" onclick="goPage('leaderboard')">Leaderboard</a></li>
     <li><a data-p="community"   onclick="goPage('community')">Community</a></li>
+    <li id="nav-compete-li" style="display:none"><a data-p="compete" onclick="goPage('compete')" style="position:relative;">⚡ Compete<span id="nav-compete-live" style="position:absolute;top:2px;right:-6px;width:7px;height:7px;border-radius:50%;background:var(--a1);box-shadow:0 0 6px var(--a1);animation:logopulse 2s infinite;"></span></a></li>
   </ul>
   <div class="nav-right">
     <div class="nbadge">✦ <span id="xp-display">445</span> XP</div>
@@ -1299,6 +1387,155 @@ nav{
 
     </div>
   </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: COMPETE  (Pro only)
+════════════════════════════════ -->
+<div class="page" id="page-compete">
+<div class="wrap" style="padding-top:88px;padding-bottom:80px;position:relative;z-index:2;">
+
+  <!-- Header -->
+  <div class="rv" style="margin-bottom:36px;">
+    <div class="stag">Pro Exclusive</div>
+    <h2 class="shead">Compete<em style="display:inline;color:var(--a1)">.</em></h2>
+    <p class="sdesc" style="max-width:560px;">Live contests, weekly tournaments and national school battles. Write real code. Earn your rank.</p>
+  </div>
+
+  <!-- Tab bar -->
+  <div id="compete-tabs" style="display:flex;gap:6px;margin-bottom:28px;border-bottom:1px solid var(--bdr);padding-bottom:0;">
+    <button class="compete-tab active" id="ctab-live"    onclick="switchCompeteTab('live',this)"   >🟢 Live Now</button>
+    <button class="compete-tab"        id="ctab-upcoming" onclick="switchCompeteTab('upcoming',this)">📅 Upcoming</button>
+    <button class="compete-tab"        id="ctab-past"     onclick="switchCompeteTab('past',this)"   >✅ Past</button>
+    <button class="compete-tab"        id="ctab-mine"     onclick="switchCompeteTab('mine',this)"   >🏅 My History</button>
+  </div>
+
+  <!-- ── LIVE NOW ── -->
+  <div id="compete-panel-live">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;">
+
+      <!-- Live contest card -->
+      <div class="compete-card compete-card-live rv">
+        <div class="cc-type-badge cc-live">🟢 LIVE NOW</div>
+        <div class="cc-title">Timed Coding Round #14</div>
+        <div class="cc-meta">⏱ Ends in <span class="cc-timer" data-end="3600">—</span> &nbsp;·&nbsp; 📝 3 Problems</div>
+        <div class="cc-desc">Race against the clock. Solve 3 algorithm problems in 60 minutes. Every second counts.</div>
+        <div class="cc-tags"><span class="cc-tag">Timed Round</span><span class="cc-tag">Algorithms</span><span class="cc-tag">60 min</span></div>
+        <div class="cc-footer">
+          <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);">🏆 Top 3 get Gold Badge</div>
+          <button class="btn btn-fill btn-sm" onclick="openContest('timed-14')" style="background:var(--a1);box-shadow:0 4px 16px -6px var(--a1);">Enter Now →</button>
+        </div>
+      </div>
+
+      <!-- Daily challenge card -->
+      <div class="compete-card compete-card-live rv d1">
+        <div class="cc-type-badge cc-live">🟢 LIVE NOW</div>
+        <div class="cc-title">Daily Challenge — Day 47</div>
+        <div class="cc-meta">⏱ Resets in <span class="cc-timer" data-end="7200">—</span> &nbsp;·&nbsp; 📝 1 Problem</div>
+        <div class="cc-desc">One hand-picked problem every day. Solve it before midnight to maintain your streak.</div>
+        <div class="cc-tags"><span class="cc-tag">Daily</span><span class="cc-tag">Streak</span><span class="cc-tag">+25 XP</span></div>
+        <div class="cc-footer">
+          <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);">🔥 1,240 solved today</div>
+          <button class="btn btn-fill btn-sm" onclick="openContest('daily-47')" style="background:var(--a1);box-shadow:0 4px 16px -6px var(--a1);">Solve Now →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── UPCOMING ── -->
+  <div id="compete-panel-upcoming" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;">
+
+      <div class="compete-card rv">
+        <div class="cc-type-badge cc-upcoming">📅 UPCOMING</div>
+        <div class="cc-title">Weekly Tournament — Week 12</div>
+        <div class="cc-meta">🗓 Starts in <span class="cc-timer" data-end="86400">—</span> &nbsp;·&nbsp; 📝 5 Problems</div>
+        <div class="cc-desc">The weekly showdown. 5 problems, 90 minutes, one winner. Climb the seasonal leaderboard.</div>
+        <div class="cc-tags"><span class="cc-tag">Tournament</span><span class="cc-tag">90 min</span><span class="cc-tag">Top 10 ranked</span></div>
+        <div class="cc-footer">
+          <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);">128 registered</div>
+          <button class="btn btn-outline btn-sm" onclick="registerContest('weekly-12')">Register →</button>
+        </div>
+      </div>
+
+      <div class="compete-card rv d1">
+        <div class="cc-type-badge cc-upcoming">📅 UPCOMING</div>
+        <div class="cc-title">School vs School — Round 3</div>
+        <div class="cc-meta">🗓 Starts in <span class="cc-timer" data-end="172800">—</span> &nbsp;·&nbsp; 📝 4 Problems</div>
+        <div class="cc-desc">Represent your school. Your score contributes to your school's total. Honour is on the line.</div>
+        <div class="cc-tags"><span class="cc-tag">School vs School</span><span class="cc-tag">Team</span><span class="cc-tag">National</span></div>
+        <div class="cc-footer">
+          <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);">42 schools registered</div>
+          <button class="btn btn-outline btn-sm" onclick="registerContest('svs-3')">Register →</button>
+        </div>
+      </div>
+
+      <div class="compete-card rv d2">
+        <div class="cc-type-badge cc-upcoming">📅 UPCOMING</div>
+        <div class="cc-title">Timed Coding Round #15</div>
+        <div class="cc-meta">🗓 Starts in <span class="cc-timer" data-end="259200">—</span> &nbsp;·&nbsp; 📝 3 Problems</div>
+        <div class="cc-desc">The next timed round. Same pressure, new problems. Prepare your edge cases.</div>
+        <div class="cc-tags"><span class="cc-tag">Timed Round</span><span class="cc-tag">60 min</span></div>
+        <div class="cc-footer">
+          <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);">67 registered</div>
+          <button class="btn btn-outline btn-sm" onclick="registerContest('timed-15')">Register →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PAST ── -->
+  <div id="compete-panel-past" style="display:none;">
+    <div class="compete-table-wrap">
+      <div class="compete-table-head">
+        <span>Contest</span><span>Type</span><span>Date</span><span>Problems</span><span>Top Score</span>
+      </div>
+      <div class="compete-table-row"><span>Weekly Tournament — Week 11</span><span class="cc-tag" style="font-size:10px">Tournament</span><span style="color:var(--muted)">18 Mar 2026</span><span style="color:var(--muted)">5</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">340 XP</span></div>
+      <div class="compete-table-row"><span>Timed Round #13</span><span class="cc-tag" style="font-size:10px">Timed</span><span style="color:var(--muted)">15 Mar 2026</span><span style="color:var(--muted)">3</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">220 XP</span></div>
+      <div class="compete-table-row"><span>School vs School — Round 2</span><span class="cc-tag" style="font-size:10px">School</span><span style="color:var(--muted)">10 Mar 2026</span><span style="color:var(--muted)">4</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">295 XP</span></div>
+      <div class="compete-table-row"><span>Weekly Tournament — Week 10</span><span class="cc-tag" style="font-size:10px">Tournament</span><span style="color:var(--muted)">11 Mar 2026</span><span style="color:var(--muted)">5</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">310 XP</span></div>
+      <div class="compete-table-row"><span>Timed Round #12</span><span class="cc-tag" style="font-size:10px">Timed</span><span style="color:var(--muted)">8 Mar 2026</span><span style="color:var(--muted)">3</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">180 XP</span></div>
+    </div>
+  </div>
+
+  <!-- ── MY HISTORY ── -->
+  <div id="compete-panel-mine" style="display:none;">
+
+    <!-- Summary stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;">
+      <div class="db-card rv" style="text-align:center;padding:20px 14px;">
+        <div style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Contests</div>
+        <div style="font-family:'Clash Display',sans-serif;font-size:36px;font-weight:700;color:var(--a1)">9</div>
+      </div>
+      <div class="db-card rv d1" style="text-align:center;padding:20px 14px;">
+        <div style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Best Rank</div>
+        <div style="font-family:'Clash Display',sans-serif;font-size:36px;font-weight:700;color:var(--a1)">#3</div>
+      </div>
+      <div class="db-card rv d2" style="text-align:center;padding:20px 14px;">
+        <div style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">XP Earned</div>
+        <div style="font-family:'Clash Display',sans-serif;font-size:36px;font-weight:700;color:var(--a1)">1.8K</div>
+      </div>
+      <div class="db-card rv d3" style="text-align:center;padding:20px 14px;">
+        <div style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Solved</div>
+        <div style="font-family:'Clash Display',sans-serif;font-size:36px;font-weight:700;color:var(--a1)">26</div>
+      </div>
+    </div>
+
+    <!-- Personal history table -->
+    <div class="compete-table-wrap">
+      <div class="compete-table-head">
+        <span>Contest</span><span>Type</span><span>Date</span><span>Rank</span><span>XP Earned</span>
+      </div>
+      <div class="compete-table-row compete-table-row-me"><span>Weekly Tournament — Week 11</span><span class="cc-tag" style="font-size:10px">Tournament</span><span style="color:var(--muted)">18 Mar 2026</span><span style="color:#fbbf24;font-weight:700;font-family:'JetBrains Mono',monospace">#3 🥉</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">+340 XP</span></div>
+      <div class="compete-table-row"><span>Timed Round #13</span><span class="cc-tag" style="font-size:10px">Timed</span><span style="color:var(--muted)">15 Mar 2026</span><span style="color:var(--muted);font-family:'JetBrains Mono',monospace">#7</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">+220 XP</span></div>
+      <div class="compete-table-row"><span>School vs School — Round 2</span><span class="cc-tag" style="font-size:10px">School</span><span style="color:var(--muted)">10 Mar 2026</span><span style="color:var(--muted);font-family:'JetBrains Mono',monospace">#5</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">+295 XP</span></div>
+      <div class="compete-table-row"><span>Weekly Tournament — Week 10</span><span class="cc-tag" style="font-size:10px">Tournament</span><span style="color:var(--muted)">11 Mar 2026</span><span style="color:#fbbf24;font-weight:700;font-family:'JetBrains Mono',monospace">#4</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">+310 XP</span></div>
+    </div>
+  </div>
+
+</div>
 </div>
 
 <!-- ════════════════════════════════
@@ -1640,7 +1877,7 @@ nav{
       <div class="chero-desc" id="ch-desc">Isolate the missing integer within the bounds. Push your pattern recognition to the limit.</div>
       <div style="display:flex;gap:9px;margin-bottom:26px;flex-wrap:wrap" id="ch-tags">
         <span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace" id="ch-tag-cat">Quantification</span>
-        <span style="background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#86efac" id="ch-tag-diff">Easy</span>
+        <span style="background:rgba(var(--a1-rgb,249,115,22),.1);border:1px solid rgba(var(--a1-rgb,249,115,22),.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1)" id="ch-tag-diff">Easy</span>
         <span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace" id="ch-tag-xp">✦ 20 XP</span>
       </div>
       <button class="btn-white" id="ch-accept-btn" onclick="acceptDailyChallenge()">▶ Accept Challenge</button>
@@ -2075,9 +2312,9 @@ nav{
       <div style="padding:20px 36px;border-bottom:1px solid var(--bdr);">
         <div style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Complexity Analysis</div>
         <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-          <div id="crp-time" style="flex:1;min-width:120px;padding:14px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:14px;text-align:center;">
-            <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#22c55e;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Time</div>
-            <div id="crp-time-val" style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#22c55e;"></div>
+          <div id="crp-time" style="flex:1;min-width:120px;padding:14px;background:rgba(var(--a1-rgb,249,115,22),.07);border:1px solid rgba(var(--a1-rgb,249,115,22),.2);border-radius:14px;text-align:center;">
+            <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Time</div>
+            <div id="crp-time-val" style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#3b4dd8;"></div>
           </div>
           <div id="crp-space" style="flex:1;min-width:120px;padding:14px;background:rgba(168,139,250,.07);border:1px solid rgba(168,139,250,.2);border-radius:14px;text-align:center;">
             <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Space</div>
@@ -2136,8 +2373,13 @@ function makeParticles(){
       // Stars
       particles.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.5,vx:0,vy:0,c:`rgba(255,255,255,${Math.random()*.6+.1})`,twinkle:Math.random()*Math.PI*2,twinkleSpeed:Math.random()*.02+.005});
     } else {
-      // Matrix chars
-      particles.push({x:Math.floor(Math.random()*(W/12))*12,y:Math.random()*H,vy:Math.random()*1.5+.5,char:String.fromCharCode(0x30A0+Math.random()*96),alpha:Math.random()*.7+.1,size:12});
+      // Soft floating dots for clean Pro aesthetic
+      particles.push({
+        x:Math.random()*W, y:Math.random()*H,
+        r:Math.random()*2+.8,
+        vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25,
+        c:`rgba(${59+Math.floor(Math.random()*60)},${77+Math.floor(Math.random()*40)},216,${(Math.random()*.08+.03).toFixed(3)})`
+      });
     }
   }
 }
@@ -2173,20 +2415,22 @@ function drawExplorer(){
   });
 }
 function drawPro(){
-  ctx.fillStyle='#010804';ctx.fillRect(0,0,W,H);
-  // Green glow blobs
-  [{x:W*.15,y:H*.25,r:W*.3,c:'rgba(34,197,94,.04)'},{x:W*.8,y:H*.7,r:W*.25,c:'rgba(34,197,94,.035)'},{x:W*.5,y:H*.5,r:W*.15,c:'rgba(134,239,172,.03)'}].forEach(b=>{
-    const g2=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);g2.addColorStop(0,b.c);g2.addColorStop(1,'transparent');ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
+  // Clean off-white base — CodeChef-style light
+  const g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,'#f8f9fb');g.addColorStop(.5,'#f4f5f9');g.addColorStop(1,'#f0f2f7');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // Very subtle indigo blobs — barely visible
+  [{x:W*.1,y:H*.1,r:W*.35,c:'rgba(99,102,241,.028)'},{x:W*.85,y:H*.25,r:W*.28,c:'rgba(59,77,216,.022)'},{x:W*.5,y:H*.85,r:W*.3,c:'rgba(139,92,246,.018)'}].forEach(b=>{
+    const g2=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+    g2.addColorStop(0,b.c);g2.addColorStop(1,'transparent');
+    ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
   });
-  // Matrix rain
+  // Soft floating dots
   particles.forEach(p=>{
-    ctx.fillStyle=`rgba(34,197,94,${p.alpha})`;
-    ctx.font=`${p.size}px JetBrains Mono,monospace`;
-    ctx.fillText(p.char,p.x,p.y);
-    p.y+=p.vy;
-    if(p.y>H){p.y=0;p.x=Math.floor(Math.random()*(W/12))*12;p.alpha=Math.random()*.7+.1;p.char=String.fromCharCode(0x30A0+Math.random()*96);}
-    // Occasional flicker
-    if(Math.random()<.01){p.char=String.fromCharCode(0x30A0+Math.random()*96);}
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.c;ctx.fill();
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
   });
 }
 let frame=0;
@@ -2226,7 +2470,7 @@ const modeConfig={
     courseH:'Coding <em>Challenges</em>',
     courseP:'Real-world coding problems from easy to hard. Write actual code, run it, submit it.',
     chTitle:'Binary Search',chDesc:'Implement binary search on a sorted array. Return the index or -1.',
-    cheroGrad:'linear-gradient(135deg,#22c55e,#84cc16)',
+    cheroGrad:'linear-gradient(135deg,#3b4dd8,#6c75e1)',
   }
 };
 
@@ -2257,7 +2501,7 @@ function setMode(m,btn){
   const ctaCfg={
     junior:{heading:'Keep the <em>Streak Alive.</em>',desc:"You're on a roll! Jump into today's logic puzzle and earn XP.",btnLabel:'🧩 Play Today\'s Puzzle',btnPage:'challenges'},
     explorer:{heading:'Push Your <em>Limits.</em>',desc:'New algorithm challenges are waiting. Keep climbing the leaderboard.',btnLabel:'🌌 Tackle Next Challenge',btnPage:'challenges'},
-    pro:{heading:'Write. Run. <em>Conquer.</em>',desc:'Your next hard problem is live. Open the editor and submit your best solution.',btnLabel:'💻 Open Code Editor',btnPage:'courses'},
+    pro:{heading:'Write. Run. <em>Conquer.</em>',desc:'Your next hard problem is live. Open the editor and submit your best solution.',btnLabel:'⚡ Go to Compete',btnPage:'compete'},
   };
   const cc=ctaCfg[m];
   const ctaH=document.getElementById('cta-heading');
@@ -2266,7 +2510,71 @@ function setMode(m,btn){
   if(ctaH)ctaH.innerHTML=cc.heading;
   if(ctaD)ctaD.textContent=cc.desc;
   if(ctaBtn){ctaBtn.textContent=cc.btnLabel;ctaBtn.onclick=()=>goPage(cc.btnPage);}
+  // Compete nav — Pro only
+  const compLi=document.getElementById('nav-compete-li');
+  if(compLi)compLi.style.display=m==='pro'?'list-item':'none';
+  if(m!=='pro'){const cp=document.getElementById('page-compete');if(cp&&cp.classList.contains('active'))goPage('home');}
 }
+
+// ════════════════════════════════════════
+// COMPETE PAGE
+// ════════════════════════════════════════
+function switchCompeteTab(tab,el){
+  ['live','upcoming','past','mine'].forEach(t=>{
+    document.getElementById('compete-panel-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('ctab-'+t).classList.remove('active');
+  });
+  if(el)el.classList.add('active');
+  if(tab==='live'||tab==='upcoming') initCompeteTimers();
+}
+
+// Countdown timers
+function initCompeteTimers(){
+  document.querySelectorAll('.cc-timer').forEach(el=>{
+    const secs=parseInt(el.dataset.end)||0;
+    if(el._timerInterval) clearInterval(el._timerInterval);
+    let remaining=secs;
+    function tick(){
+      if(remaining<=0){el.textContent='Ended';clearInterval(el._timerInterval);return;}
+      const h=Math.floor(remaining/3600);
+      const m=Math.floor((remaining%3600)/60);
+      const s=remaining%60;
+      el.textContent=h>0?`${h}h ${m}m ${s}s`:`${m}m ${s}s`;
+      remaining--;
+    }
+    tick();
+    el._timerInterval=setInterval(tick,1000);
+  });
+}
+
+function openContest(id){
+  // Opens the live code editor for contest problems
+  const contestProbs={'timed-14':1,'daily-47':1};
+  const probN=contestProbs[id]||1;
+  openProProblem(probN);
+}
+
+function registerContest(id){
+  const labels={
+    'weekly-12':'✅ Registered for Weekly Tournament Week 12!',
+    'svs-3':'✅ Registered for School vs School Round 3!',
+    'timed-15':'✅ Registered for Timed Round #15!'
+  };
+  const toast=document.createElement('div');
+  toast.className='contest-toast';
+  toast.textContent=labels[id]||'✅ Registered!';
+  document.body.appendChild(toast);
+  setTimeout(()=>{toast.style.opacity='0';toast.style.transition='opacity .4s';setTimeout(()=>toast.remove(),400);},3000);
+  // Update button
+  event.target.textContent='Registered ✓';
+  event.target.disabled=true;
+  event.target.style.opacity='.6';
+}
+
+// Init timers when compete page is first shown
+document.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(initCompeteTimers,200);
+});
 
 // ════════════════════════════════════════
 // SVG SCENES
@@ -2406,53 +2714,75 @@ function heroSceneExplorer(){
 function heroScenePro(){
   return `<svg viewBox="0 0 700 900" style="width:100%;height:100%;position:absolute;inset:0;" preserveAspectRatio="xMidYMid slice">
     <defs>
-      <radialGradient id="hs-p" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#041509"/><stop offset="100%" stop-color="#010804"/></radialGradient>
-      <radialGradient id="pg" cx="40%" cy="40%" r="55%"><stop offset="0%" stop-color="rgba(34,197,94,.12)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+      <linearGradient id="hs-p" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f4f5f9"/><stop offset="100%" stop-color="#eef0f7"/></linearGradient>
+      <radialGradient id="pg-p" cx="70%" cy="20%" r="55%"><stop offset="0%" stop-color="rgba(99,102,241,.07)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+      <filter id="shadow-p"><feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(59,77,216,.10)"/></filter>
     </defs>
     <rect width="700" height="900" fill="url(#hs-p)"/>
-    <rect width="700" height="900" fill="url(#pg)"/>
-    <!-- Matrix columns -->
-    ${Array.from({length:22},(_,i)=>{const x=i*32+4,chars=Array.from({length:Math.floor(Math.random()*8+4)},()=>String.fromCharCode(0x30A0+Math.floor(Math.random()*96)));return chars.map((c,j)=>`<text x="${x}" y="${j*28+40}" fill="#22c55e" font-family="JetBrains Mono" font-size="14" opacity="${(0.05+Math.random()*.25).toFixed(2)}">${c}</text>`).join('');}).join('')}
-    <!-- Trophy -->
-    <g transform="translate(280,220)">
-      <rect x="48" y="168" width="48" height="20" rx="5" fill="#34d399" opacity=".8"/>
-      <rect x="36" y="184" width="72" height="14" rx="5" fill="#22c55e" opacity=".8"/>
-      <path d="M18 12 L18 105 Q18 138 72 138 Q126 138 126 105 L126 12 Z" fill="#059669" opacity=".75"/>
-      <path d="M18 30 L0 30 L0 85 Q0 110 18 110" fill="#22c55e" opacity=".6"/>
-      <path d="M126 30 L144 30 L144 85 Q144 110 126 110" fill="#22c55e" opacity=".6"/>
-      <text x="72" y="85" text-anchor="middle" font-family="Clash Display,sans-serif" font-size="32" font-weight="700" fill="#d1fae5">#1</text>
-      <polygon points="72,0 80,24 104,24 84,40 92,64 72,50 52,64 60,40 40,24 64,24" fill="#fbbf24" opacity=".9"/>
+    <rect width="700" height="900" fill="url(#pg-p)"/>
+    <!-- Soft grid lines -->
+    <g stroke="rgba(99,102,241,.06)" stroke-width="1">
+      ${Array.from({length:12},(_,i)=>`<line x1="${i*60}" y1="0" x2="${i*60}" y2="900"/>`).join('')}
+      ${Array.from({length:16},(_,i)=>`<line x1="0" y1="${i*60}" x2="700" y2="${i*60}"/>`).join('')}
     </g>
-    <!-- Algorithm graph -->
-    <g transform="translate(420,280)" stroke="#22c55e" stroke-width="1.5" fill="none">
-      <rect x="0"   y="0"   width="55" height="55" rx="10" stroke-opacity=".6" fill="rgba(34,197,94,.06)"/>
-      <rect x="90"  y="0"   width="55" height="55" rx="10" stroke-opacity=".6" fill="rgba(34,197,94,.06)"/>
-      <rect x="45"  y="88"  width="55" height="55" rx="10" stroke-opacity=".6" fill="rgba(34,197,94,.1)"/>
-      <rect x="135" y="88"  width="55" height="55" rx="10" stroke-opacity=".6" fill="rgba(34,197,94,.06)"/>
-      <line x1="55" y1="27" x2="90" y2="27"/>
-      <line x1="27" y1="55" x2="72" y2="88"/>
-      <line x1="118" y1="55" x2="100" y2="88"/>
-      <line x1="100" y1="88" x2="135" y2="103"/>
-      <text x="27"  y="32" text-anchor="middle" fill="#34d399" font-family="JetBrains Mono" font-size="12">A</text>
-      <text x="117" y="32" text-anchor="middle" fill="#34d399" font-family="JetBrains Mono" font-size="12">B</text>
-      <text x="72"  y="118" text-anchor="middle" fill="#4ade80" font-family="JetBrains Mono" font-size="12">C</text>
-      <text x="162" y="118" text-anchor="middle" fill="#34d399" font-family="JetBrains Mono" font-size="12">D</text>
+    <!-- Main code editor card — light theme -->
+    <g filter="url(#shadow-p)">
+      <rect x="55" y="180" width="420" height="420" rx="18" fill="#ffffff"/>
     </g>
-    <!-- Code panel -->
-    <rect x="60" y="480" width="420" height="300" rx="16" fill="rgba(4,21,9,.9)" stroke="#22c55e" stroke-width="1" stroke-opacity=".2"/>
-    <rect x="60" y="480" width="420" height="32" rx="16" fill="rgba(34,197,94,.08)"/>
-    <circle cx="84" cy="496" r="6" fill="#ef4444" opacity=".8"/>
-    <circle cx="102" cy="496" r="6" fill="#f59e0b" opacity=".8"/>
-    <circle cx="120" cy="496" r="6" fill="#22c55e" opacity=".8"/>
-    <text x="466" y="500" text-anchor="end" fill="#1e6640" font-family="JetBrains Mono" font-size="10">JavaScript</text>
+    <!-- Editor title bar -->
+    <rect x="55" y="180" width="420" height="40" rx="18" fill="#f8f9fb"/>
+    <rect x="55" y="200" width="420" height="20" fill="#f8f9fb"/>
+    <circle cx="80" cy="200" r="6" fill="#ef4444" opacity=".7"/>
+    <circle cx="100" cy="200" r="6" fill="#f59e0b" opacity=".7"/>
+    <circle cx="120" cy="200" r="6" fill="#22c55e" opacity=".7"/>
+    <text x="420" y="205" text-anchor="end" fill="#9ca3af" font-family="JetBrains Mono" font-size="10">solution.js</text>
+    <!-- Line numbers -->
+    ${Array.from({length:12},(_,i)=>`<text x="72" y="${238+i*28}" fill="#d1d5db" font-family="JetBrains Mono" font-size="11">${i+1}</text>`).join('')}
+    <!-- Code lines — clean syntax highlighting -->
     ${[
-      {x:78,y:530,t:'function binarySearch(arr, target) {',c:'#4ade80'},{x:90,y:548,t:'let lo = 0, hi = arr.length - 1;',c:'#e2e8f0'},
-      {x:90,y:566,t:'while (lo <= hi) {',c:'#e2e8f0'},{x:104,y:584,t:'const mid = lo + hi >> 1;',c:'#86efac'},
-      {x:104,y:602,t:'if (arr[mid] === target)',c:'#e2e8f0'},{x:118,y:620,t:'return mid;',c:'#22c55e'},
-      {x:104,y:638,t:'lo = arr[mid] < target ? mid+1 : lo;',c:'#e2e8f0'},{x:104,y:656,t:'hi = arr[mid] > target ? mid-1 : hi;',c:'#e2e8f0'},
-      {x:90,y:674,t:'}',c:'#e2e8f0'},{x:90,y:692,t:'return -1;',c:'#22c55e'},{x:78,y:710,t:'}',c:'#4ade80'},
-    ].map(l=>`<text x="${l.x}" y="${l.y}" fill="${l.c}" font-family="JetBrains Mono" font-size="11.5">${l.t}</text>`).join('')}
-    <rect x="78" y="717" width="7" height="10" rx="2" fill="#22c55e"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect>
+      {x:92,y:238,t:'function binarySearch(arr, target) {',c:'#3b4dd8'},
+      {x:104,y:266,t:'let lo = 0, hi = arr.length - 1;',c:'#374151'},
+      {x:104,y:294,t:'while (lo <= hi) {',c:'#374151'},
+      {x:116,y:322,t:'const mid = (lo + hi) >> 1;',c:'#7c3aed'},
+      {x:116,y:350,t:'if (arr[mid] === target)',c:'#374151'},
+      {x:128,y:378,t:'return mid;',c:'#059669'},
+      {x:116,y:406,t:'else if (arr[mid] < target)',c:'#374151'},
+      {x:128,y:434,t:'lo = mid + 1;',c:'#374151'},
+      {x:116,y:462,t:'else hi = mid - 1;',c:'#374151'},
+      {x:104,y:490,t:'}',c:'#374151'},
+      {x:104,y:518,t:'return -1;',c:'#059669'},
+      {x:92, y:546,t:'}',c:'#3b4dd8'},
+    ].map(l=>`<text x="${l.x}" y="${l.y}" fill="${l.c}" font-family="JetBrains Mono" font-size="11.5" font-weight="500">${l.t}</text>`).join('')}
+    <!-- Cursor blink -->
+    <rect x="92" y="552" width="7" height="11" rx="2" fill="#3b4dd8"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect>
+    <!-- Rank card -->
+    <g filter="url(#shadow-p)">
+      <rect x="310" y="230" width="190" height="110" rx="16" fill="#ffffff"/>
+    </g>
+    <text x="326" y="258" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">NATIONAL RANK</text>
+    <text x="326" y="300" fill="#3b4dd8" font-family="Clash Display,sans-serif" font-size="42" font-weight="700">#3</text>
+    <text x="326" y="324" fill="#6b7280" font-family="JetBrains Mono" font-size="10">Top 0.8% · 450+ coders</text>
+    <!-- XP card -->
+    <g filter="url(#shadow-p)">
+      <rect x="310" y="362" width="190" height="100" rx="16" fill="#ffffff"/>
+    </g>
+    <text x="326" y="390" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">TOTAL XP</text>
+    <text x="326" y:="432" fill="#3b4dd8" font-family="Clash Display,sans-serif" font-size="38" font-weight="700">1,840</text>
+    <text x="326" y="450" fill="#3b4dd8" font-family="Clash Display,sans-serif" font-size="38" font-weight="700">1,840</text>
+    <text x="326" y="472" fill="#6b7280" font-family="JetBrains Mono" font-size="10">+120 XP today</text>
+    <!-- Complexity badge -->
+    <g filter="url(#shadow-p)">
+      <rect x="310" y="484" width="190" height="80" rx="16" fill="#eef1ff"/>
+    </g>
+    <text x="326" y="510" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">AVG COMPLEXITY</text>
+    <text x="326" y="546" fill="#3b4dd8" font-family="JetBrains Mono" font-size="22" font-weight="700">O(log n)</text>
+    <!-- Tag pills -->
+    <rect x="55" y="618" width="88" height="26" rx="13" fill="#eef1ff"/>
+    <text x="99" y="635" text-anchor="middle" fill="#3b4dd8" font-family="JetBrains Mono" font-size="10" font-weight="700">Algorithms</text>
+    <rect x="153" y="618" width="72" height="26" rx="13" fill="#f0fdf4"/>
+    <text x="189" y="635" text-anchor="middle" fill="#059669" font-family="JetBrains Mono" font-size="10" font-weight="700">Accepted</text>
+    <rect x="235" y="618" width="78" height="26" rx="13" fill="#fefce8"/>
+    <text x="274" y="635" text-anchor="middle" fill="#d97706" font-family="JetBrains Mono" font-size="10" font-weight="700">94% faster</text>
   </svg>`;
 }
 
@@ -2619,20 +2949,20 @@ function updateHeroPanel(){
       badges:['🔭','🌌','⭐','🚀'],
     },
     pro:{
-      bg:'radial-gradient(ellipse at 55% 30%, #062010 0%, #040f08 50%, #010804 100%)',
-      fade:'linear-gradient(90deg, #010804 0%, rgba(1,8,4,0.5) 25%, transparent 50%)',
-      accent:'#22c55e', accent2:'#86efac', accentRgb:'34,197,94',
+      bg:'radial-gradient(ellipse at 55% 30%, #eef1ff 0%, #f4f5f9 50%, #f8f9fb 100%)',
+      fade:'linear-gradient(90deg, #f8f9fb 0%, rgba(248,249,251,0.5) 25%, transparent 50%)',
+      accent:'#3b4dd8', accent2:'#6c75e1', accentRgb:'59,77,216',
       dark:'rgba(1,5,3,0.97)', darkBorder:'rgba(34,197,94,0.2)',
       codeBg:'rgba(0,4,2,0.98)', codeFile:'solution.js',
       codeLang:'JavaScript',
       codeLines:[
         {n:'1',t:'// Binary Search O(log n)',c:'#1a4a2e',i:true},
-        {n:'2',t:'function binarySearch(arr, t) {',c:'',parts:[{t:'function ',c:'#4ade80',b:true},{t:'binarySearch',c:'#86efac'},{t:'(arr, t) {',c:'#dcfce7'}]},
-        {n:'3',t:'  let lo=0, hi=arr.length-1;',c:'',parts:[{t:'  let ',c:'#4ade80',b:true},{t:'lo=',c:'#dcfce7'},{t:'0',c:'#a78bfa'},{t:', hi=arr.length-',c:'#dcfce7'},{t:'1',c:'#a78bfa'},{t:';',c:'#dcfce7'}]},
-        {n:'4',t:'  while (lo <= hi) {',c:'',parts:[{t:'  while',c:'#4ade80',b:true},{t:' (lo <= hi) {',c:'#dcfce7'}]},
-        {n:'5',t:'    const mid = lo+hi>>1;',c:'',parts:[{t:'    const ',c:'#4ade80',b:true},{t:'mid = lo+hi>>',c:'#dcfce7'},{t:'1',c:'#a78bfa'},{t:';',c:'#dcfce7'}]},
-        {n:'6',t:'    if (arr[mid]===t) return mid;',c:'',parts:[{t:'    if',c:'#4ade80',b:true},{t:' (arr[mid]===t) ',c:'#dcfce7'},{t:'return ',c:'#4ade80',b:true},{t:'mid;',c:'#dcfce7'}]},
-        {n:'7',t:'  }; return -1; }',c:'',parts:[{t:'  }; ',c:'#dcfce7'},{t:'return ',c:'#4ade80',b:true},{t:'-',c:'#dcfce7'},{t:'1',c:'#a78bfa'},{t:'; }',c:'#dcfce7'}]},
+        {n:'2',t:'function binarySearch(arr, t) {',c:'',parts:[{t:'function ',c:'#3b4dd8',b:true},{t:'binarySearch',c:'#7c3aed'},{t:'(arr, t) {',c:'#374151'}]},
+        {n:'3',t:'  let lo=0, hi=arr.length-1;',c:'',parts:[{t:'  let ',c:'#3b4dd8',b:true},{t:'lo=',c:'#374151'},{t:'0',c:'#7c3aed'},{t:', hi=arr.length-',c:'#374151'},{t:'1',c:'#7c3aed'},{t:';',c:'#374151'}]},
+        {n:'4',t:'  while (lo <= hi) {',c:'',parts:[{t:'  while',c:'#3b4dd8',b:true},{t:' (lo <= hi) {',c:'#374151'}]},
+        {n:'5',t:'    const mid = lo+hi>>1;',c:'',parts:[{t:'    const ',c:'#3b4dd8',b:true},{t:'mid = lo+hi>>',c:'#374151'},{t:'1',c:'#7c3aed'},{t:';',c:'#374151'}]},
+        {n:'6',t:'    if (arr[mid]===t) return mid;',c:'',parts:[{t:'    if',c:'#3b4dd8',b:true},{t:' (arr[mid]===t) ',c:'#374151'},{t:'return ',c:'#059669',b:true},{t:'mid;',c:'#374151'}]},
+        {n:'7',t:'  }; return -1; }',c:'',parts:[{t:'  }; ',c:'#374151'},{t:'return ',c:'#059669',b:true},{t:'-',c:'#374151'},{t:'1',c:'#7c3aed'},{t:'; }',c:'#374151'}]},
       ],
       stat1:{lbl:'XP TODAY',val:'+120 XP',sub:'Level 8 unlocked! 🏆',bar:100},
       stat2:{lbl:'DAY STREAK',val:'14 Days',sub:'Legend badge earned! ⚡'},
@@ -2778,7 +3108,7 @@ function updateHeroPanel(){
 function progCardSVG(type){
   if(type==='junior')return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pj" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#ffe0c4"/></linearGradient></defs><rect width="400" height="230" fill="url(#pj)"/><circle cx="340" cy="50" r="50" fill="#fbbf24" opacity=".35"/><circle cx="60" cy="180" r="35" fill="#f97316" opacity=".15"/><ellipse cx="90" cy="65" rx="40" ry="22" fill="#fff" opacity=".7"/><ellipse cx="120" cy="54" rx="32" ry="18" fill="#fff" opacity=".6"/><rect y="164" width="400" height="66" fill="#86efac" opacity=".4"/><rect y="178" width="400" height="52" fill="#4ade80" opacity=".25"/><circle cx="220" cy="125" r="30" fill="rgba(249,115,22,.08)" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4,3"/><text x="220" y="130" text-anchor="middle" fill="#f97316" font-size="16" font-family="JetBrains Mono">◆◆◆◆◆?</text><rect x="80" y="78" width="100" height="65" rx="12" fill="#fff" opacity=".85" stroke="#f97316" stroke-width="1"/><rect x="93" y="93" width="55" height="5" rx="2" fill="#f97316"/><rect x="93" y="104" width="74" height="4" rx="2" fill="#3b82f6" opacity=".7"/><rect x="93" y="114" width="44" height="4" rx="2" fill="#22c55e" opacity=".7"/><rect x="93" y="124" width="62" height="4" rx="2" fill="#a78bfa" opacity=".7"/><text x="200" y="210" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#7c5c3a" opacity=".8">LOGIC PUZZLES · PATTERN GAMES</text></svg>`;
   if(type==='explorer')return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pe" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#060d1c"/><stop offset="100%" stop-color="#0d1a3a"/></linearGradient></defs><rect width="400" height="230" fill="url(#pe)"/>${Array.from({length:40},()=>{const x=Math.random()*400,y=Math.random()*230,r=Math.random()*1.5+.3,a=Math.random()*.7+.1;return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="white" opacity="${a.toFixed(1)}"/>`;}).join('')}<circle cx="320" cy="60" r="48" fill="#1e3a5f" opacity=".7"/><circle cx="320" cy="60" r="38" fill="#1d4ed8" opacity=".4"/><ellipse cx="320" cy="60" rx="65" ry="14" fill="none" stroke="#06b6d4" stroke-width="2" opacity=".6"/><rect x="30" y="80" width="200" height="120" rx="12" fill="#030712" stroke="#06b6d4" stroke-width="1" stroke-opacity=".3"/><rect x="30" y="80" width="200" height="26" rx="12" fill="#0f172a"/><circle cx="48" cy="93" r="5" fill="#ef4444" opacity=".8"/><circle cx="62" cy="93" r="5" fill="#f59e0b" opacity=".8"/><circle cx="76" cy="93" r="5" fill="#22c55e" opacity=".8"/><rect x="42" y="116" width="65" height="5" rx="2" fill="#06b6d4" opacity=".8"/><rect x="42" y="127" width="100" height="4" rx="2" fill="#34d399" opacity=".7"/><rect x="42" y="138" width="55" height="4" rx="2" fill="#f97316" opacity=".8"/><rect x="42" y="149" width="80" height="4" rx="2" fill="#a78bfa" opacity=".7"/><rect x="42" y="160" width="45" height="4" rx="2" fill="#06b6d4"/><rect x="42" y="171" width="70" height="4" rx="2" fill="#34d399"/><rect x="42" y="181" width="8" height="9" rx="2" fill="#06b6d4"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect><text x="200" y="222" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#4e7a9e">ALGORITHMS · SEQUENCES · LOGIC</text></svg>`;
-  return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pp" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#030c08"/><stop offset="100%" stop-color="#071a10"/></linearGradient></defs><rect width="400" height="230" fill="url(#pp)"/><rect width="400" height="230" fill="url(#pp)"/>${Array.from({length:10},(_,i)=>{const x=i*40+4;return Array.from({length:5},(_,j)=>`<text x="${x}" y="${j*28+30}" fill="#22c55e" font-family="JetBrains Mono" font-size="13" opacity="${(0.04+Math.random()*.18).toFixed(2)}">${String.fromCharCode(0x30A0+Math.floor(Math.random()*96))}</text>`).join('');}).join('')}<rect x="60" y="50" width="280" height="145" rx="12" fill="rgba(4,21,9,.9)" stroke="#22c55e" stroke-width="1" stroke-opacity=".25"/><rect x="60" y="50" width="280" height="26" rx="12" fill="rgba(34,197,94,.08)"/><circle cx="78" cy="63" r="5" fill="#ef4444" opacity=".8"/><circle cx="92" cy="63" r="5" fill="#f59e0b" opacity=".8"/><circle cx="106" cy="63" r="5" fill="#22c55e" opacity=".8"/><text x="74" y="96" fill="#4ade80" font-family="JetBrains Mono" font-size="11">function binarySearch(arr, t) {</text><text x="84" y="111" fill="#86efac" font-family="JetBrains Mono" font-size="11">  let lo=0, hi=arr.length-1</text><text x="84" y="126" fill="#e2e8f0" font-family="JetBrains Mono" font-size="11">  while (lo &lt;= hi) {</text><text x="94" y="141" fill="#86efac" font-family="JetBrains Mono" font-size="11">    const mid = lo+hi&gt;&gt;1</text><text x="84" y="156" fill="#e2e8f0" font-family="JetBrains Mono" font-size="11">  }</text><text x="74" y="171" fill="#4ade80" font-family="JetBrains Mono" font-size="11">}</text><rect x="74" y="177" width="6" height="9" rx="2" fill="#22c55e"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect><text x="200" y="220" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1e6640">BINARY SEARCH · SORTING · DP</text></svg>`;
+  return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pp" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f4f5f9"/><stop offset="100%" stop-color="#eef0f7"/></linearGradient></defs><rect width="400" height="230" fill="url(#pp)"/><rect x="60" y="30" width="280" height="155" rx="12" fill="#ffffff" opacity=".95"/><rect x="60" y="30" width="280" height="28" rx="12" fill="#f8f9fb"/><circle cx="78" cy="44" r="5" fill="#ef4444" opacity=".7"/><circle cx="92" cy="44" r="5" fill="#f59e0b" opacity=".7"/><circle cx="106" cy="44" r="5" fill="#22c55e" opacity=".7"/><text x="326" y="48" text-anchor="end" fill="#9ca3af" font-family="JetBrains Mono" font-size="9">solution.js</text><text x="74" y="78" fill="#3b4dd8" font-family="JetBrains Mono" font-size="10.5" font-weight="500">function binarySearch(arr, t) {</text><text x="84" y="93" fill="#7c3aed" font-family="JetBrains Mono" font-size="10.5">  let lo=0, hi=arr.length-1</text><text x="84" y="108" fill="#374151" font-family="JetBrains Mono" font-size="10.5">  while (lo &lt;= hi) {</text><text x="94" y="123" fill="#7c3aed" font-family="JetBrains Mono" font-size="10.5">    const mid = lo+hi&gt;&gt;1</text><text x="84" y="138" fill="#059669" font-family="JetBrains Mono" font-size="10.5">    return mid;</text><text x="74" y="153" fill="#3b4dd8" font-family="JetBrains Mono" font-size="10.5">}</text><rect x="74" y="158" width="6" height="9" rx="2" fill="#3b4dd8"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect><rect x="60" y="196" width="72" height="22" rx="11" fill="#eef1ff"/><text x="96" y="211" text-anchor="middle" fill="#3b4dd8" font-family="JetBrains Mono" font-size="9" font-weight="700">Algorithms</text><rect x="142" y="196" width="66" height="22" rx="11" fill="#f0fdf4"/><text x="175" y="211" text-anchor="middle" fill="#059669" font-family="JetBrains Mono" font-size="9" font-weight="700">Accepted</text><rect x="218" y="196" width="72" height="22" rx="11" fill="#fefce8"/><text x="254" y="211" text-anchor="middle" fill="#d97706" font-family="JetBrains Mono" font-size="9" font-weight="700">94% faster</text></svg>`;
 }
 
 function updateProgCards(){
@@ -2854,6 +3184,7 @@ function goPage(p){
   if(p==='projects')setTimeout(initProjPage,50);
   if(p==='home'){updateHeroPanel();updateHeroMid();}
   if(p==='challenges')updateDailyChallenge();
+  if(p==='compete'){switchCompeteTab('live',document.getElementById('ctab-live'));setTimeout(initCompeteTimers,100);}
   // Reset hero panel bg if leaving home
   if(p!=='home'){const hp=document.getElementById('hero-r-panel');if(hp)hp.style.background='';}
   setTimeout(initReveal,80);
@@ -3569,7 +3900,7 @@ function updateUsernameDisplay(val){
 function saveProfile(){
   const btn=event.currentTarget;
   btn.textContent='Saved! ✓';
-  btn.style.background='#22c55e';
+  btn.style.background='var(--a1)';
   setTimeout(()=>{btn.textContent='Save Changes →';btn.style.background='';},2000);
 }
 function switchProfileTier(tier,el){
