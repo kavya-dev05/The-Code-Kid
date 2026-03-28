@@ -113,9 +113,11 @@ nav{
   box-shadow:none !important;
   height:60px !important;}
 [data-mode="pro"] .logo{
-  font-family:"Playfair Display",Georgia,serif;
-  font-size:16px;font-weight:700;
-  color:#111418;letter-spacing:0;}
+  font-family:"Satoshi",sans-serif;
+  font-size:14px;font-weight:700;
+  color:#111418;letter-spacing:-.2px;}
+[data-mode="pro"] .logo .logo-text{color:#111418;font-family:"Satoshi",sans-serif;font-size:14px;font-weight:700;}
+[data-mode="pro"] .logo .logo-text span{color:#1c2b3a;}
 [data-mode="pro"] .logo-icon{
   background:#1c2b3a;border-radius:3px;
   animation:none;box-shadow:none;}
@@ -627,6 +629,22 @@ nav{
 [data-mode="pro"] .c-kw{color:#1c2b3a;font-weight:600;}
 [data-mode="pro"] .c-fn{color:#737878;}
 [data-mode="pro"] .c-str{color:#9aa0a0;}
+/* ── Logo image — theme-aware blending ── */
+/* Junior & Pro: light bg → multiply makes white transparent, logo integrates perfectly */
+.site-logo-img{
+  mix-blend-mode:multiply;
+  border-radius:9px;
+  transition:filter .4s, box-shadow .4s;
+}
+/* Explorer: dark bg → multiply turns white black (looks bad).
+   Use normal mode + a white rounded-rect behind so the logo stays crisp */
+[data-mode="explorer"] .site-logo-img{
+  mix-blend-mode:normal;
+  background:#ffffff;
+  padding:4px;
+  border-radius:10px;
+  box-shadow:0 2px 12px rgba(0,0,0,.35);
+}
 .logo{
   font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;
   color:var(--a1);cursor:pointer;display:flex;align-items:center;gap:8px;
@@ -1084,7 +1102,7 @@ nav{
 }
 .feat-t{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:600;color:var(--text);margin-bottom:5px;letter-spacing:-.3px;transition:color .4s;}
 .feat-d{font-size:13.5px;color:var(--muted);line-height:1.6;transition:color .4s;}
-.feat-vis{border-radius:26px;overflow:hidden;height:100%;min-height:400px;}
+.feat-vis{border-radius:0;overflow:hidden;height:100%;min-height:400px;}
 
 /* CTA FINAL */
 .cta-box{
@@ -1789,6 +1807,7 @@ nav{
   flex-shrink:0;
 }
 </style>
+
 </head>
 <body>
 
@@ -1801,9 +1820,9 @@ nav{
 
 <!-- ── NAV ── -->
 <nav id="main-nav">
-  <div class="logo" onclick="goPage('home')">
-    <div class="logo-icon">✦</div>
-    <span class="logo-text">The<span>Code</span>Kid<span style="color:var(--a1);font-family:'JetBrains Mono',monospace">_</span></span>
+  <div class="logo" onclick="goPage('home')" style="display:flex;align-items:center;gap:9px;cursor:pointer;">
+    <img id="nav-logo-img" src="data:image/png;base64,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" alt="The Code Kid" class="site-logo-img" style="height:34px;width:34px;object-fit:contain;display:block;border-radius:9px;flex-shrink:0;">
+    <span class="logo-text" style="font-family:'Clash Display',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.3px;color:var(--text);transition:color .4s;white-space:nowrap;">The <span style="color:var(--a1);transition:color .4s;">Code Kid</span></span>
   </div>
   <ul class="nav-links" id="nl">
     <li><a data-p="home"        onclick="goPage('home')">Home</a></li>
@@ -2310,9 +2329,9 @@ nav{
 
       <!-- Brand column -->
       <div class="footer-brand">
-        <div class="footer-logo" onclick="goPage('home')">
-          <div class="footer-logo-icon">✦</div>
-          TheCodeKid_
+        <div class="footer-logo" onclick="goPage('home')" style="display:flex;align-items:center;gap:9px;cursor:pointer;">
+          <img id="footer-logo-img" src="data:image/png;base64,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" alt="The Code Kid" class="site-logo-img" style="height:30px;width:30px;object-fit:contain;display:block;border-radius:7px;flex-shrink:0;">
+          <span style="font-family:'Clash Display',sans-serif;font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.3px;transition:color .4s;">The <span style="color:var(--a1);transition:color .4s;">Code Kid</span></span>
         </div>
         <p class="footer-tagline">India's most aesthetic coding platform for young minds. Learn logic, build projects and compete — all in one place.</p>
         <div class="footer-socials">
@@ -2370,7 +2389,7 @@ nav{
 
     <!-- Bottom bar -->
     <div class="footer-bottom">
-      <span class="footer-copy">© 2026 TheCodeKid Technologies Pvt. Ltd. · Made with precision in India 🇮🇳</span>
+      <span class="footer-copy">© 2026 The Code Kid Technologies Pvt. Ltd. · Made with precision in India 🇮🇳</span>
       <div class="footer-badges">
         <span class="footer-badge">450+ Students</span>
         <span class="footer-badge">12 Courses</span>
@@ -3854,7 +3873,7 @@ function updateHeroPanel(){
 function progCardSVG(type){
   if(type==='junior')return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pj" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#ffe0c4"/></linearGradient></defs><rect width="400" height="230" fill="url(#pj)"/><circle cx="340" cy="50" r="50" fill="#fbbf24" opacity=".35"/><circle cx="60" cy="180" r="35" fill="#f97316" opacity=".15"/><ellipse cx="90" cy="65" rx="40" ry="22" fill="#fff" opacity=".7"/><ellipse cx="120" cy="54" rx="32" ry="18" fill="#fff" opacity=".6"/><rect y="164" width="400" height="66" fill="#86efac" opacity=".4"/><rect y="178" width="400" height="52" fill="#4ade80" opacity=".25"/><circle cx="220" cy="125" r="30" fill="rgba(249,115,22,.08)" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4,3"/><text x="220" y="130" text-anchor="middle" fill="#f97316" font-size="16" font-family="JetBrains Mono">◆◆◆◆◆?</text><rect x="80" y="78" width="100" height="65" rx="12" fill="#fff" opacity=".85" stroke="#f97316" stroke-width="1"/><rect x="93" y="93" width="55" height="5" rx="2" fill="#f97316"/><rect x="93" y="104" width="74" height="4" rx="2" fill="#3b82f6" opacity=".7"/><rect x="93" y="114" width="44" height="4" rx="2" fill="#22c55e" opacity=".7"/><rect x="93" y="124" width="62" height="4" rx="2" fill="#a78bfa" opacity=".7"/><text x="200" y="210" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#7c5c3a" opacity=".8">LOGIC PUZZLES · PATTERN GAMES</text></svg>`;
   if(type==='explorer')return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pe" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#060d1c"/><stop offset="100%" stop-color="#0d1a3a"/></linearGradient></defs><rect width="400" height="230" fill="url(#pe)"/>${Array.from({length:40},()=>{const x=Math.random()*400,y=Math.random()*230,r=Math.random()*1.5+.3,a=Math.random()*.7+.1;return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="white" opacity="${a.toFixed(1)}"/>`;}).join('')}<circle cx="320" cy="60" r="48" fill="#1e3a5f" opacity=".7"/><circle cx="320" cy="60" r="38" fill="#1d4ed8" opacity=".4"/><ellipse cx="320" cy="60" rx="65" ry="14" fill="none" stroke="#06b6d4" stroke-width="2" opacity=".6"/><rect x="30" y="80" width="200" height="120" rx="12" fill="#030712" stroke="#06b6d4" stroke-width="1" stroke-opacity=".3"/><rect x="30" y="80" width="200" height="26" rx="12" fill="#0f172a"/><circle cx="48" cy="93" r="5" fill="#ef4444" opacity=".8"/><circle cx="62" cy="93" r="5" fill="#f59e0b" opacity=".8"/><circle cx="76" cy="93" r="5" fill="#22c55e" opacity=".8"/><rect x="42" y="116" width="65" height="5" rx="2" fill="#06b6d4" opacity=".8"/><rect x="42" y="127" width="100" height="4" rx="2" fill="#34d399" opacity=".7"/><rect x="42" y="138" width="55" height="4" rx="2" fill="#f97316" opacity=".8"/><rect x="42" y="149" width="80" height="4" rx="2" fill="#a78bfa" opacity=".7"/><rect x="42" y="160" width="45" height="4" rx="2" fill="#06b6d4"/><rect x="42" y="171" width="70" height="4" rx="2" fill="#34d399"/><rect x="42" y="181" width="8" height="9" rx="2" fill="#06b6d4"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect><text x="200" y="222" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#4e7a9e">ALGORITHMS · SEQUENCES · LOGIC</text></svg>`;
-  return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pp" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f4f5f9"/><stop offset="100%" stop-color="#eef0f7"/></linearGradient></defs><rect width="400" height="230" fill="url(#pp)"/><rect x="60" y="30" width="280" height="155" rx="12" fill="#ffffff" opacity=".95"/><rect x="60" y="30" width="280" height="28" rx="12" fill="#f8f9fb"/><circle cx="78" cy="44" r="5" fill="#ef4444" opacity=".7"/><circle cx="92" cy="44" r="5" fill="#f59e0b" opacity=".7"/><circle cx="106" cy="44" r="5" fill="#22c55e" opacity=".7"/><text x="326" y="48" text-anchor="end" fill="#9ca3af" font-family="JetBrains Mono" font-size="9">solution.js</text><text x="74" y="78" fill="#1a2744" font-family="JetBrains Mono" font-size="10.5" font-weight="600">function binarySearch(arr, t) {</text><text x="84" y="93" fill="#7c3aed" font-family="JetBrains Mono" font-size="10.5">  let lo=0, hi=arr.length-1</text><text x="84" y="108" fill="#374151" font-family="JetBrains Mono" font-size="10.5">  while (lo &lt;= hi) {</text><text x="94" y="123" fill="#7c3aed" font-family="JetBrains Mono" font-size="10.5">    const mid = lo+hi&gt;&gt;1</text><text x="84" y="138" fill="#059669" font-family="JetBrains Mono" font-size="10.5">    return mid;</text><text x="74" y="153" fill="#3b4dd8" font-family="JetBrains Mono" font-size="10.5">}</text><rect x="74" y="158" width="6" height="9" rx="2" fill="#3b4dd8"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect><rect x="60" y="196" width="72" height="22" rx="6" fill="#f0f4ff"/><text x="96" y="211" text-anchor="middle" fill="#1a2744" font-family="JetBrains Mono" font-size="9" font-weight="700">Algorithms</text><rect x="142" y="196" width="66" height="22" rx="6" fill="#f0fdf4"/><text x="175" y="211" text-anchor="middle" fill="#059669" font-family="JetBrains Mono" font-size="9" font-weight="700">Accepted</text><rect x="218" y="196" width="72" height="22" rx="6" fill="#fefce8"/><text x="254" y="211" text-anchor="middle" fill="#d97706" font-family="JetBrains Mono" font-size="9" font-weight="700">94% faster</text></svg>`;
+  return `<svg viewBox="0 0 400 230" style="width:100%;height:100%;display:block;"><defs><linearGradient id="pp" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#eef0eb"/><stop offset="100%" stop-color="#e6e8e3"/></linearGradient></defs><rect width="400" height="230" fill="url(#pp)"/><rect x="60" y="30" width="280" height="155" rx="12" fill="#ffffff" opacity=".95"/><rect x="60" y="30" width="280" height="28" rx="12" fill="#f8f9fb"/><circle cx="78" cy="44" r="5" fill="#ef4444" opacity=".7"/><circle cx="92" cy="44" r="5" fill="#f59e0b" opacity=".7"/><circle cx="106" cy="44" r="5" fill="#22c55e" opacity=".7"/><text x="326" y="48" text-anchor="end" fill="#9ca3af" font-family="JetBrains Mono" font-size="9">solution.js</text><text x="74" y="78" fill="#1a2744" font-family="JetBrains Mono" font-size="10.5" font-weight="600">function binarySearch(arr, t) {</text><text x="84" y="93" fill="#7c3aed" font-family="JetBrains Mono" font-size="10.5">  let lo=0, hi=arr.length-1</text><text x="84" y="108" fill="#374151" font-family="JetBrains Mono" font-size="10.5">  while (lo &lt;= hi) {</text><text x="94" y="123" fill="#7c3aed" font-family="JetBrains Mono" font-size="10.5">    const mid = lo+hi&gt;&gt;1</text><text x="84" y="138" fill="#059669" font-family="JetBrains Mono" font-size="10.5">    return mid;</text><text x="74" y="153" fill="#3b4dd8" font-family="JetBrains Mono" font-size="10.5">}</text><rect x="74" y="158" width="6" height="9" rx="2" fill="#3b4dd8"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect><rect x="60" y="196" width="72" height="22" rx="6" fill="#f0f4ff"/><text x="96" y="211" text-anchor="middle" fill="#1a2744" font-family="JetBrains Mono" font-size="9" font-weight="700">Algorithms</text><rect x="142" y="196" width="66" height="22" rx="6" fill="#f0fdf4"/><text x="175" y="211" text-anchor="middle" fill="#059669" font-family="JetBrains Mono" font-size="9" font-weight="700">Accepted</text><rect x="218" y="196" width="72" height="22" rx="6" fill="#fefce8"/><text x="254" y="211" text-anchor="middle" fill="#d97706" font-family="JetBrains Mono" font-size="9" font-weight="700">94% faster</text></svg>`;
 }
 
 function updateProgCards(){
@@ -3868,7 +3887,7 @@ function updateProgCards(){
 function featureVisSVG(){
   // PRO MODE — Premium aesthetic SVG workspace illustration
   if(mode==='pro'){
-    return `<div style="width:100%;height:100%;position:relative;overflow:hidden;background:#f0ede6;">
+    return `<div style="width:100%;height:100%;position:relative;overflow:hidden;background:#eef0eb;">
       <svg viewBox="0 0 600 680" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
         <defs>
           <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -3876,8 +3895,8 @@ function featureVisSVG(){
             <stop offset="100%" stop-color="#d8d4cc"/>
           </linearGradient>
           <linearGradient id="wall-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#f0ede6"/>
-            <stop offset="70%" stop-color="#e4e0d8"/>
+            <stop offset="0%" stop-color="#eef0eb"/>
+            <stop offset="70%" stop-color="#e2e4df"/>
           </linearGradient>
           <linearGradient id="desk-grad" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stop-color="#ccc8c0"/>
@@ -4171,7 +4190,7 @@ function featureVisSVG(){
   }
   
   // JUNIOR MODE — Illustrated SVG
-  if(mode==='junior')return `<svg viewBox="0 0 480 560" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;border-radius:26px;display:block;"><defs><linearGradient id="fv-j" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#ffe8d4"/></linearGradient></defs><rect width="480" height="560" rx="26" fill="url(#fv-j)"/><circle cx="420" cy="60" r="60" fill="#fbbf24" opacity=".2"/><circle cx="60" cy="500" r="50" fill="#f97316" opacity=".15"/><g transform="translate(40,60)"><rect x="0" y="240" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="178" width="100" height="68" rx="10" fill="#1e293b"/><rect x="16" y="184" width="88" height="56" rx="7" fill="#0f172a"/><rect x="24" y="196" width="50" height="5" rx="2" fill="#f97316"/><rect x="24" y="206" width="68" height="4" rx="2" fill="#3b82f6"/><rect x="24" y="215" width="42" height="4" rx="2" fill="#22c55e"/><ellipse cx="60" cy="152" rx="26" ry="28" fill="#fde68a"/><rect x="38" y="174" width="44" height="48" rx="12" fill="#f97316"/><ellipse cx="50" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="147" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="147" r="3.5" fill="#1e293b"/><path d="M48 162 Q60 169 72 162" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="130" rx="26" ry="12" fill="#92400e"/></g><g transform="translate(180,40)"><rect x="0" y="256" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="188" width="100" height="74" rx="10" fill="#1e293b"/><rect x="16" y="194" width="88" height="62" rx="7" fill="#0f172a"/><rect x="24" y="206" width="55" height="5" rx="2" fill="#06b6d4"/><rect x="24" y="216" width="40" height="4" rx="2" fill="#34d399"/><rect x="24" y="225" width="70" height="4" rx="2" fill="#f97316"/><rect x="24" y="234" width="45" height="4" rx="2" fill="#a78bfa"/><rect x="24" y="243" width="60" height="4" rx="2" fill="#06b6d4"/><ellipse cx="60" cy="158" rx="28" ry="30" fill="#fed7aa"/><rect x="38" y="182" width="44" height="50" rx="12" fill="#3b82f6"/><ellipse cx="50" cy="152" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="153" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="152" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="153" r="3.5" fill="#1e293b"/><path d="M48 167 Q60 175 72 167" stroke="#9a3412" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="134" rx="28" ry="12" fill="#1e293b"/></g><g transform="translate(320,60)"><rect x="0" y="240" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="178" width="100" height="68" rx="10" fill="#1e293b"/><rect x="16" y="184" width="88" height="56" rx="7" fill="#0f172a"/><rect x="24" y="196" width="60" height="5" rx="2" fill="#22c55e"/><rect x="24" y="206" width="44" height="4" rx="2" fill="#f97316"/><rect x="24" y="215" width="68" height="4" rx="2" fill="#60a5fa"/><rect x="24" y="224" width="38" height="4" rx="2" fill="#a78bfa"/><ellipse cx="60" cy="152" rx="26" ry="28" fill="#fde68a"/><rect x="38" y="174" width="44" height="50" rx="12" fill="#10b981"/><ellipse cx="50" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="147" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="147" r="3.5" fill="#1e293b"/><path d="M48 162 Q60 169 72 162" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="130" rx="26" ry="12" fill="#44403c"/></g><rect x="80" y="330" width="320" height="55" rx="16" fill="rgba(249,115,22,.08)" stroke="#f97316" stroke-width="1.5"/><text x="240" y="362" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#f97316">TheCodeKid · 2026</text><rect x="70" y="408" width="100" height="34" rx="18" fill="#fbbf24" opacity=".2"/><text x="120" y="430" text-anchor="middle" font-size="13" fill="#92400e" font-family="JetBrains Mono">⭐ Logic Pro</text><rect x="310" y="408" width="100" height="34" rx="18" fill="#3b82f6" opacity=".15"/><text x="360" y="430" text-anchor="middle" font-size="13" fill="#1d4ed8" font-family="JetBrains Mono">🏆 Top 10</text><rect x="160" y="456" width="160" height="34" rx="18" fill="#22c55e" opacity=".14"/><text x="240" y="478" text-anchor="middle" font-size="13" fill="#166534" font-family="JetBrains Mono">✦ 445 XP</text></svg>`;
+  if(mode==='junior')return `<svg viewBox="0 0 480 560" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;border-radius:26px;display:block;"><defs><linearGradient id="fv-j" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#ffe8d4"/></linearGradient></defs><rect width="480" height="560" rx="26" fill="url(#fv-j)"/><circle cx="420" cy="60" r="60" fill="#fbbf24" opacity=".2"/><circle cx="60" cy="500" r="50" fill="#f97316" opacity=".15"/><g transform="translate(40,60)"><rect x="0" y="240" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="178" width="100" height="68" rx="10" fill="#1e293b"/><rect x="16" y="184" width="88" height="56" rx="7" fill="#0f172a"/><rect x="24" y="196" width="50" height="5" rx="2" fill="#f97316"/><rect x="24" y="206" width="68" height="4" rx="2" fill="#3b82f6"/><rect x="24" y="215" width="42" height="4" rx="2" fill="#22c55e"/><ellipse cx="60" cy="152" rx="26" ry="28" fill="#fde68a"/><rect x="38" y="174" width="44" height="48" rx="12" fill="#f97316"/><ellipse cx="50" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="147" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="147" r="3.5" fill="#1e293b"/><path d="M48 162 Q60 169 72 162" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="130" rx="26" ry="12" fill="#92400e"/></g><g transform="translate(180,40)"><rect x="0" y="256" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="188" width="100" height="74" rx="10" fill="#1e293b"/><rect x="16" y="194" width="88" height="62" rx="7" fill="#0f172a"/><rect x="24" y="206" width="55" height="5" rx="2" fill="#06b6d4"/><rect x="24" y="216" width="40" height="4" rx="2" fill="#34d399"/><rect x="24" y="225" width="70" height="4" rx="2" fill="#f97316"/><rect x="24" y="234" width="45" height="4" rx="2" fill="#a78bfa"/><rect x="24" y="243" width="60" height="4" rx="2" fill="#06b6d4"/><ellipse cx="60" cy="158" rx="28" ry="30" fill="#fed7aa"/><rect x="38" y="182" width="44" height="50" rx="12" fill="#3b82f6"/><ellipse cx="50" cy="152" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="153" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="152" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="153" r="3.5" fill="#1e293b"/><path d="M48 167 Q60 175 72 167" stroke="#9a3412" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="134" rx="28" ry="12" fill="#1e293b"/></g><g transform="translate(320,60)"><rect x="0" y="240" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="178" width="100" height="68" rx="10" fill="#1e293b"/><rect x="16" y="184" width="88" height="56" rx="7" fill="#0f172a"/><rect x="24" y="196" width="60" height="5" rx="2" fill="#22c55e"/><rect x="24" y="206" width="44" height="4" rx="2" fill="#f97316"/><rect x="24" y="215" width="68" height="4" rx="2" fill="#60a5fa"/><rect x="24" y="224" width="38" height="4" rx="2" fill="#a78bfa"/><ellipse cx="60" cy="152" rx="26" ry="28" fill="#fde68a"/><rect x="38" y="174" width="44" height="50" rx="12" fill="#10b981"/><ellipse cx="50" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="147" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="147" r="3.5" fill="#1e293b"/><path d="M48 162 Q60 169 72 162" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="130" rx="26" ry="12" fill="#44403c"/></g><rect x="80" y="330" width="320" height="55" rx="16" fill="rgba(249,115,22,.08)" stroke="#f97316" stroke-width="1.5"/><text x="240" y="362" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#f97316">The Code Kid · 2026</text><rect x="70" y="408" width="100" height="34" rx="18" fill="#fbbf24" opacity=".2"/><text x="120" y="430" text-anchor="middle" font-size="13" fill="#92400e" font-family="JetBrains Mono">⭐ Logic Pro</text><rect x="310" y="408" width="100" height="34" rx="18" fill="#3b82f6" opacity=".15"/><text x="360" y="430" text-anchor="middle" font-size="13" fill="#1d4ed8" font-family="JetBrains Mono">🏆 Top 10</text><rect x="160" y="456" width="160" height="34" rx="18" fill="#22c55e" opacity=".14"/><text x="240" y="478" text-anchor="middle" font-size="13" fill="#166534" font-family="JetBrains Mono">✦ 445 XP</text></svg>`;
   
   // EXPLORER MODE — Dark themed SVG
   return `<svg viewBox="0 0 480 560" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;border-radius:26px;display:block;"><rect width="480" height="560" rx="26" fill="${mode==='explorer'?'#060d1c':'#030c08'}"/><text x="240" y="280" text-anchor="middle" fill="${mode==='explorer'?'#06b6d4':'#22c55e'}" font-family="JetBrains Mono" font-size="16">// Loading scene...</text></svg>`;
@@ -4748,7 +4767,7 @@ function doLogin(){
 
 function showTierToast(tier) {
   const labels = { junior: '🎮 Junior World Unlocked!', explorer: '🔭 Explorer World Unlocked!', pro: '⚡ Pro World Unlocked!' };
-  const colors = { junior: '#f97316', explorer: '#06b6d4', pro: '#22c55e' };
+  const colors = { junior: '#f97316', explorer: '#06b6d4', pro: '#1c2b3a' };
   const toast = document.createElement('div');
   toast.style.cssText = `position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:${colors[tier]};color:#fff;padding:14px 28px;border-radius:50px;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;z-index:9999;box-shadow:0 8px 32px -8px ${colors[tier]};animation:pageIn .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;`;
   toast.textContent = labels[tier] || 'Welcome!';
@@ -4797,6 +4816,61 @@ function lmSel(el,m){
   if(cardTitle)cardTitle.textContent=p.cardTitle;
   if(cardSub)cardSub.textContent=p.cardSub;
   if(cardIcon)cardIcon.textContent=p.cardIcon;
+}
+
+// Sync all tier selector buttons (used by lmSel and signOut)
+function _syncLoginTierButtons(m) {
+  document.querySelectorAll('.login-mode-sel').forEach(function(sel) {
+    sel.querySelectorAll('.lms-btn').forEach(function(b) {
+      b.classList.remove('sel');
+      // match by checking onclick attr contains the tier name
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + m + "'") !== -1) {
+        b.classList.add('sel');
+      }
+    });
+  });
+}
+
+// Sync left preview panel on login page (used by lmSel and signOut)
+function _syncLoginPreviewPanel(m) {
+  var previews2 = {
+    junior: {
+      badge:'🎮 Junior Mode',
+      heading:'Start Your<br><em>Coding Journey.</em>',
+      desc:'Logic puzzles, pattern games and fun challenges designed for young minds aged 8–12.',
+      feats:[{icon:'🧩',text:'Fun pattern-based quizzes'},{icon:'📚',text:'Beginner-friendly curriculum'},{icon:'⭐',text:'XP rewards & streaks'},{icon:'🛡️',text:'Safe, distraction-free environment'}],
+      cardIcon:'🎮', cardTitle:"Today's Challenge", cardSub:'Node Calibration · ✦ 20 XP'
+    },
+    explorer: {
+      badge:'🔭 Explorer Mode',
+      heading:'Code Beyond,<br><em>No Limits.</em>',
+      desc:'Bridge logic and real programming. Structural thinking, algorithms and problem solving for ages 12–15.',
+      feats:[{icon:'🔭',text:'Intermediate algorithm challenges'},{icon:'🌌',text:'Real data structure puzzles'},{icon:'📊',text:'Competitive leaderboard'},{icon:'🚀',text:'Dark ocean UI — focused & immersive'}],
+      cardIcon:'🔭', cardTitle:"Today's Challenge", cardSub:'Fibonacci Sequence · ✦ 25 XP'
+    },
+    pro: {
+      badge:'⚡ Pro Mode',
+      heading:'Think & Build,<br><em>Conquer.</em>',
+      desc:'Advanced algorithms, live coding editor, and competitive challenges. For those ready to lead the field.',
+      feats:[{icon:'💻',text:'Live code editor with run & submit'},{icon:'⚡',text:'Hard algorithm problems (LeetCode style)'},{icon:'🏆',text:'Full matrix/terminal aesthetic'},{icon:'🔥',text:'Compete at national level'}],
+      cardIcon:'⚡', cardTitle:"Today's Challenge", cardSub:'Binary Search · ✦ 60 XP'
+    }
+  };
+  var p = previews2[m] || previews2['junior'];
+  var badge = document.getElementById('ltp-badge');
+  var heading = document.getElementById('ltp-heading');
+  var desc = document.getElementById('ltp-desc');
+  var feats = document.getElementById('ltp-features');
+  var cardTitle = document.getElementById('ltp-card-title');
+  var cardSub = document.getElementById('ltp-card-sub');
+  var cardIcon = document.querySelector('#ltp-visual-card > div:first-child');
+  if(badge) badge.textContent = p.badge;
+  if(heading) heading.innerHTML = p.heading;
+  if(desc) desc.textContent = p.desc;
+  if(feats) feats.innerHTML = p.feats.map(function(f){ return '<div class="ltp-feat"><div class="ltp-feat-icon">'+f.icon+'</div>'+f.text+'</div>'; }).join('');
+  if(cardTitle) cardTitle.textContent = p.cardTitle;
+  if(cardSub) cardSub.textContent = p.cardSub;
+  if(cardIcon) cardIcon.textContent = p.cardIcon;
 }
 
 // ════════════════════════════════════════
@@ -4996,15 +5070,15 @@ function submitContact(){
 
 const footerContent = {
   about: {
-    title: 'About TheCodeKid',
-    body: `<p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">TheCodeKid is India's most aesthetically crafted coding education platform for young learners aged 8–18. We believe coding education should be beautiful, focused and deeply engaging — not cluttered or overwhelming.</p>
+    title: 'About The Code Kid',
+    body: `<p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">The Code Kid is India's most aesthetically crafted coding education platform for young learners aged 8–18. We believe coding education should be beautiful, focused and deeply engaging — not cluttered or overwhelming.</p>
     <p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">Founded in 2024 in Bengaluru, we've built three distinct learning worlds — Junior, Explorer and Pro — each with its own aesthetic, curriculum and challenge style, tailored precisely to the age and skill level of the learner.</p>
     <p style="color:var(--muted);font-size:14px;line-height:1.75;">Our platform is used by 450+ students across schools in Delhi, Mumbai, Bengaluru, Pune and Gurgaon.</p>`
   },
   mission: {
     title: 'Our Mission',
     body: `<p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">To make every young coder feel like they belong in the world of technology — regardless of their school, city or background.</p>
-    <p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">We reject the idea that learning to code has to be boring, generic or one-size-fits-all. Every pixel, animation and challenge on TheCodeKid is designed with intention.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:16px;">We reject the idea that learning to code has to be boring, generic or one-size-fits-all. Every pixel, animation and challenge on The Code Kid is designed with intention.</p>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
       <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);"><span style="font-size:18px;">🧠</span><span style="font-size:13px;color:var(--text);font-weight:600;">Build logical thinking from an early age</span></div>
       <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(var(--a1-rgb,249,115,22),.06);border:1px solid var(--bdr);"><span style="font-size:18px;">🎨</span><span style="font-size:13px;color:var(--text);font-weight:600;">Make learning beautiful and distraction-free</span></div>
@@ -5029,7 +5103,7 @@ const footerContent = {
   },
   terms: {
     title: 'Terms of Use',
-    body: `<p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;">By using TheCodeKid, you agree to use the platform respectfully and only for educational purposes.</p>
+    body: `<p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;">By using The Code Kid, you agree to use the platform respectfully and only for educational purposes.</p>
     <p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;"><strong style="color:var(--text);">Accounts:</strong> One account per student. Sharing accounts or impersonating others is not permitted.</p>
     <p style="color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:12px;"><strong style="color:var(--text);">Content:</strong> Projects uploaded to the community must be your own original work and must be appropriate for all ages.</p>
     <p style="color:var(--muted);font-size:13px;line-height:1.75;"><strong style="color:var(--text);">Changes:</strong> We reserve the right to update these terms. Continued use means acceptance.</p>`
@@ -5067,11 +5141,19 @@ function closeFooterModal(){
 // SIGN OUT
 // ════════════════════════════════════════
 function signOut(){
+  // Remember which tier they were in so login page shows correct theme
+  var lastTier = mode || 'junior';
   // Clear all tier access
   unlockedTiers.clear();
   currentSignedInTier = null;
   saveTierState();
-  setMode('junior', null);
+  // Keep mode matching their last tier so login/signup renders correctly
+  loginMode = lastTier;
+  setMode(lastTier, null);
+  // Sync tier selector buttons on both login and signup pages
+  _syncLoginTierButtons(lastTier);
+  // Sync the left preview panel content
+  _syncLoginPreviewPanel(lastTier);
   goPage('login');
 }
 
@@ -5170,10 +5252,10 @@ const tierData = {
     title: 'Pro\nCoders',
     desc: 'Raw algorithms, live code editor and competitive challenges. Write real code, optimise complexity, lead the field.',
     features: ['💻 Live Code Editor','⚡ LeetCode Problems','📈 Complexity Analysis','🏆 National Ranking'],
-    bg: 'radial-gradient(ellipse at 40% 30%, #052e12 0%, #041509 30%, #030f06 60%, #010804 100%)',
-    btnBg: '#22c55e', btnColor: '#fff',
-    deco1: '#22c55e', deco2: '#86efac', deco3Color: '#4ade80',
-    textColor: '#dcfce7', badgeColor: '#4ade80',
+    bg: 'radial-gradient(ellipse at 40% 30%, #2e4057 0%, #1c2b3a 30%, #111c28 60%, #080f17 100%)',
+    btnBg: '#eef0eb', btnColor: '#1c2b3a',
+    deco1: '#2e4057', deco2: '#1c2b3a', deco3Color: '#eef0eb',
+    textColor: '#eef0eb', badgeColor: '#9aa0a0',
   }
 };
 
@@ -5190,7 +5272,7 @@ function enterTier(tier) {
     window.scrollTo({ top: 0, behavior: 'instant' });
     // Subtle toast to confirm switch
     const labels = { junior: '🎮 Switched to Junior', explorer: '🔭 Switched to Explorer', pro: '⚡ Switched to Pro' };
-    const colors = { junior: '#f97316', explorer: '#06b6d4', pro: '#22c55e' };
+    const colors = { junior: '#f97316', explorer: '#06b6d4', pro: '#1c2b3a' };
     const toast = document.createElement('div');
     toast.style.cssText = `position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:${colors[tier]};color:#fff;padding:12px 24px;border-radius:50px;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;z-index:9999;box-shadow:0 8px 32px -8px ${colors[tier]};animation:pageIn .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;`;
     toast.textContent = labels[tier];
