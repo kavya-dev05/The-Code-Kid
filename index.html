@@ -252,7 +252,7 @@ nav{
 [data-mode="pro"] .feat-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:80px;align-items:start;}
+  gap:80px;align-items:stretch;}
 [data-mode="pro"] .feat-item{
   display:flex;flex-direction:column;gap:6px;
   border:none;border-bottom:1px solid rgba(17,20,24,.09);
@@ -271,7 +271,13 @@ nav{
 [data-mode="pro"] .feat-d{
   font-family:"Satoshi",sans-serif;
   font-size:13.5px;color:#737878;line-height:1.65;}
-[data-mode="pro"] .feat-vis{border-radius:0;}
+[data-mode="pro"] .feat-vis{
+  border-radius:0;
+  height:100%;
+  min-height:400px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(17,20,24,.08), 0 0 0 1px rgba(17,20,24,.06);
+}
 
 /* ─ Cards — flat white, hairline, zero radius ─ */
 [data-mode="pro"] .card{
@@ -561,6 +567,29 @@ nav{
   font-family:"Playfair Display",serif;font-weight:900;color:#111418;}
 [data-mode="pro"] .profile-hstat-l{color:#9aa0a0;letter-spacing:2px;}
 [data-mode="pro"] .badge-item{border-radius:0;border-color:rgba(17,20,24,.1);}
+
+/* Pro Recent Activity Timeline */
+/* activity list now rendered dynamically per-theme via updateActivityList() */
+.pro-act-item{display:grid;grid-template-columns:24px 1fr;column-gap:14px;position:relative;padding-bottom:20px;align-items:start;}
+.pro-act-item--last{padding-bottom:0;}
+.pro-act-line{position:absolute;left:11px;top:20px;bottom:0;width:1px;background:rgba(17,20,24,.08);}
+.pro-act-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;justify-self:center;flex-shrink:0;border:2px solid #ffffff;box-shadow:0 0 0 1.5px currentColor;}
+.pro-act-dot--solved{background:#1c2b3a;color:#1c2b3a;}
+.pro-act-dot--streak{background:#d97706;color:#d97706;}
+.pro-act-dot--badge{background:#7c3aed;color:#7c3aed;}
+.pro-act-dot--challenge{background:#059669;color:#059669;}
+.pro-act-body{display:flex;flex-direction:column;gap:3px;}
+.pro-act-meta{display:flex;align-items:center;gap:8px;margin-bottom:2px;}
+.pro-act-tag{font-family:"Satoshi",sans-serif;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:2px 7px;border-radius:1px;}
+.pro-act-tag--solved{background:rgba(28,43,58,.1);color:#1c2b3a;}
+.pro-act-tag--streak{background:rgba(217,119,6,.1);color:#b45309;}
+.pro-act-tag--badge{background:rgba(124,58,237,.1);color:#6d28d9;}
+.pro-act-tag--challenge{background:rgba(5,150,105,.1);color:#047857;}
+.pro-act-time{font-family:"Satoshi",sans-serif;font-size:11px;color:#9aa0a0;font-weight:400;}
+.pro-act-title{font-family:"Playfair Display",Georgia,serif;font-size:14px;font-weight:700;color:#111418;line-height:1.2;}
+.pro-act-sub{display:flex;align-items:center;gap:10px;margin-top:1px;}
+.pro-act-xp{font-family:"Satoshi",sans-serif;font-size:11px;font-weight:700;color:#1c2b3a;}
+.pro-act-detail{font-family:"Satoshi",sans-serif;font-size:11px;font-weight:400;color:#9aa0a0;}
 
 /* ─ Footer ─ */
 [data-mode="pro"] .site-footer{
@@ -1038,7 +1067,7 @@ nav{
 .prog-desc{font-size:13.5px;color:var(--muted);line-height:1.6;transition:color .4s;}
 
 /* FEATURES */
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:stretch;}
 .feat-list{display:flex;flex-direction:column;}
 .feat-item{
   padding:24px 0;border-bottom:1px solid var(--bdr);
@@ -1055,7 +1084,7 @@ nav{
 }
 .feat-t{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:600;color:var(--text);margin-bottom:5px;letter-spacing:-.3px;transition:color .4s;}
 .feat-d{font-size:13.5px;color:var(--muted);line-height:1.6;transition:color .4s;}
-.feat-vis{border-radius:26px;overflow:hidden;}
+.feat-vis{border-radius:26px;overflow:hidden;height:100%;min-height:400px;}
 
 /* CTA FINAL */
 .cta-box{
@@ -1877,14 +1906,9 @@ nav{
       </div>
 
       <!-- Recent activity -->
-      <div class="db-card rv">
-        <div class="db-lbl" style="margin-bottom:12px">📋 Recent Activity</div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div class="activity-row"><span class="activity-icon">✅</span><div><div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">Solved: Binary Search</div><div style="font-size:11px;color:var(--muted);transition:color .4s">+60 XP · 2 hours ago</div></div></div>
-          <div class="activity-row"><span class="activity-icon">🔥</span><div><div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">3-day streak achieved!</div><div style="font-size:11px;color:var(--muted);transition:color .4s">Yesterday</div></div></div>
-          <div class="activity-row"><span class="activity-icon">🏅</span><div><div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">Badge unlocked: Debug</div><div style="font-size:11px;color:var(--muted);transition:color .4s">3 days ago</div></div></div>
-          <div class="activity-row"><span class="activity-icon">🎯</span><div><div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">Daily challenge completed</div><div style="font-size:11px;color:var(--muted);transition:color .4s">4 days ago · +20 XP</div></div></div>
-        </div>
+      <div class="db-card rv" id="recent-activity-card">
+        <div class="db-lbl" style="margin-bottom:14px">📋 Recent Activity</div>
+        <div id="activity-list-body"></div>
       </div>
 
     </div>
@@ -3124,6 +3148,67 @@ const modeConfig={
   }
 };
 
+// ════════════════════════════════════════
+// RECENT ACTIVITY — Per-theme data & renderer
+// ════════════════════════════════════════
+const themeActivity = {
+  junior: [
+    { icon:'✅', title:'Solved: Sequential Pattern Alpha',  sub:'+20 XP · 1 hour ago' },
+    { icon:'🔥', title:'5-day streak achieved!',           sub:'Yesterday' },
+    { icon:'🏅', title:'Badge unlocked: Pattern Wizard',   sub:'2 days ago' },
+    { icon:'🎯', title:'Daily puzzle completed',           sub:'3 days ago · +15 XP' },
+    { icon:'⭐', title:'Reached Logic Pro rank',           sub:'4 days ago' },
+  ],
+  explorer: [
+    { icon:'✅', title:'Solved: Fibonacci Sequence',        sub:'+25 XP · 2 hours ago' },
+    { icon:'🔥', title:'7-day streak — Explorer Fire!',    sub:'Yesterday' },
+    { icon:'🏅', title:'Badge unlocked: Algo Ace',         sub:'2 days ago' },
+    { icon:'🎯', title:'Algorithm challenge completed',    sub:'3 days ago · +30 XP' },
+    { icon:'🌌', title:'Entered Top 50 on Leaderboard',    sub:'5 days ago' },
+  ],
+  pro: [
+    { type:'solved',    tag:'SOLVED',    time:'2 hours ago',  title:'Binary Search',   xp:'+60 XP', detail:'O(log n) · Medium' },
+    { type:'streak',    tag:'STREAK',    time:'Yesterday',    title:'3-Day Streak',    xp:'+15 XP', detail:'Consistency milestone' },
+    { type:'badge',     tag:'BADGE',     time:'3 days ago',   title:'Debug Unlocked',  xp:'',       detail:'Rare · Top 12% of users' },
+    { type:'challenge', tag:'DAILY',     time:'4 days ago',   title:'Daily Challenge', xp:'+20 XP', detail:'Completed on first try' },
+  ]
+};
+
+function updateActivityList() {
+  const el = document.getElementById('activity-list-body');
+  if (!el) return;
+  const m = mode || 'junior';
+  const data = themeActivity[m] || themeActivity.junior;
+
+  if (m === 'pro') {
+    // Pro: timeline style
+    el.style.cssText = 'display:flex;flex-direction:column;gap:0;';
+    el.innerHTML = data.map((a, i) => {
+      const isLast = i === data.length - 1;
+      return `<div class="pro-act-item${isLast?' pro-act-item--last':''}">
+        ${!isLast ? '<div class="pro-act-line"></div>' : ''}
+        <div class="pro-act-dot pro-act-dot--${a.type}"></div>
+        <div class="pro-act-body">
+          <div class="pro-act-meta"><span class="pro-act-tag pro-act-tag--${a.type}">${a.tag}</span><span class="pro-act-time">${a.time}</span></div>
+          <div class="pro-act-title">${a.title}</div>
+          <div class="pro-act-sub">${a.xp?`<span class="pro-act-xp">${a.xp}</span>`:''}<span class="pro-act-detail">${a.detail}</span></div>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    // Junior / Explorer: icon row style
+    el.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
+    el.innerHTML = data.map(a => `
+      <div class="activity-row">
+        <span class="activity-icon">${a.icon}</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">${a.title}</div>
+          <div style="font-size:11px;color:var(--muted);transition:color .4s">${a.sub}</div>
+        </div>
+      </div>`).join('');
+  }
+}
+
 function setMode(m,btn){
   mode=m;
   document.documentElement.setAttribute('data-mode',m);
@@ -3169,6 +3254,12 @@ function setMode(m,btn){
   const proRow=document.getElementById('stats-row-pro');
   if(defRow)defRow.style.display=m==='pro'?'none':'grid';
   if(proRow)proRow.style.display=m==='pro'?'block':'none';
+  // Sync profile tier badge with current mode
+  const badgeMap={junior:'🎮 Junior Coder',explorer:'🔭 Explorer',pro:'⚡ Pro Coder'};
+  const profileBadgeEl=document.getElementById('profile-tier-badge');
+  if(profileBadgeEl)profileBadgeEl.textContent=badgeMap[m]||badgeMap.junior;
+  // Render per-theme recent activity
+  updateActivityList();
 }
 
 // ════════════════════════════════════════
@@ -3775,8 +3866,315 @@ function updateProgCards(){
 
 // Feature vis
 function featureVisSVG(){
-  if(mode==='junior')return `<svg viewBox="0 0 480 560" style="width:100%;height:auto;border-radius:26px;display:block;"><defs><linearGradient id="fv-j" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#ffe8d4"/></linearGradient></defs><rect width="480" height="560" rx="26" fill="url(#fv-j)"/><circle cx="420" cy="60" r="60" fill="#fbbf24" opacity=".2"/><circle cx="60" cy="500" r="50" fill="#f97316" opacity=".15"/><g transform="translate(40,60)"><rect x="0" y="240" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="178" width="100" height="68" rx="10" fill="#1e293b"/><rect x="16" y="184" width="88" height="56" rx="7" fill="#0f172a"/><rect x="24" y="196" width="50" height="5" rx="2" fill="#f97316"/><rect x="24" y="206" width="68" height="4" rx="2" fill="#3b82f6"/><rect x="24" y="215" width="42" height="4" rx="2" fill="#22c55e"/><ellipse cx="60" cy="152" rx="26" ry="28" fill="#fde68a"/><rect x="38" y="174" width="44" height="48" rx="12" fill="#f97316"/><ellipse cx="50" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="147" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="147" r="3.5" fill="#1e293b"/><path d="M48 162 Q60 169 72 162" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="130" rx="26" ry="12" fill="#92400e"/></g><g transform="translate(180,40)"><rect x="0" y="256" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="188" width="100" height="74" rx="10" fill="#1e293b"/><rect x="16" y="194" width="88" height="62" rx="7" fill="#0f172a"/><rect x="24" y="206" width="55" height="5" rx="2" fill="#06b6d4"/><rect x="24" y="216" width="40" height="4" rx="2" fill="#34d399"/><rect x="24" y="225" width="70" height="4" rx="2" fill="#f97316"/><rect x="24" y="234" width="45" height="4" rx="2" fill="#a78bfa"/><rect x="24" y="243" width="60" height="4" rx="2" fill="#06b6d4"/><ellipse cx="60" cy="158" rx="28" ry="30" fill="#fed7aa"/><rect x="38" y="182" width="44" height="50" rx="12" fill="#3b82f6"/><ellipse cx="50" cy="152" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="153" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="152" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="153" r="3.5" fill="#1e293b"/><path d="M48 167 Q60 175 72 167" stroke="#9a3412" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="134" rx="28" ry="12" fill="#1e293b"/></g><g transform="translate(320,60)"><rect x="0" y="240" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="178" width="100" height="68" rx="10" fill="#1e293b"/><rect x="16" y="184" width="88" height="56" rx="7" fill="#0f172a"/><rect x="24" y="196" width="60" height="5" rx="2" fill="#22c55e"/><rect x="24" y="206" width="44" height="4" rx="2" fill="#f97316"/><rect x="24" y="215" width="68" height="4" rx="2" fill="#60a5fa"/><rect x="24" y="224" width="38" height="4" rx="2" fill="#a78bfa"/><ellipse cx="60" cy="152" rx="26" ry="28" fill="#fde68a"/><rect x="38" y="174" width="44" height="50" rx="12" fill="#10b981"/><ellipse cx="50" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="147" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="147" r="3.5" fill="#1e293b"/><path d="M48 162 Q60 169 72 162" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="130" rx="26" ry="12" fill="#44403c"/></g><rect x="80" y="330" width="320" height="55" rx="16" fill="rgba(249,115,22,.08)" stroke="#f97316" stroke-width="1.5"/><text x="240" y="362" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#f97316">TheCodeKid · 2026</text><rect x="70" y="408" width="100" height="34" rx="18" fill="#fbbf24" opacity=".2"/><text x="120" y="430" text-anchor="middle" font-size="13" fill="#92400e" font-family="JetBrains Mono">⭐ Logic Pro</text><rect x="310" y="408" width="100" height="34" rx="18" fill="#3b82f6" opacity=".15"/><text x="360" y="430" text-anchor="middle" font-size="13" fill="#1d4ed8" font-family="JetBrains Mono">🏆 Top 10</text><rect x="160" y="456" width="160" height="34" rx="18" fill="#22c55e" opacity=".14"/><text x="240" y="478" text-anchor="middle" font-size="13" fill="#166534" font-family="JetBrains Mono">✦ 445 XP</text></svg>`;
-  return `<svg viewBox="0 0 480 560" style="width:100%;height:auto;border-radius:26px;display:block;"><rect width="480" height="560" rx="26" fill="${mode==='explorer'?'#060d1c':'#030c08'}"/><text x="240" y="280" text-anchor="middle" fill="${mode==='explorer'?'#06b6d4':'#22c55e'}" font-family="JetBrains Mono" font-size="16">// Loading scene...</text></svg>`;
+  // PRO MODE — Premium aesthetic SVG workspace illustration
+  if(mode==='pro'){
+    return `<div style="width:100%;height:100%;position:relative;overflow:hidden;background:#f0ede6;">
+      <svg viewBox="0 0 600 680" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+        <defs>
+          <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#e8e4dc"/>
+            <stop offset="100%" stop-color="#d8d4cc"/>
+          </linearGradient>
+          <linearGradient id="wall-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#f0ede6"/>
+            <stop offset="70%" stop-color="#e4e0d8"/>
+          </linearGradient>
+          <linearGradient id="desk-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ccc8c0"/>
+            <stop offset="100%" stop-color="#b8b4ac"/>
+          </linearGradient>
+          <linearGradient id="screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1a1a18"/>
+            <stop offset="100%" stop-color="#0e0e0c"/>
+          </linearGradient>
+          <linearGradient id="monitor-frame" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#d0ccc4"/>
+            <stop offset="100%" stop-color="#b8b4ac"/>
+          </linearGradient>
+          <filter id="shadow-soft" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,0.18)"/>
+          </filter>
+          <filter id="shadow-light" x="-10%" y="-10%" width="120%" height="130%">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(0,0,0,0.10)"/>
+          </filter>
+          <filter id="key-shadow">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.15)"/>
+          </filter>
+          <clipPath id="screen-clip">
+            <rect x="148" y="132" width="260" height="220" rx="2"/>
+          </clipPath>
+        </defs>
+
+        <!-- Room background -->
+        <rect width="600" height="680" fill="url(#wall-grad)"/>
+
+        <!-- Subtle wall texture lines -->
+        <line x1="0" y1="340" x2="600" y2="340" stroke="#dddad2" stroke-width="0.5" opacity="0.6"/>
+        <line x1="300" y1="0" x2="300" y2="340" stroke="#dddad2" stroke-width="0.5" opacity="0.4"/>
+
+        <!-- Window light coming from right — ambient glow -->
+        <ellipse cx="560" cy="120" rx="120" ry="160" fill="rgba(255,252,240,0.35)"/>
+        <ellipse cx="560" cy="120" rx="70" ry="100" fill="rgba(255,252,240,0.25)"/>
+
+        <!-- Desk surface -->
+        <rect x="60" y="430" width="500" height="18" rx="2" fill="url(#desk-grad)" filter="url(#shadow-soft)"/>
+        <rect x="60" y="448" width="500" height="8" rx="1" fill="#aca8a0"/>
+        <!-- Desk front face -->
+        <rect x="60" y="456" width="500" height="80" fill="#b4b0a8"/>
+
+        <!-- Desk legs -->
+        <rect x="90" y="536" width="14" height="80" rx="3" fill="#a8a49c"/>
+        <rect x="496" y="536" width="14" height="80" rx="3" fill="#a8a49c"/>
+
+        <!-- Monitor stand base -->
+        <ellipse cx="278" cy="438" rx="55" ry="8" fill="#b0aca4" opacity="0.8"/>
+        <rect x="268" y="395" width="20" height="46" rx="4" fill="#c0bbb4"/>
+
+        <!-- Monitor body -->
+        <rect x="128" y="100" width="300" height="302" rx="10" fill="url(#monitor-frame)" filter="url(#shadow-soft)"/>
+        <rect x="134" y="106" width="288" height="290" rx="8" fill="#c8c4bc"/>
+        <!-- Monitor bezel inner -->
+        <rect x="140" y="112" width="276" height="278" rx="6" fill="#1e1e1c"/>
+
+        <!-- Screen surface -->
+        <rect x="148" y="132" width="260" height="220" rx="2" fill="url(#screen-grad)"/>
+
+        <!-- Screen ambient light reflection top -->
+        <rect x="148" y="132" width="260" height="40" rx="2" fill="url(#screen-grad)" opacity="0.6"/>
+        <ellipse cx="278" cy="142" rx="80" ry="14" fill="rgba(255,255,255,0.04)"/>
+
+        <!-- Code on screen — editorial monospace lines -->
+        <!-- Line numbers column -->
+        <rect x="148" y="132" width="28" height="220" fill="rgba(255,255,255,0.025)"/>
+        <!-- Line numbers -->
+        <text x="162" y="158" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">01</text>
+        <text x="162" y="170" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">02</text>
+        <text x="162" y="182" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">03</text>
+        <text x="162" y="194" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">04</text>
+        <text x="162" y="206" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">05</text>
+        <text x="162" y="218" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">06</text>
+        <text x="162" y="230" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">07</text>
+        <text x="162" y="242" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">08</text>
+        <text x="162" y="254" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">09</text>
+        <text x="162" y="266" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">10</text>
+        <text x="162" y="278" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">11</text>
+        <text x="162" y="290" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">12</text>
+        <text x="162" y="302" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">13</text>
+        <text x="162" y="314" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">14</text>
+        <text x="162" y="326" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">15</text>
+        <text x="162" y="338" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle">16</text>
+
+        <!-- Code syntax — keyword, func, string, comment colours -->
+        <!-- fn impl -->
+        <text x="184" y="158" font-family="monospace" font-size="8.5" fill="#c792ea">impl</text>
+        <text x="208" y="158" font-family="monospace" font-size="8.5" fill="#82aaff"> Solution </text>
+        <text x="252" y="158" font-family="monospace" font-size="8.5" fill="#89ddff">{</text>
+
+        <text x="188" y="170" font-family="monospace" font-size="8.5" fill="#c792ea">  pub fn</text>
+        <text x="222" y="170" font-family="monospace" font-size="8.5" fill="#82aaff"> search</text>
+        <text x="257" y="170" font-family="monospace" font-size="8.5" fill="#cdd2d6">(</text>
+        <text x="263" y="170" font-family="monospace" font-size="8.5" fill="#f07178">nums</text>
+        <text x="286" y="170" font-family="monospace" font-size="8.5" fill="#89ddff">: Vec</text>
+        <text x="314" y="170" font-family="monospace" font-size="8.5" fill="#cdd2d6">&lt;</text>
+        <text x="320" y="170" font-family="monospace" font-size="8.5" fill="#ffcb6b">i32</text>
+        <text x="335" y="170" font-family="monospace" font-size="8.5" fill="#cdd2d6">&gt;,</text>
+        <text x="346" y="170" font-family="monospace" font-size="8.5" fill="#f07178">t</text>
+        <text x="352" y="170" font-family="monospace" font-size="8.5" fill="#cdd2d6">:</text>
+        <text x="357" y="170" font-family="monospace" font-size="8.5" fill="#ffcb6b">i32</text>
+        <text x="374" y="170" font-family="monospace" font-size="8.5" fill="#cdd2d6">) -&gt;</text>
+        <text x="393" y="170" font-family="monospace" font-size="8.5" fill="#ffcb6b">i32</text>
+
+        <text x="188" y="182" font-family="monospace" font-size="8.5" fill="#89ddff">  {</text>
+
+        <text x="196" y="194" font-family="monospace" font-size="8.5" fill="#c792ea">    let mut</text>
+        <text x="241" y="194" font-family="monospace" font-size="8.5" fill="#f07178"> lo</text>
+        <text x="253" y="194" font-family="monospace" font-size="8.5" fill="#89ddff"> =</text>
+        <text x="263" y="194" font-family="monospace" font-size="8.5" fill="#f78c6c"> 0</text>
+        <text x="270" y="194" font-family="monospace" font-size="8.5" fill="#cdd2d6">;</text>
+
+        <text x="196" y="206" font-family="monospace" font-size="8.5" fill="#c792ea">    let mut</text>
+        <text x="241" y="206" font-family="monospace" font-size="8.5" fill="#f07178"> hi</text>
+        <text x="253" y="206" font-family="monospace" font-size="8.5" fill="#89ddff"> =</text>
+        <text x="263" y="206" font-family="monospace" font-size="8.5" fill="#f07178"> nums</text>
+        <text x="290" y="206" font-family="monospace" font-size="8.5" fill="#cdd2d6">.len() -</text>
+        <text x="334" y="206" font-family="monospace" font-size="8.5" fill="#f78c6c"> 1</text>
+        <text x="341" y="206" font-family="monospace" font-size="8.5" fill="#cdd2d6">;</text>
+
+        <!-- while loop line -->
+        <text x="196" y="218" font-family="monospace" font-size="8.5" fill="#c792ea">    while</text>
+        <text x="234" y="218" font-family="monospace" font-size="8.5" fill="#f07178"> lo</text>
+        <text x="247" y="218" font-family="monospace" font-size="8.5" fill="#89ddff"> &lt;=</text>
+        <text x="262" y="218" font-family="monospace" font-size="8.5" fill="#f07178"> hi</text>
+        <text x="274" y="218" font-family="monospace" font-size="8.5" fill="#89ddff"> {</text>
+
+        <text x="204" y="230" font-family="monospace" font-size="8.5" fill="#c792ea">      let</text>
+        <text x="229" y="230" font-family="monospace" font-size="8.5" fill="#f07178"> mid</text>
+        <text x="250" y="230" font-family="monospace" font-size="8.5" fill="#89ddff"> =</text>
+        <text x="260" y="230" font-family="monospace" font-size="8.5" fill="#f07178"> lo</text>
+        <text x="272" y="230" font-family="monospace" font-size="8.5" fill="#89ddff"> +</text>
+        <text x="281" y="230" font-family="monospace" font-size="8.5" fill="#cdd2d6"> (</text>
+        <text x="288" y="230" font-family="monospace" font-size="8.5" fill="#f07178">hi</text>
+        <text x="298" y="230" font-family="monospace" font-size="8.5" fill="#89ddff"> -</text>
+        <text x="306" y="230" font-family="monospace" font-size="8.5" fill="#f07178"> lo</text>
+        <text x="318" y="230" font-family="monospace" font-size="8.5" fill="#cdd2d6">) /</text>
+        <text x="332" y="230" font-family="monospace" font-size="8.5" fill="#f78c6c"> 2</text>
+        <text x="339" y="230" font-family="monospace" font-size="8.5" fill="#cdd2d6">;</text>
+
+        <!-- match statement -->
+        <text x="204" y="242" font-family="monospace" font-size="8.5" fill="#c792ea">      match</text>
+        <text x="238" y="242" font-family="monospace" font-size="8.5" fill="#f07178"> nums</text>
+        <text x="263" y="242" font-family="monospace" font-size="8.5" fill="#cdd2d6">[mid] {</text>
+
+        <!-- match arms -->
+        <text x="212" y="254" font-family="monospace" font-size="8.5" fill="#f07178">        x</text>
+        <text x="240" y="254" font-family="monospace" font-size="8.5" fill="#c792ea"> if</text>
+        <text x="252" y="254" font-family="monospace" font-size="8.5" fill="#f07178"> x</text>
+        <text x="259" y="254" font-family="monospace" font-size="8.5" fill="#89ddff"> ==</text>
+        <text x="272" y="254" font-family="monospace" font-size="8.5" fill="#f07178"> t</text>
+        <text x="278" y="254" font-family="monospace" font-size="8.5" fill="#89ddff"> =&gt;</text>
+        <text x="296" y="254" font-family="monospace" font-size="8.5" fill="#c792ea"> return</text>
+        <text x="330" y="254" font-family="monospace" font-size="8.5" fill="#f07178"> mid</text>
+        <text x="347" y="254" font-family="monospace" font-size="8.5" fill="#c792ea"> as</text>
+        <text x="361" y="254" font-family="monospace" font-size="8.5" fill="#ffcb6b"> i32</text>
+        <text x="376" y="254" font-family="monospace" font-size="8.5" fill="#cdd2d6">,</text>
+
+        <text x="212" y="266" font-family="monospace" font-size="8.5" fill="#f07178">        x</text>
+        <text x="240" y="266" font-family="monospace" font-size="8.5" fill="#c792ea"> if</text>
+        <text x="252" y="266" font-family="monospace" font-size="8.5" fill="#f07178"> x</text>
+        <text x="259" y="266" font-family="monospace" font-size="8.5" fill="#89ddff"> &lt;</text>
+        <text x="267" y="266" font-family="monospace" font-size="8.5" fill="#f07178"> t</text>
+        <text x="275" y="266" font-family="monospace" font-size="8.5" fill="#89ddff"> =&gt;</text>
+        <text x="291" y="266" font-family="monospace" font-size="8.5" fill="#f07178"> lo</text>
+        <text x="303" y="266" font-family="monospace" font-size="8.5" fill="#89ddff"> =</text>
+        <text x="313" y="266" font-family="monospace" font-size="8.5" fill="#f07178"> mid</text>
+        <text x="330" y="266" font-family="monospace" font-size="8.5" fill="#89ddff"> +</text>
+        <text x="339" y="266" font-family="monospace" font-size="8.5" fill="#f78c6c"> 1</text>
+        <text x="346" y="266" font-family="monospace" font-size="8.5" fill="#cdd2d6">,</text>
+
+        <text x="212" y="278" font-family="monospace" font-size="8.5" fill="#89ddff">        _</text>
+        <text x="226" y="278" font-family="monospace" font-size="8.5" fill="#89ddff"> =&gt;</text>
+        <text x="242" y="278" font-family="monospace" font-size="8.5" fill="#f07178"> hi</text>
+        <text x="254" y="278" font-family="monospace" font-size="8.5" fill="#89ddff"> =</text>
+        <text x="263" y="278" font-family="monospace" font-size="8.5" fill="#f07178"> mid</text>
+        <text x="280" y="278" font-family="monospace" font-size="8.5" fill="#89ddff"> -</text>
+        <text x="289" y="278" font-family="monospace" font-size="8.5" fill="#f78c6c"> 1</text>
+        <text x="296" y="278" font-family="monospace" font-size="8.5" fill="#cdd2d6">,</text>
+
+        <!-- closing braces -->
+        <text x="204" y="290" font-family="monospace" font-size="8.5" fill="#89ddff">      }</text>
+        <text x="196" y="302" font-family="monospace" font-size="8.5" fill="#89ddff">    }</text>
+        <text x="188" y="314" font-family="monospace" font-size="8.5" fill="#f78c6c">    -1</text>
+        <text x="188" y="326" font-family="monospace" font-size="8.5" fill="#89ddff">  }</text>
+        <text x="184" y="338" font-family="monospace" font-size="8.5" fill="#89ddff">}</text>
+
+        <!-- Cursor blink line -->
+        <rect x="187" y="341" width="6" height="9" rx="1" fill="rgba(255,255,255,0.6)" opacity="0.8">
+          <animate attributeName="opacity" values="0.8;0;0.8" dur="1.2s" repeatCount="indefinite"/>
+        </rect>
+
+        <!-- Monitor bottom bezel / chin -->
+        <rect x="134" y="390" width="288" height="22" rx="4" fill="#c4c0b8"/>
+        <circle cx="278" cy="401" r="4" fill="#b0aca4"/>
+
+        <!-- Keyboard -->
+        <rect x="164" y="450" width="232" height="62" rx="6" fill="#d8d4cc" filter="url(#key-shadow)"/>
+        <rect x="168" y="454" width="224" height="54" rx="5" fill="#dedad2"/>
+
+        <!-- Key rows — function row -->
+        <g fill="#c8c4bc">
+          <!-- Row 1 — function/number keys -->
+          <rect x="174" y="458" width="14" height="9" rx="2"/>
+          <rect x="191" y="458" width="14" height="9" rx="2"/>
+          <rect x="208" y="458" width="14" height="9" rx="2"/>
+          <rect x="225" y="458" width="14" height="9" rx="2"/>
+          <rect x="242" y="458" width="14" height="9" rx="2"/>
+          <rect x="259" y="458" width="14" height="9" rx="2"/>
+          <rect x="276" y="458" width="14" height="9" rx="2"/>
+          <rect x="293" y="458" width="14" height="9" rx="2"/>
+          <rect x="310" y="458" width="14" height="9" rx="2"/>
+          <rect x="327" y="458" width="14" height="9" rx="2"/>
+          <rect x="344" y="458" width="14" height="9" rx="2"/>
+          <rect x="361" y="458" width="14" height="9" rx="2"/>
+          <!-- Row 2 — QWERTY -->
+          <rect x="174" y="470" width="14" height="9" rx="2"/>
+          <rect x="191" y="470" width="14" height="9" rx="2"/>
+          <rect x="208" y="470" width="14" height="9" rx="2"/>
+          <rect x="225" y="470" width="14" height="9" rx="2"/>
+          <rect x="242" y="470" width="14" height="9" rx="2"/>
+          <rect x="259" y="470" width="14" height="9" rx="2"/>
+          <rect x="276" y="470" width="14" height="9" rx="2"/>
+          <rect x="293" y="470" width="14" height="9" rx="2"/>
+          <rect x="310" y="470" width="14" height="9" rx="2"/>
+          <rect x="327" y="470" width="14" height="9" rx="2"/>
+          <rect x="344" y="470" width="22" height="9" rx="2"/>
+          <!-- Row 3 — home row -->
+          <rect x="178" y="482" width="14" height="9" rx="2"/>
+          <rect x="195" y="482" width="14" height="9" rx="2"/>
+          <rect x="212" y="482" width="14" height="9" rx="2"/>
+          <rect x="229" y="482" width="14" height="9" rx="2"/>
+          <rect x="246" y="482" width="14" height="9" rx="2"/>
+          <rect x="263" y="482" width="14" height="9" rx="2"/>
+          <rect x="280" y="482" width="14" height="9" rx="2"/>
+          <rect x="297" y="482" width="14" height="9" rx="2"/>
+          <rect x="314" y="482" width="14" height="9" rx="2"/>
+          <rect x="331" y="482" width="14" height="9" rx="2"/>
+          <rect x="348" y="482" width="18" height="9" rx="2"/>
+          <!-- Row 4 — spacebar row -->
+          <rect x="174" y="494" width="22" height="9" rx="2"/>
+          <rect x="215" y="494" width="118" height="9" rx="2" fill="#c0bbb4"/>
+          <rect x="344" y="494" width="22" height="9" rx="2"/>
+          <rect x="369" y="494" width="9" height="9" rx="2"/>
+        </g>
+
+        <!-- Subtle light dot on keyboard (premium detail) -->
+        <circle cx="278" cy="482" r="1.5" fill="rgba(255,200,100,0.5)">
+          <animate attributeName="opacity" values="0.5;0.9;0.5" dur="3s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Trackpad / mouse area (minimal) -->
+        <rect x="430" y="452" width="52" height="38" rx="6" fill="#ccc8c0" filter="url(#key-shadow)"/>
+        <rect x="434" y="456" width="44" height="30" rx="4" fill="#d4d0c8"/>
+        <line x1="456" y1="456" x2="456" y2="486" stroke="#c0bbb4" stroke-width="0.8"/>
+
+        <!-- Small plant / object on desk left for editorial warmth -->
+        <ellipse cx="110" cy="432" rx="18" ry="8" fill="#b8b4ac"/>
+        <rect x="106" y="380" width="8" height="52" rx="3" fill="#c4c0b8"/>
+        <!-- Plant leaves -->
+        <ellipse cx="110" cy="370" rx="16" ry="22" fill="#6b7c5a" opacity="0.85" transform="rotate(-15,110,370)"/>
+        <ellipse cx="118" cy="362" rx="12" ry="18" fill="#7a8c68" opacity="0.75" transform="rotate(10,118,362)"/>
+        <ellipse cx="102" cy="365" rx="11" ry="16" fill="#5f7050" opacity="0.8" transform="rotate(-25,102,365)"/>
+
+        <!-- Coffee mug right side — editorial detail -->
+        <rect x="470" y="400" width="36" height="34" rx="5" fill="#dedad2"/>
+        <rect x="474" y="404" width="28" height="26" rx="3" fill="#c8c4bc"/>
+        <!-- Mug handle -->
+        <path d="M506 410 Q518 410 518 417 Q518 424 506 424" stroke="#ccc8c0" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- Steam -->
+        <path d="M482 398 Q484 392 482 386" stroke="#d0ccc4" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7">
+          <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <path d="M490 396 Q492 389 490 382" stroke="#d0ccc4" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5">
+          <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.5s" repeatCount="indefinite"/>
+        </path>
+
+        <!-- Ambient floor shadow under desk -->
+        <ellipse cx="310" cy="618" rx="220" ry="18" fill="rgba(0,0,0,0.08)"/>
+
+        <!-- Vignette overlay for depth -->
+        <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="transparent"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,0.12)"/>
+        </radialGradient>
+        <rect width="600" height="680" fill="url(#vignette)" pointer-events="none"/>
+      </svg>
+    </div>`;
+  }
+  
+  // JUNIOR MODE — Illustrated SVG
+  if(mode==='junior')return `<svg viewBox="0 0 480 560" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;border-radius:26px;display:block;"><defs><linearGradient id="fv-j" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#ffe8d4"/></linearGradient></defs><rect width="480" height="560" rx="26" fill="url(#fv-j)"/><circle cx="420" cy="60" r="60" fill="#fbbf24" opacity=".2"/><circle cx="60" cy="500" r="50" fill="#f97316" opacity=".15"/><g transform="translate(40,60)"><rect x="0" y="240" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="178" width="100" height="68" rx="10" fill="#1e293b"/><rect x="16" y="184" width="88" height="56" rx="7" fill="#0f172a"/><rect x="24" y="196" width="50" height="5" rx="2" fill="#f97316"/><rect x="24" y="206" width="68" height="4" rx="2" fill="#3b82f6"/><rect x="24" y="215" width="42" height="4" rx="2" fill="#22c55e"/><ellipse cx="60" cy="152" rx="26" ry="28" fill="#fde68a"/><rect x="38" y="174" width="44" height="48" rx="12" fill="#f97316"/><ellipse cx="50" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="147" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="147" r="3.5" fill="#1e293b"/><path d="M48 162 Q60 169 72 162" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="130" rx="26" ry="12" fill="#92400e"/></g><g transform="translate(180,40)"><rect x="0" y="256" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="188" width="100" height="74" rx="10" fill="#1e293b"/><rect x="16" y="194" width="88" height="62" rx="7" fill="#0f172a"/><rect x="24" y="206" width="55" height="5" rx="2" fill="#06b6d4"/><rect x="24" y="216" width="40" height="4" rx="2" fill="#34d399"/><rect x="24" y="225" width="70" height="4" rx="2" fill="#f97316"/><rect x="24" y="234" width="45" height="4" rx="2" fill="#a78bfa"/><rect x="24" y="243" width="60" height="4" rx="2" fill="#06b6d4"/><ellipse cx="60" cy="158" rx="28" ry="30" fill="#fed7aa"/><rect x="38" y="182" width="44" height="50" rx="12" fill="#3b82f6"/><ellipse cx="50" cy="152" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="153" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="152" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="153" r="3.5" fill="#1e293b"/><path d="M48 167 Q60 175 72 167" stroke="#9a3412" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="134" rx="28" ry="12" fill="#1e293b"/></g><g transform="translate(320,60)"><rect x="0" y="240" width="120" height="10" rx="4" fill="#e8c4a0"/><rect x="10" y="178" width="100" height="68" rx="10" fill="#1e293b"/><rect x="16" y="184" width="88" height="56" rx="7" fill="#0f172a"/><rect x="24" y="196" width="60" height="5" rx="2" fill="#22c55e"/><rect x="24" y="206" width="44" height="4" rx="2" fill="#f97316"/><rect x="24" y="215" width="68" height="4" rx="2" fill="#60a5fa"/><rect x="24" y="224" width="38" height="4" rx="2" fill="#a78bfa"/><ellipse cx="60" cy="152" rx="26" ry="28" fill="#fde68a"/><rect x="38" y="174" width="44" height="50" rx="12" fill="#10b981"/><ellipse cx="50" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="52" cy="147" r="3.5" fill="#1e293b"/><ellipse cx="70" cy="146" rx="6" ry="7" fill="#fff" opacity=".9"/><circle cx="68" cy="147" r="3.5" fill="#1e293b"/><path d="M48 162 Q60 169 72 162" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="130" rx="26" ry="12" fill="#44403c"/></g><rect x="80" y="330" width="320" height="55" rx="16" fill="rgba(249,115,22,.08)" stroke="#f97316" stroke-width="1.5"/><text x="240" y="362" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#f97316">TheCodeKid · 2026</text><rect x="70" y="408" width="100" height="34" rx="18" fill="#fbbf24" opacity=".2"/><text x="120" y="430" text-anchor="middle" font-size="13" fill="#92400e" font-family="JetBrains Mono">⭐ Logic Pro</text><rect x="310" y="408" width="100" height="34" rx="18" fill="#3b82f6" opacity=".15"/><text x="360" y="430" text-anchor="middle" font-size="13" fill="#1d4ed8" font-family="JetBrains Mono">🏆 Top 10</text><rect x="160" y="456" width="160" height="34" rx="18" fill="#22c55e" opacity=".14"/><text x="240" y="478" text-anchor="middle" font-size="13" fill="#166534" font-family="JetBrains Mono">✦ 445 XP</text></svg>`;
+  
+  // EXPLORER MODE — Dark themed SVG
+  return `<svg viewBox="0 0 480 560" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;border-radius:26px;display:block;"><rect width="480" height="560" rx="26" fill="${mode==='explorer'?'#060d1c':'#030c08'}"/><text x="240" y="280" text-anchor="middle" fill="${mode==='explorer'?'#06b6d4':'#22c55e'}" font-family="JetBrains Mono" font-size="16">// Loading scene...</text></svg>`;
 }
 
 function updateFeatVis(){
