@@ -2491,25 +2491,25 @@ nav{
 
   <!-- EXPLORER courses -->
   <div id="courses-explorer" class="course-track" style="display:none">
-    <div class="citem rv" onclick="openGame({mode:'explorer',n:1,cat:'ALGORITHMS',title:'Fibonacci Sequence',q:'What comes next?',pattern:['1','1','2','3','5','8','?'],opts:['10','11','13','15'],ans:2,hint:'Each number = sum of the two before it.'})">
-      <div class="cnum cdone">✓</div><div style="flex:1"><div class="ctitle">Fibonacci Sequence</div><div class="cdesc">What number completes this famous sequence?</div></div>
-      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 25 XP</span><span class="ctag ctag-easy">easy</span><span class="ctag">Algorithms</span></div>
+    <div class="citem rv" onclick="openExplorerGame(1)">
+      <div class="cnum cdone">✓</div><div style="flex:1"><div class="ctitle">🔁 Loop Counter</div><div class="cdesc">Watch a robot walk a loop — count how many steps it takes and pick the answer!</div></div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 25 XP</span><span class="ctag ctag-easy">easy</span><span class="ctag">Loops</span></div>
     </div>
-    <div class="citem rv d1" onclick="openGame({mode:'explorer',n:2,cat:'DETECTION',title:'Isolate Anomaly I',q:'Which does NOT belong?',pattern:['16','25','36','42','49','64'],opts:['25','36','42','64'],ans:2,hint:'All others are perfect squares.'})">
-      <div class="cnum">2</div><div style="flex:1"><div class="ctitle">Isolate Anomaly I</div><div class="cdesc">Locate the value that does not match the primary array.</div></div>
-      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 30 XP</span><span class="ctag">medium</span><span class="ctag">Detection</span></div>
+    <div class="citem rv d1" onclick="openExplorerGame(2)">
+      <div class="cnum">2</div><div style="flex:1"><div class="ctitle">🔀 True or False?</div><div class="cdesc">Is the condition true or false? Tap your answer as fast as you can!</div></div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 25 XP</span><span class="ctag ctag-easy">easy</span><span class="ctag">Conditions</span></div>
     </div>
-    <div class="citem rv d2" onclick="openGame({mode:'explorer',n:3,cat:'QUANTIFICATION',title:'Sequence Interpolation',q:'Find the missing number: 2, 6, 18, ?, 162',pattern:['2','6','18','?','162'],opts:['36','42','54','72'],ans:2,hint:'Each term is multiplied by 3.'})">
-      <div class="cnum">3</div><div style="flex:1"><div class="ctitle">Sequence Interpolation</div><div class="cdesc">Isolate the missing integer within the bounds.</div></div>
-      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 30 XP</span><span class="ctag">medium</span><span class="ctag">Quantification</span></div>
+    <div class="citem rv d2" onclick="openExplorerGame(3)">
+      <div class="cnum">3</div><div style="flex:1"><div class="ctitle">📦 Build the Array</div><div class="cdesc">Tap the emoji items in the right order to fill the array correctly!</div></div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 25 XP</span><span class="ctag ctag-easy">easy</span><span class="ctag">Arrays</span></div>
     </div>
-    <div class="citem rv d3" onclick="openGame({mode:'explorer',n:4,cat:'COMPARISON',title:'Volumetric Assessment',q:'Which has greater conceptual volume: Stack or Queue?',pattern:['Stack','vs','Queue','?','',''],opts:['Stack','Queue','Equal','Neither'],ans:2,hint:'Both LIFO and FIFO hold same max capacity.'})">
-      <div class="cnum">4</div><div style="flex:1"><div class="ctitle">Volumetric Assessment</div><div class="cdesc">Select the entity with the greater conceptual volume.</div></div>
-      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 25 XP</span><span class="ctag ctag-easy">easy</span><span class="ctag">Comparison</span></div>
+    <div class="citem rv d3" onclick="openExplorerGame(4)">
+      <div class="cnum">4</div><div style="flex:1"><div class="ctitle">🐛 Spot the Bug</div><div class="cdesc">Two code snippets — one has a mistake. Tap the buggy one!</div></div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 25 XP</span><span class="ctag">medium</span><span class="ctag">Debugging</span></div>
     </div>
-    <div class="citem rv d4" onclick="openGame({mode:'explorer',n:5,cat:'DETECTION',title:'Isolate Anomaly II',q:'Which is NOT O(log n)?',pattern:['Binary','Search','?','Heap','Build','Merge'],opts:['Binary Search','Heap Build','Merge Sort','None'],ans:1,hint:'Binary search is O(log n), heap build and merge sort are O(n log n) or O(n).'})">
-      <div class="cnum">5</div><div style="flex:1"><div class="ctitle">Isolate Anomaly II</div><div class="cdesc">Identify the structural inconsistency in the data blocks.</div></div>
-      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 35 XP</span><span class="ctag">medium</span><span class="ctag">Detection</span></div>
+    <div class="citem rv d4" onclick="openExplorerGame(5)">
+      <div class="cnum">5</div><div style="flex:1"><div class="ctitle">⚙️ What's the Output?</div><div class="cdesc">Watch the value go into the function machine — what number comes out?</div></div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="cxp">✦ 25 XP</span><span class="ctag">medium</span><span class="ctag">Functions</span></div>
     </div>
   </div>
 
@@ -2896,6 +2896,7 @@ nav{
     </div>
   </div>
   <div class="gs-pbar"><div class="gs-pfill" id="gs-pfill" style="width:20%"></div></div>
+  <!-- Standard quiz body (Junior / MCQ games) -->
   <div class="gs-body" id="gs-body">
     <!-- Quiz card -->
     <div class="quiz-card" id="quiz-card">
@@ -2920,6 +2921,8 @@ nav{
       </div>
     </div>
   </div>
+  <!-- Explorer interactive games container (separate, never destroys quiz-card) -->
+  <div id="explorer-game-container" style="display:none;flex:1;overflow-y:auto;background:#0b1220;"></div>
 </div>
 
 <!-- CODE EDITOR SCREEN -->
@@ -4234,7 +4237,7 @@ function updateCourseHero(){
   if(btn){
     btn.onclick = ()=>{
       if(mode==='pro') openProProblem(1);
-      else if(mode==='explorer') openGame({mode:'explorer',n:1,cat:'ALGORITHMS',title:'Fibonacci Sequence',q:'What comes next?',pattern:['1','1','2','3','5','8','?'],opts:['10','11','13','15'],ans:2,hint:'Each number = sum of the two before it.'});
+      else if(mode==='explorer') openExplorerGame(1);
       else openGame({mode:'junior',n:1,cat:'STRUCTURE',title:'Sequential Pattern Alpha',q:'What comes next in the sequence?',pattern:['▲','▲','●','▲','▲','?'],opts:['●','▲','■','◆'],ans:0,hint:'Look at every 3rd position.'});
     };
   }
@@ -4358,13 +4361,7 @@ function nextQuestion(){
     {mode:'junior',n:4,cat:'LOGIC',title:'Colour Logic I',q:'Which colour comes next in the pattern?',pattern:['🔴','🔵','🔴','🔵','🔴','?'],opts:['🔴','🔵','🟢','🟡'],ans:1,hint:'Red and blue alternate.'},
     {mode:'junior',n:5,cat:'QUANTIFICATION',title:'Vector Addition',q:'What is 3 + 4?',pattern:['3','+','4','=','?',''],opts:['6','7','8','9'],ans:1,hint:'Count on from 3 by 4 steps.'}
   ];
-  const explorerGames=[
-    {mode:'explorer',n:1,cat:'ALGORITHMS',title:'Fibonacci Sequence',q:'What comes next?',pattern:['1','1','2','3','5','8','?'],opts:['10','11','13','15'],ans:2,hint:'Each number = sum of the two before it.'},
-    {mode:'explorer',n:2,cat:'DETECTION',title:'Isolate Anomaly I',q:'Which does NOT belong?',pattern:['16','25','36','42','49','64'],opts:['25','36','42','64'],ans:2,hint:'All others are perfect squares.'},
-    {mode:'explorer',n:3,cat:'QUANTIFICATION',title:'Sequence Interpolation',q:'Find the missing number: 2, 6, 18, ?, 162',pattern:['2','6','18','?','162'],opts:['36','42','54','72'],ans:2,hint:'Each term is multiplied by 3.'},
-    {mode:'explorer',n:4,cat:'COMPARISON',title:'Volumetric Assessment',q:'Which has greater conceptual volume: Stack or Queue?',pattern:['Stack','vs','Queue','?','',''],opts:['Stack','Queue','Equal','Neither'],ans:2,hint:'Both LIFO and FIFO hold same max capacity.'},
-    {mode:'explorer',n:5,cat:'DETECTION',title:'Isolate Anomaly II',q:'Which is NOT O(log n)?',pattern:['Binary','Search','?','Heap','Build','Merge'],opts:['Binary Search','Heap Build','Merge Sort','None'],ans:1,hint:'Binary search is O(log n), heap build and merge sort are O(n log n) or O(n).'}
-  ];
+  const explorerGames=[]; // Explorer now uses interactive games via openExplorerGame
   const allGames={junior:juniorGames,explorer:explorerGames};
   const games=allGames[m];
   if(games){
@@ -4376,6 +4373,342 @@ function nextQuestion(){
 
 function closeGame(){
   document.getElementById('game-screen').classList.remove('open');
+  // Stop any running explorer game loops/timers
+  if(window._explorerGameCleanup){ window._explorerGameCleanup(); window._explorerGameCleanup=null; }
+  // Restore standard quiz body
+  const gsBody = document.getElementById('gs-body');
+  if(gsBody) gsBody.style.display = '';
+  // Clear and hide explorer container
+  const egc = document.getElementById('explorer-game-container');
+  if(egc){ egc.style.display = 'none'; egc.innerHTML = ''; }
+}
+
+// ════════════════════════════════════════
+// EXPLORER INTERACTIVE GAMES — Scratch-style
+// ════════════════════════════════════════
+function openExplorerGame(n){
+  const screen = document.getElementById('game-screen');
+  screen.classList.add('open');
+  document.getElementById('gs-xp').textContent = xpEarned + ' XP';
+  document.getElementById('gs-prog').textContent = n + '/5';
+  document.getElementById('gs-pfill').style.width = (n * 20) + '%';
+
+  // Hide standard quiz body, show explorer container
+  const gsBody = document.getElementById('gs-body');
+  const egc = document.getElementById('explorer-game-container');
+  if(gsBody) gsBody.style.display = 'none';
+  if(egc){ egc.style.display = 'flex'; egc.innerHTML = ''; }
+
+  if(n===1) _gameMAZE(egc);
+  else if(n===2) _gameCOLOUR(egc);
+  else if(n===3) _gameSORT(egc);
+  else if(n===4) _gameGATES(egc);
+  else if(n===5) _gameBINARY(egc);
+}
+
+function _explorerWin(body, xp, msg, nextN){
+  xpEarned += xp;
+  document.getElementById('gs-xp').textContent = xpEarned + ' XP';
+  document.getElementById('xp-display').textContent = 445 + xpEarned;
+  body.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:18px;padding:40px;text-align:center;">
+      <div style="font-size:56px">🎉</div>
+      <div style="font-size:22px;font-weight:800;color:#67e8f9;font-family:'Clash Display',sans-serif;">${msg}</div>
+      <div style="font-size:14px;color:#4e7a9e">+${xp} XP earned!</div>
+      ${nextN<=5
+        ? `<button onclick="openExplorerGame(${nextN})" style="margin-top:8px;padding:14px 36px;background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;cursor:pointer;box-shadow:0 8px 24px -6px rgba(6,182,212,.5)">Next Game →</button>`
+        : `<button onclick="closeGame()" style="margin-top:8px;padding:14px 36px;background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;cursor:pointer;box-shadow:0 8px 24px -6px rgba(6,182,212,.5)">🏆 Finish!</button>`
+      }
+    </div>`;
+}
+
+// ════════════════════════════════════════
+// EXPLORER GAMES — Visual coding concepts, Scratch style
+// ════════════════════════════════════════
+
+// ── SHARED STYLE HELPERS ────────────────────────────────────────────────────
+function _egShell(egc, emoji, title, tip){
+  egc.style.cssText='display:flex;flex-direction:column;align-items:center;min-height:100%;background:#0b1220;';
+  egc.innerHTML=`
+    <div style="width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;padding:24px 18px 36px;gap:6px;">
+      <div style="font-size:38px;margin-bottom:2px;">${emoji}</div>
+      <div style="font-size:20px;font-weight:800;color:#67e8f9;font-family:'Clash Display',sans-serif;">${title}</div>
+      <div style="font-size:12px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;text-align:center;margin-bottom:12px;">${tip}</div>
+      <div id="eg-area" style="width:100%;"></div>
+      <div id="eg-fb" style="min-height:26px;margin-top:12px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;font-weight:700;transition:color .2s;"></div>
+    </div>`;
+}
+function _egFb(msg, ok){
+  const f=document.getElementById('eg-fb');
+  if(f){f.textContent=msg;f.style.color=ok?'#22c55e':'#ef4444';}
+}
+function _bigBtn(label, onclick, color='#06b6d4'){
+  return `<button onclick="${onclick}" style="padding:16px 28px;background:${color}22;border:2.5px solid ${color}66;border-radius:20px;color:${color};font-size:16px;font-weight:800;font-family:'Clash Display',sans-serif;cursor:pointer;transition:all .18s;width:100%;text-align:left;display:flex;align-items:center;gap:12px;margin-bottom:10px;">${label}</button>`;
+}
+function _sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+
+// ── GAME 1: 🔁 LOOP COUNTER ──────────────────────────────────────────────────
+// Visual: a robot walks across a track, stops light up one by one.
+// Question: how many steps did the loop make? Pick from 3 options.
+function _gameMAZE(egc){
+  const rounds=[
+    {steps:3, start:1, end:3, q:'Loop runs from 1 to 3. How many steps?', opts:['2','3','4'], ans:1},
+    {steps:5, start:0, end:4, q:'Loop runs from 0 to 4. How many steps?', opts:['4','5','6'], ans:1},
+    {steps:4, start:2, end:5, q:'Loop runs from 2 to 5. How many steps?', opts:['3','4','5'], ans:1},
+  ];
+  let ri=0;
+
+  function show(){
+    const r=rounds[ri];
+    const area=document.getElementById('eg-area'); if(!area)return;
+
+    // Build a visual track of r.steps boxes
+    const track=Array.from({length:r.steps},(_,i)=>
+      `<div id="lc-step-${i}" style="width:48px;height:48px;border-radius:14px;background:#1a2a42;border:2px solid rgba(6,182,212,.25);display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .3s;">⬜</div>`
+    ).join('');
+
+    area.innerHTML=`
+      <div style="background:#0e1a2e;border:1.5px solid rgba(6,182,212,.2);border-radius:20px;padding:22px 18px;margin-bottom:16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#67e8f9;margin-bottom:14px;line-height:1.8;">
+          <span style="color:#f59e0b;">for</span> (i = ${r.start}; i &lt;= ${r.end}; i++) {<br>
+          &nbsp;&nbsp;<span style="color:#22c55e;">🤖 walk one step</span><br>
+          }
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:4px;">${track}</div>
+        <div style="text-align:center;font-size:11px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;margin-top:8px;">Each box = one loop step</div>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:#e0f2fe;font-family:'Satoshi',sans-serif;margin-bottom:10px;text-align:center;">${r.q}</div>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        ${r.opts.map((o,i)=>`<button onclick="lcAns(${i})" style="width:76px;height:76px;border-radius:18px;background:rgba(6,182,212,.1);border:2.5px solid rgba(6,182,212,.3);color:#67e8f9;font-size:26px;font-weight:900;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .2s;">${o}</button>`).join('')}
+      </div>`;
+
+    // Animate boxes lighting up one by one
+    (async()=>{
+      await _sleep(400);
+      for(let i=0;i<r.steps;i++){
+        const box=document.getElementById(`lc-step-${i}`); if(!box)break;
+        box.style.background='rgba(6,182,212,.4)'; box.style.borderColor='#06b6d4';
+        box.textContent='🤖'; await _sleep(420);
+      }
+    })();
+
+    window.lcAns=function(i){
+      if(i===r.ans){ _egFb('✓ Correct! The loop ran '+r.steps+' times.', true); ri++; if(ri>=rounds.length) setTimeout(()=>_explorerWin(egc,25,'You counted every loop! 🔁',2),800); else setTimeout(show,1000); }
+      else { _egFb('✗ Count the boxes — one step per iteration!', false); }
+    };
+    _egFb('','');
+  }
+  _egShell(egc,'🔁','Loop Counter','Count how many times the loop runs by watching the robot walk!');
+  show();
+}
+
+
+// ── GAME 2: 🔀 TRUE OR FALSE? ────────────────────────────────────────────────
+// Shows a single condition. Student taps TRUE or FALSE. Big, colourful, instant.
+function _gameCOLOUR(egc){
+  const qs=[
+    {expr:'5 > 3',       ans:true,  explain:'5 is greater than 3 ✓'},
+    {expr:'10 === 10',   ans:true,  explain:'Both sides are exactly 10 ✓'},
+    {expr:'"dog" === "cat"', ans:false, explain:'"dog" and "cat" are different strings'},
+    {expr:'7 < 2',       ans:false, explain:'7 is NOT less than 2'},
+    {expr:'4 >= 4',      ans:true,  explain:'4 is equal to 4, so >= is true ✓'},
+    {expr:'0 === false', ans:false, explain:'=== checks type too — 0 is a number, false is a boolean'},
+  ];
+  let qi=0, score=0;
+
+  function show(){
+    const q=qs[qi];
+    const area=document.getElementById('eg-area'); if(!area)return;
+    area.innerHTML=`
+      <div style="background:#0e1a2e;border:1.5px solid rgba(6,182,212,.2);border-radius:24px;padding:28px 20px;text-align:center;margin-bottom:20px;">
+        <div style="font-size:11px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;margin-bottom:10px;">Is this condition TRUE or FALSE?</div>
+        <div style="font-size:28px;font-weight:900;color:#f59e0b;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">${q.expr}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <button onclick="tfAns(true)" style="height:90px;border-radius:20px;background:rgba(34,197,94,.12);border:2.5px solid rgba(34,197,94,.4);color:#22c55e;font-size:22px;font-weight:900;font-family:'Clash Display',sans-serif;cursor:pointer;transition:all .18s;">✅ TRUE</button>
+        <button onclick="tfAns(false)" style="height:90px;border-radius:20px;background:rgba(239,68,68,.12);border:2.5px solid rgba(239,68,68,.4);color:#ef4444;font-size:22px;font-weight:900;font-family:'Clash Display',sans-serif;cursor:pointer;transition:all .18s;">❌ FALSE</button>
+      </div>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;">${qi+1} / ${qs.length}</div>`;
+    _egFb('','');
+
+    window.tfAns=function(val){
+      window.tfAns=()=>{}; // block double tap
+      if(val===q.ans){ score++; _egFb('✓ '+q.explain, true); }
+      else { _egFb('✗ '+q.explain, false); }
+      qi++;
+      if(qi>=qs.length) setTimeout(()=>_explorerWin(egc,25,'True or False champion! 🔀',3),900);
+      else setTimeout(show,1000);
+    };
+  }
+  _egShell(egc,'🔀','True or False?','Is the condition true or false? Tap your answer!');
+  show();
+}
+
+
+// ── GAME 3: 📦 BUILD THE ARRAY ───────────────────────────────────────────────
+// Shows a target array [🍎,🍌,🍇]. Student taps emoji in the right order to fill it.
+function _gameSORT(egc){
+  const rounds=[
+    {target:['🍎','🍌','🍇'], label:'array = [🍎, 🍌, 🍇]'},
+    {target:['🐶','🐱','🐸'], label:'array = [🐶, 🐱, 🐸]'},
+    {target:['⭐','🌙','☀️'], label:'array = [⭐, 🌙, ☀️]'},
+  ];
+  let ri=0;
+
+  function show(){
+    const r=rounds[ri];
+    let filled=[];
+    const shuffled=[...r.target].sort(()=>Math.random()-.5);
+    const area=document.getElementById('eg-area'); if(!area)return;
+
+    function render(){
+      area.innerHTML=`
+        <div style="background:#0e1a2e;border:1.5px solid rgba(6,182,212,.2);border-radius:20px;padding:20px 18px;margin-bottom:16px;">
+          <div style="font-size:12px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;margin-bottom:10px;">Build this array in order:</div>
+          <div style="font-size:18px;font-weight:700;color:#67e8f9;font-family:'JetBrains Mono',monospace;margin-bottom:16px;">${r.label}</div>
+          <div style="display:flex;gap:10px;justify-content:center;margin-bottom:6px;">
+            ${r.target.map((_,i)=>`
+              <div style="width:64px;height:64px;border-radius:16px;background:${filled[i]?'rgba(6,182,212,.25)':'#1a2a42'};border:2px solid ${filled[i]?'#06b6d4':'rgba(6,182,212,.2)'};display:flex;align-items:center;justify-content:center;font-size:30px;">
+                ${filled[i]||''}
+              </div>`).join('')}
+          </div>
+          <div style="text-align:center;font-size:11px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;">Slots filled: ${filled.length} / ${r.target.length}</div>
+        </div>
+        <div style="font-size:13px;color:#e0f2fe;font-family:'Satoshi',sans-serif;text-align:center;margin-bottom:12px;">Tap in the correct order 👇</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          ${shuffled.map((em,i)=>`<button id="em-btn-${i}" onclick="emClick(${i})" style="width:70px;height:70px;border-radius:18px;background:rgba(6,182,212,.1);border:2px solid rgba(6,182,212,.3);font-size:32px;cursor:pointer;transition:all .2s;">${em}</button>`).join('')}
+        </div>`;
+      _egFb('','');
+    }
+
+    window.emClick=function(i){
+      const em=shuffled[i];
+      const expected=r.target[filled.length];
+      if(em===expected){
+        filled.push(em);
+        const btn=document.getElementById(`em-btn-${i}`);
+        if(btn){btn.style.opacity='.2';btn.style.pointerEvents='none';}
+        if(filled.length===r.target.length){
+          _egFb('✓ Perfect array! 📦', true);
+          ri++;
+          if(ri>=rounds.length) setTimeout(()=>_explorerWin(egc,25,'Array builder pro! 📦',4),800);
+          else setTimeout(show,1000);
+        } else { render(); _egFb('✓ Keep going!', true); }
+      } else {
+        _egFb(`✗ Next should be ${expected} — check the order!`, false);
+      }
+    };
+    render();
+  }
+  _egShell(egc,'📦','Build the Array','Tap the emoji in the exact order shown to fill the array!');
+  show();
+}
+
+
+// ── GAME 4: 🐛 SPOT THE BUG ──────────────────────────────────────────────────
+// Two snippets shown side by side — one correct, one has an obvious typo/symbol.
+// Student taps the buggy one. Very visual, no deep reading needed.
+function _gameGATES(egc){
+  const rounds=[
+    { good:'if (x > 5)',      bad:'if (x >> 5)',     bugSide:1, tip:'>> is a bit-shift, not a comparison!' },
+    { good:'for (i = 0; i < 3; i++)', bad:'for (i = 0; i = 3; i++)', bugSide:1, tip:'= assigns a value — use < to compare!' },
+    { good:'array.push(10)',  bad:'array.pish(10)',   bugSide:1, tip:'"pish" is a typo — the method is push!' },
+    { good:'return x + y',    bad:'return x ++ y',   bugSide:1, tip:'++ increments — use + to add two values!' },
+  ];
+  let ri=0;
+
+  function show(){
+    const r=rounds[ri];
+    // Randomly swap sides each round
+    const swap=Math.random()>.5;
+    const left =swap?r.bad :r.good;
+    const right=swap?r.good:r.bad;
+    const bugSide=swap?0:1; // 0=left,1=right
+
+    const area=document.getElementById('eg-area'); if(!area)return;
+    area.innerHTML=`
+      <div style="font-size:13px;color:#e0f2fe;font-family:'Satoshi',sans-serif;text-align:center;margin-bottom:14px;">One of these has a bug. Tap it! 🐛</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        ${[left,right].map((code,i)=>`
+          <button onclick="bugTap(${i},${bugSide})" style="padding:20px 12px;background:#0e1a2e;border:2px solid rgba(6,182,212,.2);border-radius:18px;color:#94a3b8;font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;text-align:left;line-height:1.8;transition:all .2s;word-break:break-all;">${code}</button>`).join('')}
+      </div>
+      <div style="margin-top:14px;padding:10px 14px;background:rgba(6,182,212,.06);border-radius:12px;font-size:11px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;text-align:center;">💡 Hint: look closely at the symbols</div>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;">Round ${ri+1} / ${rounds.length}</div>`;
+    _egFb('','');
+
+    window.bugTap=function(tapped, bugAt){
+      window.bugTap=()=>{};
+      if(tapped===bugAt){
+        _egFb('✓ Found it! '+r.tip, true);
+        ri++; if(ri>=rounds.length) setTimeout(()=>_explorerWin(egc,25,'Bug hunter! 🐛',5),900); else setTimeout(show,1100);
+      } else { _egFb('✗ Look at the symbols more carefully!', false); setTimeout(show,900); }
+    };
+  }
+  _egShell(egc,'🐛','Spot the Bug','Which snippet has the mistake? Tap the buggy one!');
+  show();
+}
+
+
+// ── GAME 5: ⚙️ WHAT'S THE OUTPUT? ───────────────────────────────────────────
+// A visual "machine" shows a function name + input. Student picks the output.
+// Super simple: add, multiply, greet — all single-operation.
+function _gameBINARY(egc){
+  const rounds=[
+    {fn:'add',     input:'3, 4',   body:'return a + b', output:'7',  opts:['6','7','8'],      ans:1},
+    {fn:'double',  input:'5',      body:'return n * 2', output:'10', opts:['5','10','25'],     ans:1},
+    {fn:'bigger',  input:'9, 4',   body:'return a > b', output:'true', opts:['true','false','9'], ans:0},
+    {fn:'square',  input:'3',      body:'return n * n', output:'9',  opts:['6','9','12'],      ans:1},
+    {fn:'greet',   input:'"Sam"',  body:'return "Hi " + name', output:'"Hi Sam"', opts:['"Hello"','"Hi Sam"','"Sam Hi"'], ans:1},
+  ];
+  let ri=0;
+
+  function show(){
+    const r=rounds[ri];
+    const area=document.getElementById('eg-area'); if(!area)return;
+    area.innerHTML=`
+      <div style="background:#0e1a2e;border:1.5px solid rgba(6,182,212,.2);border-radius:24px;padding:22px 18px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:0;justify-content:center;flex-direction:column;gap:12px;">
+
+          <!-- INPUT pill -->
+          <div style="background:rgba(245,158,11,.12);border:2px solid rgba(245,158,11,.35);border-radius:50px;padding:10px 24px;font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#f59e0b;">
+            📥 ${r.input}
+          </div>
+
+          <!-- Arrow down -->
+          <div style="font-size:20px;color:#4e7a9e;">↓</div>
+
+          <!-- Function box -->
+          <div style="background:rgba(6,182,212,.1);border:2.5px solid rgba(6,182,212,.4);border-radius:18px;padding:14px 28px;text-align:center;">
+            <div style="font-size:13px;font-weight:800;color:#67e8f9;font-family:'JetBrains Mono',monospace;">⚙️ ${r.fn}()</div>
+            <div style="font-size:11px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;margin-top:4px;">${r.body}</div>
+          </div>
+
+          <!-- Arrow down -->
+          <div style="font-size:20px;color:#4e7a9e;">↓</div>
+
+          <!-- Output question -->
+          <div style="background:rgba(139,92,246,.12);border:2px solid rgba(139,92,246,.35);border-radius:50px;padding:10px 28px;font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#a78bfa;">
+            📤 ?
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;color:#e0f2fe;font-family:'Satoshi',sans-serif;text-align:center;margin-bottom:12px;">What does <span style="color:#67e8f9;font-family:'JetBrains Mono',monospace;">${r.fn}(${r.input})</span> return?</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        ${r.opts.map((o,i)=>`<button onclick="outAns(${i})" style="padding:14px 26px;border-radius:50px;background:rgba(139,92,246,.1);border:2px solid rgba(139,92,246,.3);color:#a78bfa;font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .2s;">${o}</button>`).join('')}
+      </div>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:#4e7a9e;font-family:'JetBrains Mono',monospace;">Question ${ri+1} / ${rounds.length}</div>`;
+    _egFb('','');
+
+    window.outAns=function(i){
+      window.outAns=()=>{};
+      if(i===r.ans){ _egFb('✓ Correct! Output = '+r.output, true); ri++; if(ri>=rounds.length) setTimeout(()=>_explorerWin(egc,25,'Function master! ⚙️',6),800); else setTimeout(show,1000); }
+      else { _egFb('✗ Trace the function — what does '+r.body+' give?', false); setTimeout(show,1000); }
+    };
+  }
+  _egShell(egc,'⚙️',"What's the Output?",'Watch the value go through the function machine — what comes out?');
+  show();
 }
 
 function toggleHint(){
