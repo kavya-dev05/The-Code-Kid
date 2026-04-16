@@ -27,7 +27,7 @@ router.get('/me', async (req, res) => {
     tier: profile.tier,
     xp: profile.xp,
     streak: profile.streak,
-    level: Math.floor(profile.xp / 100) + 1,
+    level: Math.floor(profile.xp / 100),
     xpToNextLevel: 100 - (profile.xp % 100),
     last_active: profile.last_active,
     avatar_url: profile.avatar_url,
@@ -75,8 +75,8 @@ router.post('/complete-challenge', async (req, res) => {
     .single();
 
   const newXp = (profile?.xp || 0) + xpEarned;
-  const newLevel = Math.floor(newXp / 100) + 1;
-  const oldLevel = Math.floor((profile?.xp || 0) / 100) + 1;
+  const newLevel = Math.floor(newXp / 100);
+  const oldLevel = Math.floor((profile?.xp || 0) / 100);
 
   await supabase
     .from('profiles')

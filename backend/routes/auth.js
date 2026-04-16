@@ -133,32 +133,15 @@ router.post('/signup', async (req, res) => {
 // ─────────────────────────────────────────
 // POST /api/auth/login
 // Body: { email, password }
-// email can be either an email address OR a username
 // ─────────────────────────────────────────
 router.post('/login', async (req, res) => {
-  const { email: loginInput, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!loginInput || !password) {
-    return res.status(400).json({ error: 'Username/email and password are required.' });
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required.' });
   }
 
-  let resolvedEmail = loginInput;
-
-  // If it doesn't look like an email, treat it as a username and look up the account
-  if (!loginInput.includes('@')) {
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('id, email')
-      .eq('username', loginInput)
-      .single();
-
-    if (profileError || !profile) {
-      return res.status(401).json({ error: 'Invalid username or password.' });
-    }
-    resolvedEmail = profile.email;
-  }
-
-  const { data, error } = await supabase.auth.signInWithPassword({ email: resolvedEmail, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     return res.status(401).json({ error: 'Incorrect email or password.' });
@@ -196,7 +179,7 @@ router.post('/login', async (req, res) => {
       tier: profile?.tier || 'junior',
       xp: profile?.xp || 0,
       streak,
-      level: Math.floor((profile?.xp || 0) / 100) + 1,
+      level: Math.floor((profile?.xp || 0) / 100),
     },
   });
 });
