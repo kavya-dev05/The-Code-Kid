@@ -2053,20 +2053,21 @@ nav{
           <div class="lms-btn" onclick="lmSel(this,'pro')">⚡ Pro<br><span style="font-size:9px;opacity:.65">Advanced</span></div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Username</label>
-          <input type="text" class="form-input" placeholder="young_coder_007" id="login-username">
+        <!-- Unified Username/Email input with toggle -->
+        <div class="login-id-toggle" style="display:flex;gap:6px;margin-bottom:4px;">
+          <div class="lms-btn sel" id="ltype-user-btn" onclick="toggleLoginIdType('username',this)" style="flex:1;border-radius:10px 4px 4px 10px;font-size:11px;text-align:center;">👤 Username</div>
+          <div class="lms-btn" id="ltype-email-btn" onclick="toggleLoginIdType('email',this)" style="flex:1;border-radius:4px 10px 10px 4px;font-size:11px;text-align:center;">✉️ Email</div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" placeholder="kavya@thecodekid.in" id="login-email">
+        <div class="form-group" id="login-username-wrap">
+          <label class="form-label" id="login-id-label">Username</label>
+          <input type="text" class="form-input" placeholder="young_coder_007" id="login-id">
         </div>
         <div class="form-group">
           <label class="form-label">Password</label>
           <input type="password" class="form-input" placeholder="••••••••" id="login-pass">
         </div>
         <div style="display:flex;justify-content:flex-end;margin-bottom:22px">
-          <span style="font-size:12px;font-weight:700;color:var(--a1);cursor:pointer;font-family:'JetBrains Mono',monospace">Forgot password?</span>
+          <span style="font-size:12px;font-weight:700;color:var(--a1);cursor:pointer;font-family:'JetBrains Mono',monospace" onclick="showForgotPwModal()">Forgot password?</span>
         </div>
         <button class="btn btn-fill" style="width:100%;justify-content:center;border-radius:14px;padding:15px;" onclick="doLogin()">Sign In →</button>
 
@@ -5232,15 +5233,14 @@ async function doLogin() {
   const btn = event.currentTarget;
   clearFormError();
 
-  // These IDs match the actual login form inputs
-  const emailEl = document.getElementById('login-email');
+  const idEl    = document.getElementById('login-id');
   const passEl  = document.getElementById('login-pass');
 
-  const email    = emailEl ? emailEl.value.trim() : '';
-  const password = passEl  ? passEl.value         : '';
+  const loginId = idEl ? idEl.value.trim() : '';
+  const password = passEl ? passEl.value : '';
 
-  if (!email || !password) {
-    showFormError('Please enter your email and password.');
+  if (!loginId || !password) {
+    showFormError('Please enter your username/email and password.');
     return;
   }
 
@@ -5253,7 +5253,7 @@ async function doLogin() {
     const res = await fetch(`${API}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email: loginId, password })
     });
 
     const data = await res.json();
@@ -5370,6 +5370,33 @@ function showTierToast(tier) {
   toast.textContent = labels[tier] || 'Welcome!';
   document.body.appendChild(toast);
   setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity .4s'; setTimeout(() => toast.remove(), 400); }, 2800);
+}
+
+// ─── Toggle between username and email login ───────
+function toggleLoginIdType(type, btn) {
+  const userBtn  = document.getElementById('ltype-user-btn');
+  const emailBtn = document.getElementById('ltype-email-btn');
+  const idWrap   = document.getElementById('login-username-wrap');
+  const idLabel  = document.getElementById('login-id-label');
+  const idInput  = document.getElementById('login-id');
+
+  if (!userBtn || !emailBtn || !idWrap) return;
+
+  if (type === 'username') {
+    userBtn.classList.add('sel');
+    emailBtn.classList.remove('sel');
+    idLabel.textContent = 'Username';
+    idInput.placeholder = 'young_coder_007';
+    idInput.type = 'text';
+  } else {
+    emailBtn.classList.add('sel');
+    userBtn.classList.remove('sel');
+    idLabel.textContent = 'Email';
+    idInput.placeholder = 'kavya@thecodekid.in';
+    idInput.type = 'email';
+  }
+  idInput.value = '';
+  idInput.focus();
 }
 
 let loginMode = 'junior';

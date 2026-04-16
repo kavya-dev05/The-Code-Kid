@@ -3,11 +3,51 @@ const router = express.Router();
 const supabase = require('../db/supabase');
 
 // ─────────────────────────────────────────
+// GET /api/auth/check-username?username=X
+// Returns 200 if available, 409 if taken
+// ─────────────────────────────────────────
+router.get('/check-username', async (req, res) => {
+  const { username } = req.query;
+  if (!username) return res.status(400).json({ error: 'Username is required.' });
+
+  const { data } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('username', username.trim())
+    .single();
+
+  if (data) {
+    return res.status(409).json({ available: false, error: 'That username is already taken.' });
+  }
+  res.json({ available: true });
+});
+
+// ─────────────────────────────────────────
+// POST /api/auth/forgot-password
+// Body: { email }
+// Sends a password reset email via Supabase Auth
+// ─────────────────────────────────────────
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email is required.' });
+
+  const { error } = await supabase.auth.resetPasswordEmail(email, {
+    redirectTo: `${req.protocol}://${req.get('host')}/reset-password`,
+  });
+
+  if (error) {
+    return res.status(400).json({ error: 'No account found with that email address.' });
+  }
+
+  res.json({ message: 'Password reset email sent! Check your inbox.' });
+});
+
+// ─────────────────────────────────────────
 // POST /api/auth/signup
-// Body: { email, password, username, tier }
+// Body: { email, password, username, school, tier }
 // ─────────────────────────────────────────
 router.post('/signup', async (req, res) => {
-  const { email, password, username, tier } = req.body;
+  const { email, password, username, school, tier } = req.body;
 
   // Basic validation
   if (!email || !password || !username) {
@@ -16,16 +56,22 @@ router.post('/signup', async (req, res) => {
   if (password.length < 6) {
     return res.status(400).json({ error: 'Password must be at least 6 characters.' });
   }
+  if (username.trim().length < 3) {
+    return res.status(400).json({ error: 'Username must be at least 3 characters.' });
+  }
+  if (!/^[a-zA-Z0-9_]+$/.test(username.trim())) {
+    return res.status(400).json({ error: 'Username can only contain letters, numbers and underscores.' });
+  }
 
   // Check if username is already taken
   const { data: existingUser } = await supabase
     .from('profiles')
     .select('username')
-    .eq('username', username)
+    .eq('username', username.trim())
     .single();
 
   if (existingUser) {
-    return res.status(400).json({ error: 'That username is already taken. Try another.' });
+    return res.status(409).json({ error: 'That username is already taken. Try another.' });
   }
 
   // Create the user in Supabase Auth
@@ -50,6 +96,7 @@ router.post('/signup', async (req, res) => {
     xp: 0,
     streak: 0,
     last_active: new Date().toISOString().split('T')[0],
+    school: school ? school.trim() : null,
   });
 
   if (profileError) {
@@ -74,10 +121,11 @@ router.post('/signup', async (req, res) => {
     user: {
       id: data.user.id,
       email: data.user.email,
-      username,
+      username: username.trim(),
       tier: tier || 'junior',
       xp: 0,
       streak: 0,
+      school: school ? school.trim() : null,
     },
   });
 });
@@ -85,15 +133,32 @@ router.post('/signup', async (req, res) => {
 // ─────────────────────────────────────────
 // POST /api/auth/login
 // Body: { email, password }
+// email can be either an email address OR a username
 // ─────────────────────────────────────────
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email: loginInput, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required.' });
+  if (!loginInput || !password) {
+    return res.status(400).json({ error: 'Username/email and password are required.' });
   }
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  let resolvedEmail = loginInput;
+
+  // If it doesn't look like an email, treat it as a username and look up the account
+  if (!loginInput.includes('@')) {
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id, email')
+      .eq('username', loginInput)
+      .single();
+
+    if (profileError || !profile) {
+      return res.status(401).json({ error: 'Invalid username or password.' });
+    }
+    resolvedEmail = profile.email;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email: resolvedEmail, password });
 
   if (error) {
     return res.status(401).json({ error: 'Incorrect email or password.' });

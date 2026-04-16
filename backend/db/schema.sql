@@ -8,6 +8,7 @@
 CREATE TABLE IF NOT EXISTS profiles (
   id          UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   username    TEXT UNIQUE NOT NULL,
+  school      TEXT,
   tier        TEXT NOT NULL DEFAULT 'junior'
                 CHECK (tier IN ('junior', 'explorer', 'pro')),
   xp          INTEGER NOT NULL DEFAULT 0,
