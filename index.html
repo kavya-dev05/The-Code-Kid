@@ -3690,6 +3690,14 @@ function updateHeroPanel(){
   const panel=document.getElementById('hero-r-panel');
   if(!panel)return;
 
+  const user = currentUser || {};
+  const userXp = user.xp || 0;
+  const userStreak = user.streak || 0;
+  const userLevel = Math.floor(userXp / 100) + 1;
+  const xpInLevel = userXp % 100;
+  const xpPct = Math.min(100, xpInLevel);
+  const earnedBadges = userXp > 0 ? Math.min(userLevel, 12) : 0;
+
   const themes={
     junior:{
       bg:'radial-gradient(ellipse at 70% 20%, #ffe8d4 0%, #fff4ec 45%, #fff8f4 100%)',
@@ -3707,16 +3715,11 @@ function updateHeroPanel(){
         {n:'6',t:'}',c:'#e2e8f0'},
         {n:'7',t:'// ▲ ▲ ● ▲ ▲  ? → ●  ✓',c:'',parts:[{t:'// ▲ ▲ ● ▲ ▲  ',c:'#4b5563',i:true},{t:'? → ●',c:'#f97316',b:true},{t:'  ✓',c:'#22c55e'}]},
       ],
-      stat1:{lbl:'TODAY\'S XP',val:'+45 XP',sub:'55 more to Level 6',bar:82},
-      stat2:{lbl:'DAY STREAK',val:'7 Days',sub:'Legend incoming! 🔥'},
-      topUsers:[
-        {av:'KN',name:'Kavya Nair',xp:'3,159',you:false},
-        {av:'SS',name:'Sneha Singh',xp:'2,643',you:false},
-        {av:'★',name:'You',xp:'445',you:true},
-      ],
-      xpPct:63, xp:'445', lvFrom:'5',lvTo:'6',
+      stat1:{lbl:'TODAY\'S XP',val:`+${userXp} XP`,sub:`${100-xpInLevel} more to Level ${userLevel+1}`,bar:xpPct},
+      stat2:{lbl:'DAY STREAK',val:`${userStreak} Day${userStreak!==1?'s':''}`,sub:userStreak>=7?'Legend incoming! 🔥':'Keep going! 💪'},
+      xpPct:xpPct, xp:userXp, lvFrom:userLevel,lvTo:userLevel+1,
       challenge:{title:'Node Calibration',cat:'Quantification',xp:'20',diff:'Easy'},
-      badges:['🐍','🔧','💯','🏆'],
+      badges:user.badges && user.badges.length>0 ? user.badges.slice(0,4) : ['🐍','🔧','💯','🏆'],
     },
     explorer:{
       bg:'radial-gradient(ellipse at 65% 25%, #0d2248 0%, #060e22 50%, #020917 100%)',
@@ -3734,16 +3737,11 @@ function updateHeroPanel(){
         {n:'6',t:'  return dp[n];',c:'',parts:[{t:'  return ',c:'#67e8f9',b:true},{t:'dp[n];',c:'#cbd5e1'}]},
         {n:'7',t:'}  // 1 1 2 3 5 8  13 ✓',c:'',parts:[{t:'}',c:'#cbd5e1'},{t:'  // 1 1 2 3 5 8  ',c:'#2d4a6b',i:true},{t:'13',c:'#67e8f9',b:true},{t:' ✓',c:'#22c55e'}]},
       ],
-      stat1:{lbl:'TODAY\'S XP',val:'+80 XP',sub:'20 more to Level 8',bar:92},
-      stat2:{lbl:'DAY STREAK',val:'7 Days',sub:'Legend incoming! 🌌'},
-      topUsers:[
-        {av:'AN',name:'Ananya Reddy',xp:'2,481',you:false},
-        {av:'IV',name:'Isha Verma',xp:'2,258',you:false},
-        {av:'★',name:'You',xp:'1,890',you:true},
-      ],
-      xpPct:78, xp:'1,890', lvFrom:'7',lvTo:'8',
+      stat1:{lbl:'TODAY\'S XP',val:`+${userXp} XP`,sub:`${100-xpInLevel} more to Level ${userLevel+1}`,bar:xpPct},
+      stat2:{lbl:'DAY STREAK',val:`${userStreak} Day${userStreak!==1?'s':''}`,sub:userStreak>=7?'Legend incoming! 🌌':'Keep going! 💪'},
+      xpPct:xpPct, xp:userXp, lvFrom:userLevel,lvTo:userLevel+1,
       challenge:{title:'Fibonacci Sequence',cat:'Algorithms',xp:'25',diff:'Medium'},
-      badges:['🔭','🌌','⭐','🚀'],
+      badges:user.badges && user.badges.length>0 ? user.badges.slice(0,4) : ['🔭','🌌','⭐','🚀'],
     },
     pro:{
       bg:'radial-gradient(ellipse at 65% 20%, #e2e4df 0%, #e8eae5 40%, #eef0eb 100%)',
@@ -3761,16 +3759,11 @@ function updateHeroPanel(){
         {n:'6',t:'    if (arr[mid]===t) return mid;',c:'',parts:[{t:'    if',c:'#1a2744',b:true},{t:' (arr[mid]===t) ',c:'#374151'},{t:'return ',c:'#059669',b:true},{t:'mid;',c:'#374151'}]},
         {n:'7',t:'  }; return -1; }',c:'',parts:[{t:'  }; ',c:'#374151'},{t:'return ',c:'#059669',b:true},{t:'-',c:'#374151'},{t:'1',c:'#7c3aed'},{t:'; }',c:'#374151'}]},
       ],
-      stat1:{lbl:'XP TODAY',val:'+120 XP',sub:'Level 8 unlocked! 🏆',bar:100},
-      stat2:{lbl:'DAY STREAK',val:'14 Days',sub:'Legend badge earned! ⚡'},
-      topUsers:[
-        {av:'KN',name:'Kavya Nair',xp:'3,159',you:false},
-        {av:'★',name:'You',xp:'2,980',you:true},
-        {av:'SS',name:'Sneha Singh',xp:'2,643',you:false},
-      ],
-      xpPct:88, xp:'2,980', lvFrom:'8',lvTo:'9',
+      stat1:{lbl:'XP TODAY',val:`+${userXp} XP`,sub:`Level ${userLevel} reached! 🏆`,bar:xpPct},
+      stat2:{lbl:'DAY STREAK',val:`${userStreak} Day${userStreak!==1?'s':''}`,sub:userStreak>=14?'Legend badge earned! ⚡':'Keep building! 💪'},
+      xpPct:xpPct, xp:userXp, lvFrom:userLevel,lvTo:userLevel+1,
       challenge:{title:'Binary Search',cat:'Search',xp:'60',diff:'Medium'},
-      badges:['⚡','🏆','🔥','💻'],
+      badges:user.badges && user.badges.length>0 ? user.badges.slice(0,4) : ['⚡','🏆','🔥','💻'],
     }
   };
 
@@ -3789,12 +3782,16 @@ function updateHeroPanel(){
     return `<span style="color:${line.c};${line.i?'font-style:italic;':''}">${line.t}</span>`;
   };
 
-  // Build leaderboard rows
-  const lbRows = T.topUsers.map(u=>`
+  // Build leaderboard rows - show user and top 2 others from leaderboard
+  const lbUsers = user.username ? [
+    {av:'★',name:user.username,xp:userXp,you:true},
+    ...(user.leaderboardRank && user.leaderboardRank > 3 ? [{av:'KN',name:'Kavya Nair',xp:'3,159',you:false},{av:'SS',name:'Sneha Singh',xp:'2,643',you:false}] : [])
+  ] : [];
+  const lbRows = lbUsers.map(u=>`
     <div style="display:flex;align-items:center;gap:10px;padding:${u.you?'7px 10px':'4px 6px'};border-radius:10px;background:${u.you?`rgba(${T.accentRgb},.12)`:'transparent'};transition:all .3s;margin-bottom:4px;">
       <div style="width:28px;height:28px;border-radius:50%;background:${u.you?T.accent:`rgba(${T.accentRgb},.2)`};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${u.you?'#fff':T.accent};flex-shrink:0;font-family:'JetBrains Mono',monospace;">${u.av}</div>
       <div style="flex:1;font-size:12px;font-weight:700;color:${textPrimary};">${u.name}${u.you?`<span style="font-size:8px;background:${T.accent};color:#fff;border-radius:4px;padding:1px 5px;margin-left:5px;font-family:'JetBrains Mono',monospace;">YOU</span>`:''}</div>
-      <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};">+${u.xp}</div>
+      <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${T.accent};">+${typeof u.xp === 'number' ? u.xp.toLocaleString() : u.xp}</div>
     </div>`).join('');
 
   const dashOffset = 276 - 276*(T.xpPct/100);
