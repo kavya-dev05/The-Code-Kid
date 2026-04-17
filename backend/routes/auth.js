@@ -99,6 +99,16 @@ router.post('/signup', async (req, res) => {
     school: school ? school.trim() : null,
   });
 
+  // Log the signup activity
+  if (!profileError) {
+    await supabase.from('activity_log').insert({
+      user_id: data.user.id,
+      activity_type: 'signup',
+      activity_date: new Date().toISOString().split('T')[0],
+      details: { username: username.trim(), tier: tier || 'junior' },
+    });
+  }
+
   if (profileError) {
     // Rollback: delete auth user if profile creation failed
     await supabase.auth.admin.deleteUser(data.user.id);
@@ -159,16 +169,35 @@ router.post('/login', async (req, res) => {
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
 
   let streak = profile?.streak || 0;
-  if (profile?.last_active === yesterday) {
-    streak += 1; // continued streak
-  } else if (profile?.last_active !== today) {
-    streak = 1; // streak broken, reset to 1
+  let lastActive = profile?.last_active;
+
+  if (lastActive === yesterday) {
+    // Continued the streak - increment
+    streak += 1;
+  } else if (lastActive !== today) {
+    // First login today
+    if (lastActive && lastActive < yesterday) {
+      // Missed at least one day - reset streak to 1
+      streak = 1;
+    } else if (!lastActive) {
+      // First ever login
+      streak = 1;
+    }
+    // If lastActive === today, streak stays the same (already counted)
   }
 
   await supabase
     .from('profiles')
     .update({ last_active: today, streak })
     .eq('id', data.user.id);
+
+  // Log the login activity
+  await supabase.from('activity_log').insert({
+    user_id: data.user.id,
+    activity_type: 'login',
+    activity_date: today,
+    details: { streak },
+  });
 
   res.json({
     token: data.session.access_token,

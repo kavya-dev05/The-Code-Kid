@@ -3693,10 +3693,13 @@ function updateHeroPanel(){
   const user = currentUser || {};
   const userXp = user.xp || 0;
   const userStreak = user.streak || 0;
-  const userLevel = Math.floor(userXp / 100) + 1;
+  const userLevel = Math.floor(userXp / 100);
   const xpInLevel = userXp % 100;
   const xpPct = Math.min(100, xpInLevel);
-  const earnedBadges = userXp > 0 ? Math.min(userLevel, 12) : 0;
+  // Use real earned badges from server, fallback to defaults
+  const userBadges = user.earnedBadges && user.earnedBadges.length > 0
+    ? user.earnedBadges.slice(0, 4).map(b => b.badge_icon)
+    : null;
 
   const themes={
     junior:{
@@ -3719,7 +3722,7 @@ function updateHeroPanel(){
       stat2:{lbl:'DAY STREAK',val:`${userStreak} Day${userStreak!==1?'s':''}`,sub:userStreak>=7?'Legend incoming! 🔥':'Keep going! 💪'},
       xpPct:xpPct, xp:userXp, lvFrom:userLevel,lvTo:userLevel+1,
       challenge:{title:'Node Calibration',cat:'Quantification',xp:'20',diff:'Easy'},
-      badges:user.badges && user.badges.length>0 ? user.badges.slice(0,4) : ['🐍','🔧','💯','🏆'],
+      badges:userBadges || ['🐍','🔧','💯','🏆'],
     },
     explorer:{
       bg:'radial-gradient(ellipse at 65% 25%, #0d2248 0%, #060e22 50%, #020917 100%)',
@@ -3741,7 +3744,7 @@ function updateHeroPanel(){
       stat2:{lbl:'DAY STREAK',val:`${userStreak} Day${userStreak!==1?'s':''}`,sub:userStreak>=7?'Legend incoming! 🌌':'Keep going! 💪'},
       xpPct:xpPct, xp:userXp, lvFrom:userLevel,lvTo:userLevel+1,
       challenge:{title:'Fibonacci Sequence',cat:'Algorithms',xp:'25',diff:'Medium'},
-      badges:user.badges && user.badges.length>0 ? user.badges.slice(0,4) : ['🔭','🌌','⭐','🚀'],
+      badges:userBadges || ['🔭','🌌','⭐','🚀'],
     },
     pro:{
       bg:'radial-gradient(ellipse at 65% 20%, #e2e4df 0%, #e8eae5 40%, #eef0eb 100%)',
@@ -3763,7 +3766,7 @@ function updateHeroPanel(){
       stat2:{lbl:'DAY STREAK',val:`${userStreak} Day${userStreak!==1?'s':''}`,sub:userStreak>=14?'Legend badge earned! ⚡':'Keep building! 💪'},
       xpPct:xpPct, xp:userXp, lvFrom:userLevel,lvTo:userLevel+1,
       challenge:{title:'Binary Search',cat:'Search',xp:'60',diff:'Medium'},
-      badges:user.badges && user.badges.length>0 ? user.badges.slice(0,4) : ['⚡','🏆','🔥','💻'],
+      badges:userBadges || ['⚡','🏆','🔥','💻'],
     }
   };
 
@@ -4372,6 +4375,15 @@ function checkAns(idx){
         if (d.totalXp !== undefined) {
           currentUser.xp = d.totalXp;
           document.getElementById('xp-display').textContent = d.totalXp;
+          // Award badges if earned
+          if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
+            showBadgeEarnedToast(d.newlyEarnedBadges);
+          }
+          // Update all UI components
+          if(typeof updateHeroPanel==='function') updateHeroPanel();
+          if(typeof updateDashboardFromUser==='function') updateDashboardFromUser();
+          if(typeof updateProfileFromUser==='function') updateProfileFromUser();
+          if(typeof updateNavUI==='function') updateNavUI();
         }
       }).catch(() => {});
     }
@@ -4398,7 +4410,33 @@ function showResult(correct,xp){
 
 function nextQuestion(){
   document.getElementById('result-overlay').style.display='none';
-  if(currentGame.n>=5){closeGame();return;}
+  if(currentGame.n>=5){
+    // Course completed! Award bonus XP
+    const token = getToken();
+    if (token && currentUser) {
+      const courseBonusXp = 50; // Bonus XP for completing all 5 games
+      fetch(`${API}/user/complete-challenge`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ challengeId: 'course-complete-' + currentGame.mode + '-' + Date.now(), xpEarned: courseBonusXp, tier: currentGame.mode })
+      }).then(r => r.json()).then(d => {
+        if (d.totalXp !== undefined) {
+          currentUser.xp = d.totalXp;
+          // Award badges if earned
+          if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
+            showBadgeEarnedToast(d.newlyEarnedBadges);
+          }
+          // Update all UI components
+          updateNavUI();
+          updateDashboardFromUser();
+          updateProfileFromUser();
+          updateHeroPanel();
+        }
+      }).catch(() => {});
+    }
+    closeGame();
+    return;
+  }
   // Find next game in the current mode's course list
   const m=currentGame.mode;
   const juniorGames=[
@@ -4456,7 +4494,54 @@ function openExplorerGame(n){
 function _explorerWin(body, xp, msg, nextN){
   xpEarned += xp;
   document.getElementById('gs-xp').textContent = xpEarned + ' XP';
-  document.getElementById('xp-display').textContent = 445 + xpEarned;
+  // Use actual user XP instead of hardcoded 445
+  const baseXp = currentUser ? currentUser.xp : 0;
+  document.getElementById('xp-display').textContent = baseXp + xpEarned;
+
+  // Save XP to backend if logged in
+  const token = getToken();
+  if (token && currentUser) {
+    fetch(`${API}/user/complete-challenge`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ challengeId: 'explorer-game-' + nextN + '-' + Date.now(), xpEarned: xp, tier: 'explorer' })
+    }).then(r => r.json()).then(d => {
+      if (d.totalXp !== undefined) {
+        currentUser.xp = d.totalXp;
+        document.getElementById('xp-display').textContent = d.totalXp;
+        if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
+          showBadgeEarnedToast(d.newlyEarnedBadges);
+        }
+        if(typeof updateHeroPanel==='function') updateHeroPanel();
+        if(typeof updateDashboardFromUser==='function') updateDashboardFromUser();
+      }
+    }).catch(() => {});
+  }
+
+  // If finishing the 5th game, award course completion bonus
+  if (nextN > 5) {
+    const courseBonusXp = 50;
+    const token = getToken();
+    if (token && currentUser) {
+      fetch(`${API}/user/complete-challenge`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ challengeId: 'explorer-course-complete-' + Date.now(), xpEarned: courseBonusXp, tier: 'explorer' })
+      }).then(r => r.json()).then(d => {
+        if (d.totalXp !== undefined) {
+          currentUser.xp = d.totalXp;
+          if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
+            showBadgeEarnedToast(d.newlyEarnedBadges);
+          }
+          updateNavUI();
+          updateDashboardFromUser();
+          updateProfileFromUser();
+          updateHeroPanel();
+        }
+      }).catch(() => {});
+    }
+  }
+
   body.innerHTML = `
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:18px;padding:40px;text-align:center;">
       <div style="font-size:56px">🎉</div>
@@ -4940,7 +5025,7 @@ function submitCode(){
   }
   // Earn XP
   xpEarned+=currentProblem.xp;
-  const baseXp = currentUser ? currentUser.xp : 445;
+  const baseXp = currentUser ? currentUser.xp : 0;
   const totalXp = baseXp + xpEarned;
   document.getElementById('xp-display').textContent=totalXp;
   document.getElementById('code-xp-display').textContent=`${xpEarned} XP`;
@@ -4957,6 +5042,15 @@ function submitCode(){
         currentUser.xp = d.totalXp;
         document.getElementById('xp-display').textContent = d.totalXp;
         document.getElementById('crp-total-xp').textContent = `Total: ${d.totalXp} XP`;
+        // Award badges if earned
+        if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
+          showBadgeEarnedToast(d.newlyEarnedBadges);
+        }
+        // Update all UI components
+        if(typeof updateHeroPanel==='function') updateHeroPanel();
+        if(typeof updateDashboardFromUser==='function') updateDashboardFromUser();
+        if(typeof updateProfileFromUser==='function') updateProfileFromUser();
+        if(typeof updateNavUI==='function') updateNavUI();
       }
     }).catch(() => {});
   }
@@ -5086,6 +5180,53 @@ function acceptDailyChallenge(){
   else openGame(ch.game);
 }
 
+// Called when daily challenge is completed successfully
+function completeDailyChallenge(xpEarned) {
+  const token = getToken();
+  if (!token || !currentUser) return;
+
+  fetch(`${API}/user/daily-challenge`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ xpEarned, tier: mode })
+  }).then(r => r.json()).then(d => {
+    if (d.totalXp !== undefined) {
+      currentUser.xp = d.totalXp;
+      // Update streak on daily challenge completion
+      updateStreakOnActivity();
+      // Award badges if earned
+      if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
+        showBadgeEarnedToast(d.newlyEarnedBadges);
+      }
+      // Update all UI components
+      updateNavUI();
+      updateDashboardFromUser();
+      updateProfileFromUser();
+      updateHeroPanel();
+    }
+  }).catch(() => {});
+}
+
+// Show badge earned toast notification
+function showBadgeEarnedToast(badges) {
+  if (!badges || badges.length === 0) return;
+
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fbbf24,#f97316);color:#fff;padding:16px 28px;border-radius:16px;font-size:14px;font-weight:700;font-family:"Satoshi",sans-serif;z-index:9999;box-shadow:0 8px 32px -8px rgba(249,115,22,.5);animation:pageIn .4s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:12px;';
+  toast.innerHTML = `
+    <span style="font-size:24px">${badges[0].badge_icon}</span>
+    <div>
+      <div style="font-size:11px;opacity:.9">Badge Earned!</div>
+      <div style="font-size:15px">${badges[0].badge_name}</div>
+    </div>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity .4s'; setTimeout(()=>toast.remove(),400); }, 3000);
+}
+
 // ════════════════════════════════════════
 // AUTH
 // ════════════════════════════════════════
@@ -5151,7 +5292,48 @@ async function refreshUserFromServer(token) {
     if (res.ok) {
       const user = await res.json();
       currentUser = user;
+      // Fetch badges separately
+      try {
+        const badgesRes = await fetch(`${API}/user/badges`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (badgesRes.ok) {
+          const allBadges = await badgesRes.json();
+          currentUser.allBadges = allBadges;
+          currentUser.earnedBadges = allBadges.filter(b => b.earned);
+        }
+      } catch(e) {}
       updateNavUI();
+      updateDashboardFromUser();
+      updateProfileFromUser();
+      updateHeroPanel();
+    }
+  } catch(e) {}
+}
+
+// Update streak when user completes any activity (called after challenge completion)
+async function updateStreakOnActivity() {
+  const token = getToken();
+  if (!token || !currentUser) return;
+
+  try {
+    const res = await fetch(`${API}/user/update-streak`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.streak !== undefined) {
+        currentUser.streak = data.streak;
+        // Update all UI elements with new streak
+        updateNavUI();
+        updateDashboardFromUser();
+        updateProfileFromUser();
+        updateHeroPanel();
+      }
     }
   } catch(e) {}
 }
@@ -5161,33 +5343,19 @@ function updateNavUI() {
   // Update XP display in navbar
   const xpEl = document.getElementById('xp-display');
   if (xpEl) xpEl.textContent = currentUser.xp || 0;
+  // Update level display in navbar
+  const level = Math.floor((currentUser.xp || 0) / 100);
+  const navLvEl = document.querySelector('.nlv');
+  if (navLvEl) navLvEl.innerHTML = `Lv<br>${level}`;
   // Update streak in navbar
   document.querySelectorAll('.streak-text').forEach(el => {
     el.textContent = currentUser.streak || 0;
     el.style.display = '';
   });
-  // Update dashboard streak cards
-  document.querySelectorAll('#page-dashboard .db-card').forEach(card => {
-    const lbl = card.querySelector('.db-lbl');
-    if (lbl && lbl.textContent.toLowerCase().includes('streak')) {
-      const val = card.querySelector('.db-val');
-      if (val) val.textContent = currentUser.streak || 0;
-      // Also show the streak-text span in dashboard cards
-      const streakText = card.querySelector('.streak-text');
-      if (streakText) {
-        streakText.textContent = currentUser.streak || 0;
-        streakText.style.display = '';
-      }
-    }
-  });
-  // Update profile header stats streak
-  const profileStats = document.querySelectorAll('#page-profile .profile-hstat-n');
-  profileStats.forEach(el => {
-    const label = el.nextElementSibling?.textContent || '';
-    if (label.includes('Day Streak')) {
-      el.textContent = currentUser.streak || 0;
-    }
-  });
+  // Update dashboard cards
+  updateDashboardFromUser();
+  // Update profile
+  updateProfileFromUser();
 }
 
 function isTierUnlocked(tier) {
@@ -5878,16 +6046,18 @@ function updateDashboardFromUser() {
       const parent = card.querySelector('div[style*="font-family:Clash Display"]');
       if (parent) parent.textContent = `🧠 Level ${level}`;
     }
-    // Update badges display - show 0 badges for new users (0 XP), else show based on level
+    // Update badges display - use real badge data if available
     if (lbl && lbl.textContent.includes('Badges')) {
-      // For new users with 0 XP, show 0 badges. Otherwise, calculate based on level.
-      const earnedBadges = (currentUser.xp || 0) > 0 ? Math.min(level + 1, 12) : 0;
-      lbl.textContent = `Badges — ${earnedBadges}/12`;
+      const earnedBadgeCount = currentUser.earnedBadges ? currentUser.earnedBadges.length : 0;
+      lbl.textContent = `Badges — ${earnedBadgeCount}/12`;
       // Show/hide badge icons based on earned count
       const badgeItems = card.querySelectorAll('.badge-item');
       badgeItems.forEach((item, idx) => {
-        if (idx < earnedBadges) {
+        if (idx < earnedBadgeCount && currentUser.earnedBadges && currentUser.earnedBadges[idx]) {
           item.classList.remove('badge-locked');
+          // Update badge icon if available
+          const iconEl = item.querySelector('.badge-icon');
+          if (iconEl) iconEl.textContent = currentUser.earnedBadges[idx].badge_icon;
         } else {
           item.classList.add('badge-locked');
         }
@@ -5954,17 +6124,20 @@ function updateProfileFromUser() {
     }
   }
 
-  // Update badges - show 0 badges for new users, else based on level
+  // Update badges - use real badge data from server
   const allCards = document.querySelectorAll('#page-profile .db-card');
   allCards.forEach(card => {
     const lbl = card.querySelector('.db-lbl');
     if (lbl && lbl.textContent.includes('Badges')) {
-      const earnedBadges = (currentUser.xp || 0) > 0 ? Math.min(level + 1, 12) : 0;
-      lbl.textContent = `🏅 Badges (${earnedBadges}/12)`;
+      const earnedBadgeCount = currentUser.earnedBadges ? currentUser.earnedBadges.length : 0;
+      lbl.textContent = `🏅 Badges (${earnedBadgeCount}/12)`;
       const badgeItems = card.querySelectorAll('.badge-item');
       badgeItems.forEach((item, idx) => {
-        if (idx < earnedBadges) {
+        if (idx < earnedBadgeCount && currentUser.earnedBadges && currentUser.earnedBadges[idx]) {
           item.classList.remove('badge-locked');
+          // Update badge icon if available
+          const iconEl = item.querySelector('.badge-icon');
+          if (iconEl) iconEl.textContent = currentUser.earnedBadges[idx].badge_icon;
         } else {
           item.classList.add('badge-locked');
         }
