@@ -5274,10 +5274,16 @@ function getToken() {
 function saveSession(token, user, tier) {
   unlockedTiers.add(tier);
   currentSignedInTier = tier;
-  currentUser = user;
+  // Initialize new user fields if missing
+  currentUser = {
+    ...user,
+    rank: user.rank || null,
+    solved: user.solved || 0,
+    earnedBadges: user.earnedBadges || []
+  };
   localStorage.setItem('tck_session', JSON.stringify({
     token,
-    user,
+    user: currentUser,
     unlockedTiers: [...unlockedTiers],
     currentSignedInTier: tier
   }));
@@ -5301,6 +5307,26 @@ async function refreshUserFromServer(token) {
           const allBadges = await badgesRes.json();
           currentUser.allBadges = allBadges;
           currentUser.earnedBadges = allBadges.filter(b => b.earned);
+        }
+      } catch(e) {}
+      // Fetch rank for current tier
+      try {
+        const rankRes = await fetch(`${API}/leaderboard/${user.tier || 'junior'}/my-rank`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (rankRes.ok) {
+          const rankData = await rankRes.json();
+          if (rankData.rank) currentUser.rank = rankData.rank;
+        }
+      } catch(e) {}
+      // Fetch solved count
+      try {
+        const completionsRes = await fetch(`${API}/user/completions`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (completionsRes.ok) {
+          const completions = await completionsRes.json();
+          currentUser.solved = completions.length || 0;
         }
       } catch(e) {}
       updateNavUI();
@@ -5443,6 +5469,9 @@ async function doLogin() {
       setTimeout(() => { ov.style.display = 'none'; ov.style.animation = ''; document.body.style.overflow = ''; }, 400);
     }
 
+    // Refresh full profile from server to get all details (rank, solved, badges)
+    setTimeout(() => refreshUserFromServer(data.token), 100);
+
     setMode(data.user.tier || loginMode, null);
     goPage('home');
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -5465,9 +5494,11 @@ async function doSignup() {
   const fname    = (document.getElementById('signup-fname')   || {}).value || '';
   const lname    = (document.getElementById('signup-lname')   || {}).value || '';
   const emailEl  = document.getElementById('signup-email');
+  const schoolEl = document.getElementById('signup-school');
   const passEl   = document.getElementById('signup-pass');
 
   const email    = emailEl ? emailEl.value.trim() : '';
+  const school   = schoolEl ? schoolEl.value.trim() : '';
   const password = passEl  ? passEl.value         : '';
 
   // Build username from first + last name (e.g. "kavya_sharma")
@@ -5492,7 +5523,7 @@ async function doSignup() {
     const res = await fetch(`${API}/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, username, tier: loginMode })
+      body: JSON.stringify({ email, password, username, school, tier: loginMode })
     });
 
     const data = await res.json();
@@ -5511,6 +5542,9 @@ async function doSignup() {
     btn.innerHTML = originalHTML;
     btn.style.opacity = '';
     btn.style.pointerEvents = '';
+
+    // Refresh full profile from server to get all details (rank, solved, badges)
+    setTimeout(() => refreshUserFromServer(data.token), 100);
 
     setMode(data.user.tier || loginMode, null);
     goPage('home');
@@ -6081,27 +6115,39 @@ function updateDashboardFromUser() {
 function updateProfileFromUser() {
   if (!currentUser) return;
 
+  const level = Math.floor((currentUser.xp || 0) / 100);
+
   // Update username
   const usernameEl = document.getElementById('profile-username-display');
   if (usernameEl) usernameEl.textContent = currentUser.username || 'New User';
 
-  // Update XP in header stats
+  // Update tier badge
+  const tierBadgeEl = document.getElementById('profile-tier-badge');
+  if (tierBadgeEl) {
+    const tierBadges = { junior: '🎮 Junior Coder', explorer: '🔭 Explorer', pro: '⚡ Pro Coder' };
+    tierBadgeEl.textContent = tierBadges[currentUser.tier] || '🎮 Junior Coder';
+  }
+
+  // Update all header stats (XP, Streak, Rank, Solved)
   const xpStatEls = document.querySelectorAll('#page-profile .profile-hstat-n');
   xpStatEls.forEach(el => {
     const label = el.nextElementSibling?.textContent || '';
     if (label.includes('Total XP')) {
       el.textContent = currentUser.xp || 0;
-    }
-    if (label.includes('Day Streak')) {
+    } else if (label.includes('Day Streak')) {
       el.textContent = currentUser.streak || 0;
+    } else if (label.includes('Rank')) {
+      // Rank is fetched separately, use stored value or default
+      el.textContent = currentUser.rank ? '#' + currentUser.rank : '#--';
+    } else if (label.includes('Solved')) {
+      el.textContent = currentUser.solved || 0;
     }
   });
 
-  // Update level text
-  const level = Math.floor((currentUser.xp || 0) / 100);
+  // Update level text in profile header
   const levelTextEl = document.querySelector('#page-profile .profile-info > div:last-child');
   if (levelTextEl) {
-    levelTextEl.textContent = `Level ${level} · ${currentUser.school || 'No School Set'}`;
+    levelTextEl.textContent = `Level ${level} · ${currentUser.tier ? currentUser.tier.charAt(0).toUpperCase() + currentUser.tier.slice(1) : 'Coder'} · ${currentUser.school || 'No School Set'}`;
   }
 
   // Update XP progress card
@@ -6135,7 +6181,6 @@ function updateProfileFromUser() {
       badgeItems.forEach((item, idx) => {
         if (idx < earnedBadgeCount && currentUser.earnedBadges && currentUser.earnedBadges[idx]) {
           item.classList.remove('badge-locked');
-          // Update badge icon if available
           const iconEl = item.querySelector('.badge-icon');
           if (iconEl) iconEl.textContent = currentUser.earnedBadges[idx].badge_icon;
         } else {
@@ -6148,6 +6193,51 @@ function updateProfileFromUser() {
   // Update nav level display
   const navLvEl = document.querySelector('.nlv');
   if (navLvEl) navLvEl.innerHTML = `Lv<br>${level}`;
+
+  // Fetch and update rank and solved count if not already set
+  fetchUserProfileDetails();
+}
+
+// Fetch user's rank and solved count from backend
+async function fetchUserProfileDetails() {
+  const token = getToken();
+  if (!token || !currentUser) return;
+
+  try {
+    // Fetch rank for current tier
+    const rankRes = await fetch(`${API}/leaderboard/${currentUser.tier || 'junior'}/my-rank`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (rankRes.ok) {
+      const rankData = await rankRes.json();
+      if (rankData.rank) {
+        currentUser.rank = rankData.rank;
+        // Update rank display
+        const rankEls = document.querySelectorAll('#page-profile .profile-hstat-n');
+        rankEls.forEach(el => {
+          if (el.nextElementSibling?.textContent?.includes('Rank')) {
+            el.textContent = '#' + rankData.rank;
+          }
+        });
+      }
+    }
+
+    // Fetch solved count from completions
+    const completionsRes = await fetch(`${API}/user/completions`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (completionsRes.ok) {
+      const completions = await completionsRes.json();
+      currentUser.solved = completions.length || 0;
+      // Update solved display
+      const solvedEls = document.querySelectorAll('#page-profile .profile-hstat-n');
+      solvedEls.forEach(el => {
+        if (el.nextElementSibling?.textContent?.includes('Solved')) {
+          el.textContent = currentUser.solved;
+        }
+      });
+    }
+  } catch(e) {}
 }
 updateHeroScene();
 updateHeroMid();

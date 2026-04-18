@@ -46,6 +46,12 @@ router.get('/me', async (req, res) => {
 
   const badges = badgesData || [];
 
+  // Fetch user's solved count
+  const { count: solvedCount } = await supabase
+    .from('completions')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', req.user.id);
+
   res.json({
     id: profile.id,
     username: profile.username,
@@ -57,7 +63,9 @@ router.get('/me', async (req, res) => {
     last_active: profile.last_active,
     avatar_url: profile.avatar_url,
     created_at: profile.created_at,
+    school: profile.school,
     badges: badges,
+    solved: solvedCount || 0,
   });
 });
 
