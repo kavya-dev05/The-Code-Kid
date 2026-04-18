@@ -372,4 +372,33 @@ router.post('/update-streak', async (req, res) => {
   res.json({ streak, updated: true });
 });
 
+// ─────────────────────────────────────────
+// PUT /api/user/profile
+// Body: { username?, school? } — update profile fields
+// ─────────────────────────────────────────
+router.put('/profile', async (req, res) => {
+  const { username, school } = req.body;
+
+  const updateData = {};
+  if (username) updateData.username = username;
+  if (school) updateData.school = school;
+
+  if (Object.keys(updateData).length === 0) {
+    return res.status(400).json({ error: 'No fields to update.' });
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update(updateData)
+    .eq('id', req.user.id)
+    .select()
+    .single();
+
+  if (error) {
+    return res.status(500).json({ error: 'Failed to update profile.' });
+  }
+
+  res.json({ username: data.username, school: data.school });
+});
+
 module.exports = router;

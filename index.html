@@ -4270,6 +4270,55 @@ function updateCourseHero(){
       else openGame({mode:'junior',n:1,cat:'STRUCTURE',title:'Sequential Pattern Alpha',q:'What comes next in the sequence?',pattern:['▲','▲','●','▲','▲','?'],opts:['●','▲','■','◆'],ans:0,hint:'Look at every 3rd position.'});
     };
   }
+
+  // Update tickmarks for solved problems
+  updateCourseTickmarks();
+}
+
+// Update tickmarks on course problems based on user completions
+function updateCourseTickmarks() {
+  if (!currentUser || !currentUser.completions) return;
+
+  const completedIds = new Set(currentUser.completions.map(c => c.challenge_id));
+
+  // Junior course problems
+  const juniorProblems = [
+    'quiz-junior-1', 'quiz-junior-2', 'quiz-junior-3', 'quiz-junior-4', 'quiz-junior-5'
+  ];
+  const juniorEls = document.querySelectorAll('#courses-junior .citem');
+  juniorEls.forEach((el, idx) => {
+    const cnum = el.querySelector('.cnum');
+    if (cnum && completedIds.has(juniorProblems[idx])) {
+      cnum.classList.add('cdone');
+      cnum.textContent = '✓';
+    }
+  });
+
+  // Explorer course problems
+  const explorerProblems = [
+    'explorer-game-1', 'explorer-game-2', 'explorer-game-3', 'explorer-game-4', 'explorer-game-5'
+  ];
+  const explorerEls = document.querySelectorAll('#courses-explorer .citem');
+  explorerEls.forEach((el, idx) => {
+    const cnum = el.querySelector('.cnum');
+    if (cnum && completedIds.has(explorerProblems[idx])) {
+      cnum.classList.add('cdone');
+      cnum.textContent = '✓';
+    }
+  });
+
+  // Pro course problems
+  const proProblems = [
+    'code-binary-search', 'code-two-sum', 'code-valid-palindrome', 'code-max-depth-binary-tree', 'code-longest-common-subsequence'
+  ];
+  const proEls = document.querySelectorAll('#courses-pro .citem');
+  proEls.forEach((el, idx) => {
+    const cnum = el.querySelector('.cnum');
+    if (cnum && completedIds.has(proProblems[idx])) {
+      cnum.classList.add('cdone');
+      cnum.textContent = '✓';
+    }
+  });
 }
 
 // ════════════════════════════════════════
@@ -4364,17 +4413,26 @@ function checkAns(idx){
     const newTotal = baseXp + xpEarned;
     document.getElementById('xp-display').textContent = newTotal;
 
+    // Build challenge ID for this problem
+    const challengeId = 'quiz-junior-' + currentGame.n;
+
     // Save XP to backend if logged in
     const token = getToken();
     if (token && currentUser) {
       fetch(`${API}/user/complete-challenge`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ challengeId: 'quiz-' + (currentGame.n || Date.now()), xpEarned: 20, tier: mode })
+        body: JSON.stringify({ challengeId: challengeId, xpEarned: 20, tier: mode })
       }).then(r => r.json()).then(d => {
         if (d.totalXp !== undefined) {
           currentUser.xp = d.totalXp;
           document.getElementById('xp-display').textContent = d.totalXp;
+          // Add to completions if not already done
+          if (!currentUser.completions) currentUser.completions = [];
+          if (!currentUser.completions.find(c => c.challenge_id === challengeId)) {
+            currentUser.completions.push({ challenge_id: challengeId, tier: mode, xp_earned: 20 });
+            currentUser.solved = currentUser.completions.length;
+          }
           // Award badges if earned
           if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
             showBadgeEarnedToast(d.newlyEarnedBadges);
@@ -4384,6 +4442,7 @@ function checkAns(idx){
           if(typeof updateDashboardFromUser==='function') updateDashboardFromUser();
           if(typeof updateProfileFromUser==='function') updateProfileFromUser();
           if(typeof updateNavUI==='function') updateNavUI();
+          if(typeof updateCourseTickmarks==='function') updateCourseTickmarks();
         }
       }).catch(() => {});
     }
@@ -4498,22 +4557,34 @@ function _explorerWin(body, xp, msg, nextN){
   const baseXp = currentUser ? currentUser.xp : 0;
   document.getElementById('xp-display').textContent = baseXp + xpEarned;
 
+  // Build challenge ID for this explorer game
+  const challengeId = 'explorer-game-' + nextN;
+
   // Save XP to backend if logged in
   const token = getToken();
   if (token && currentUser) {
     fetch(`${API}/user/complete-challenge`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ challengeId: 'explorer-game-' + nextN + '-' + Date.now(), xpEarned: xp, tier: 'explorer' })
+      body: JSON.stringify({ challengeId: challengeId, xpEarned: xp, tier: 'explorer' })
     }).then(r => r.json()).then(d => {
       if (d.totalXp !== undefined) {
         currentUser.xp = d.totalXp;
         document.getElementById('xp-display').textContent = d.totalXp;
+        // Add to completions if not already done
+        if (!currentUser.completions) currentUser.completions = [];
+        if (!currentUser.completions.find(c => c.challenge_id === challengeId)) {
+          currentUser.completions.push({ challenge_id: challengeId, tier: 'explorer', xp_earned: xp });
+          currentUser.solved = currentUser.completions.length;
+        }
         if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
           showBadgeEarnedToast(d.newlyEarnedBadges);
         }
         if(typeof updateHeroPanel==='function') updateHeroPanel();
         if(typeof updateDashboardFromUser==='function') updateDashboardFromUser();
+        if(typeof updateProfileFromUser==='function') updateProfileFromUser();
+        if(typeof updateNavUI==='function') updateNavUI();
+        if(typeof updateCourseTickmarks==='function') updateCourseTickmarks();
       }
     }).catch(() => {});
   }
@@ -4526,7 +4597,7 @@ function _explorerWin(body, xp, msg, nextN){
       fetch(`${API}/user/complete-challenge`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ challengeId: 'explorer-course-complete-' + Date.now(), xpEarned: courseBonusXp, tier: 'explorer' })
+        body: JSON.stringify({ challengeId: 'explorer-course-complete', xpEarned: courseBonusXp, tier: 'explorer' })
       }).then(r => r.json()).then(d => {
         if (d.totalXp !== undefined) {
           currentUser.xp = d.totalXp;
@@ -5030,18 +5101,27 @@ function submitCode(){
   document.getElementById('xp-display').textContent=totalXp;
   document.getElementById('code-xp-display').textContent=`${xpEarned} XP`;
 
+  // Build challenge ID for this pro problem
+  const challengeId = 'code-' + currentProblem.title.replace(/\s+/g,'-').toLowerCase();
+
   // Save XP to backend if logged in
   const token = getToken();
   if (token && currentUser) {
     fetch(`${API}/user/complete-challenge`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ challengeId: 'code-' + currentProblem.title.replace(/\s+/g,'-').toLowerCase(), xpEarned: currentProblem.xp, tier: 'pro' })
+      body: JSON.stringify({ challengeId: challengeId, xpEarned: currentProblem.xp, tier: 'pro' })
     }).then(r => r.json()).then(d => {
       if (d.totalXp !== undefined) {
         currentUser.xp = d.totalXp;
         document.getElementById('xp-display').textContent = d.totalXp;
         document.getElementById('crp-total-xp').textContent = `Total: ${d.totalXp} XP`;
+        // Add to completions if not already done
+        if (!currentUser.completions) currentUser.completions = [];
+        if (!currentUser.completions.find(c => c.challenge_id === challengeId)) {
+          currentUser.completions.push({ challenge_id: challengeId, tier: 'pro', xp_earned: currentProblem.xp });
+          currentUser.solved = currentUser.completions.length;
+        }
         // Award badges if earned
         if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
           showBadgeEarnedToast(d.newlyEarnedBadges);
@@ -5051,6 +5131,7 @@ function submitCode(){
         if(typeof updateDashboardFromUser==='function') updateDashboardFromUser();
         if(typeof updateProfileFromUser==='function') updateProfileFromUser();
         if(typeof updateNavUI==='function') updateNavUI();
+        if(typeof updateCourseTickmarks==='function') updateCourseTickmarks();
       }
     }).catch(() => {});
   }
@@ -5319,7 +5400,7 @@ async function refreshUserFromServer(token) {
           if (rankData.rank) currentUser.rank = rankData.rank;
         }
       } catch(e) {}
-      // Fetch solved count
+      // Fetch solved count and completions list
       try {
         const completionsRes = await fetch(`${API}/user/completions`, {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -5327,6 +5408,7 @@ async function refreshUserFromServer(token) {
         if (completionsRes.ok) {
           const completions = await completionsRes.json();
           currentUser.solved = completions.length || 0;
+          currentUser.completions = completions; // Store full completions for tickmarks
         }
       } catch(e) {}
       updateNavUI();
@@ -5845,11 +5927,77 @@ function updateUsernameDisplay(val){
   const el=document.getElementById('profile-username-display');
   if(el)el.textContent=val||'young_coder_007';
 }
-function saveProfile(){
-  const btn=event.currentTarget;
-  btn.textContent='Saved! ✓';
-  btn.style.background='var(--a1)';
-  setTimeout(()=>{btn.textContent='Save Changes →';btn.style.background='';},2000);
+
+// Populate edit profile form with user data
+function populateEditProfileForm() {
+  if (!currentUser) return;
+
+  const usernameInput = document.getElementById('edit-username');
+  const nameInput = document.querySelector('#page-profile .form-group:nth-child(3) input');
+  const schoolInput = document.querySelector('#page-profile .form-group:nth-child(4) input');
+  const emailInput = document.querySelector('#page-profile .form-group:nth-child(5) input');
+  const bioInput = document.querySelector('#page-profile textarea');
+
+  if (usernameInput) usernameInput.value = currentUser.username || '';
+  if (schoolInput) schoolInput.value = currentUser.school || '';
+  if (emailInput) emailInput.value = currentUser.email || '';
+}
+
+async function saveProfile(){
+  const btn = event.currentTarget;
+  const token = getToken();
+  if (!token || !currentUser) {
+    btn.textContent = 'Not logged in!';
+    setTimeout(() => { btn.textContent = 'Save Changes →'; }, 2000);
+    return;
+  }
+
+  // Get form values
+  const username = document.getElementById('edit-username').value.trim();
+  const school = document.querySelector('#page-profile .form-group:nth-child(4) input').value.trim();
+
+  if (!username) {
+    btn.textContent = 'Username required!';
+    setTimeout(() => { btn.textContent = 'Save Changes →'; }, 2000);
+    return;
+  }
+
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/user/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ username, school })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      currentUser.username = data.username || username;
+      currentUser.school = data.school || school;
+      btn.textContent = 'Saved! ✓';
+      btn.style.background = 'var(--a1)';
+      // Update display
+      document.getElementById('profile-username-display').textContent = currentUser.username;
+      // Refresh profile from server
+      refreshUserFromServer(token);
+    } else {
+      throw new Error('Failed to save');
+    }
+  } catch(e) {
+    btn.textContent = 'Error - try again';
+    btn.style.background = '#ef4444';
+  }
+
+  setTimeout(() => {
+    btn.textContent = 'Save Changes →';
+    btn.style.background = '';
+    btn.disabled = false;
+  }, 2000);
 }
 function switchProfileTier(tier,el){
   document.querySelectorAll('.profile-tier-opt').forEach(o=>{
@@ -6058,10 +6206,31 @@ async function fetchAndRenderLeaderboard(tier) {
 // ════════════════════════════════════════
 function updateDashboardFromUser() {
   if (!currentUser) return;
-  // XP card
-  const xpVal = document.querySelector('#page-dashboard .db-card:first-child .db-val');
+
+  // Calculate level and progress
+  const level = Math.floor((currentUser.xp || 0) / 100);
+  const xpInLevel = (currentUser.xp || 0) % 100;
+  const xpToNextLevel = 100 - xpInLevel;
+  const progressPercent = xpInLevel;
+
+  // Count problems solved per tier
+  const completions = currentUser.completions || [];
+  const juniorSolved = completions.filter(c => c.challenge_id && c.challenge_id.startsWith('quiz-junior')).length;
+  const explorerSolved = completions.filter(c => c.challenge_id && c.challenge_id.startsWith('explorer-game')).length;
+  const proSolved = completions.filter(c => c.challenge_id && c.challenge_id.startsWith('code-')).length;
+  const totalSolved = completions.length;
+
+  // XP card - show tier-specific solved count
+  const xpCard = document.querySelector('#page-dashboard .db-card:first-child');
+  const xpVal = xpCard?.querySelector('.db-val');
+  const xpSub = xpCard?.querySelector('.db-sub');
   if (xpVal) xpVal.textContent = currentUser.xp || 0;
-  // Streak card — find by content
+  if (xpSub) {
+    const tierSolved = mode === 'junior' ? juniorSolved : mode === 'explorer' ? explorerSolved : proSolved;
+    xpSub.textContent = `From ${totalSolved} challenges solved (${tierSolved} in ${mode.charAt(0).toUpperCase() + mode.slice(1)})`;
+  }
+
+  // Streak card
   document.querySelectorAll('#page-dashboard .db-card').forEach(card => {
     const lbl = card.querySelector('.db-lbl');
     if (lbl && lbl.textContent.toLowerCase().includes('streak')) {
@@ -6069,27 +6238,38 @@ function updateDashboardFromUser() {
       if (val) val.textContent = currentUser.streak || 0;
     }
   });
-  // Level - using same formula as backend: Math.floor(xp / 100)
-  const level = Math.floor((currentUser.xp || 0) / 100);
+
+  // Level card
   document.querySelectorAll('#page-dashboard .db-card').forEach(card => {
     const lbl = card.querySelector('.db-lbl');
-    if (lbl && lbl.textContent.toLowerCase().includes('level')) {
+    if (lbl && lbl.textContent.toLowerCase().includes('level') || lbl?.textContent.includes('Current Level')) {
+      // Update level value if exists
       const val = card.querySelector('.db-val');
       if (val) val.textContent = level;
-      // Also update the full level text
-      const parent = card.querySelector('div[style*="font-family:Clash Display"]');
-      if (parent) parent.textContent = `🧠 Level ${level}`;
+      // Update level title
+      const levelTitle = card.querySelector('[style*="font-family:\'Clash Display\'"]');
+      if (levelTitle) levelTitle.textContent = `🧠 Level ${level} — ${getLevelTitle(level)}`;
+      // Update progress text
+      const progressText = card.querySelector('.db-sub');
+      if (progressText) progressText.textContent = `${xpInLevel}/${xpToNextLevel} XP to Level ${level + 1}`;
+      // Update progress bar
+      const pfill = card.querySelector('.pfill');
+      if (pfill) pfill.style.width = `${progressPercent}%`;
+      // Update percentage display
+      const percentEl = card.querySelector('[style*="font-size:64px"]');
+      if (percentEl) percentEl.textContent = `${progressPercent}%`;
+      // Update chip text
+      const chipEl = card.querySelector('.chip');
+      if (chipEl) chipEl.textContent = `${progressPercent}% to Level ${level + 1}`;
     }
-    // Update badges display - use real badge data if available
+    // Update badges display
     if (lbl && lbl.textContent.includes('Badges')) {
       const earnedBadgeCount = currentUser.earnedBadges ? currentUser.earnedBadges.length : 0;
       lbl.textContent = `Badges — ${earnedBadgeCount}/12`;
-      // Show/hide badge icons based on earned count
       const badgeItems = card.querySelectorAll('.badge-item');
       badgeItems.forEach((item, idx) => {
         if (idx < earnedBadgeCount && currentUser.earnedBadges && currentUser.earnedBadges[idx]) {
           item.classList.remove('badge-locked');
-          // Update badge icon if available
           const iconEl = item.querySelector('.badge-icon');
           if (iconEl) iconEl.textContent = currentUser.earnedBadges[idx].badge_icon;
         } else {
@@ -6098,6 +6278,7 @@ function updateDashboardFromUser() {
       });
     }
   });
+
   // Update nav XP display
   const xpDisplayEl = document.getElementById('xp-display');
   if (xpDisplayEl) xpDisplayEl.textContent = currentUser.xp || 0;
@@ -6107,6 +6288,15 @@ function updateDashboardFromUser() {
   // Update nav level
   const navLvEl = document.querySelector('.nlv');
   if (navLvEl) navLvEl.innerHTML = `Lv<br>${level}`;
+}
+
+// Get level title based on level number
+function getLevelTitle(level) {
+  if (level < 5) return 'Beginner';
+  if (level < 10) return 'Logic Master';
+  if (level < 20) return 'Code Expert';
+  if (level < 50) return 'Algorithm Wizard';
+  return 'Coding Legend';
 }
 
 // ════════════════════════════════════════
@@ -6193,6 +6383,9 @@ function updateProfileFromUser() {
   // Update nav level display
   const navLvEl = document.querySelector('.nlv');
   if (navLvEl) navLvEl.innerHTML = `Lv<br>${level}`;
+
+  // Populate edit profile form with current user data
+  populateEditProfileForm();
 
   // Fetch and update rank and solved count if not already set
   fetchUserProfileDetails();
