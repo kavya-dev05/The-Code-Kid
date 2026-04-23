@@ -2599,7 +2599,7 @@ nav{
   <div class="db-card rv" style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
     <div>
       <div class="db-lbl" id="streak-lbl">◈ Daily Streak</div>
-      <div class="db-val" style="font-size:40px">3 Days</div>
+      <div class="db-val" style="font-size:40px" id="challenges-streak-val">3 Days</div>
       <div class="db-sub">Play every day to keep your streak alive!</div>
       <div class="pbar" style="max-width:300px;margin-top:14px"><div class="pfill" style="width:43%"></div></div>
     </div>
@@ -5252,6 +5252,11 @@ function updateDailyChallenge(){
   if(cat)cat.textContent=ch.cat;
   if(diff)diff.textContent=ch.diff;
   if(xp)xp.textContent=ch.xp;
+  // Update streak display from current user data
+  if (currentUser && currentUser.streak !== undefined) {
+    const streakVal = document.getElementById('challenges-streak-val');
+    if (streakVal) streakVal.textContent = `${currentUser.streak} Days`;
+  }
 }
 
 function acceptDailyChallenge(){
@@ -6220,14 +6225,13 @@ function updateDashboardFromUser() {
   const proSolved = completions.filter(c => c.challenge_id && c.challenge_id.startsWith('code-')).length;
   const totalSolved = completions.length;
 
-  // XP card - show tier-specific solved count
+  // XP card - show total challenges solved across all themes
   const xpCard = document.querySelector('#page-dashboard .db-card:first-child');
   const xpVal = xpCard?.querySelector('.db-val');
   const xpSub = xpCard?.querySelector('.db-sub');
   if (xpVal) xpVal.textContent = currentUser.xp || 0;
   if (xpSub) {
-    const tierSolved = mode === 'junior' ? juniorSolved : mode === 'explorer' ? explorerSolved : proSolved;
-    xpSub.textContent = `From ${totalSolved} challenges solved (${tierSolved} in ${mode.charAt(0).toUpperCase() + mode.slice(1)})`;
+    xpSub.textContent = `From ${totalSolved} challenges solved`;
   }
 
   // Streak card
@@ -6348,9 +6352,9 @@ function updateProfileFromUser() {
       const xpValue = card.querySelector('div[style*="font-size:48px"]');
       if (xpValue) xpValue.textContent = `${currentUser.xp || 0} XP`;
 
+      const nextLevel = level + 1;
       const levelProg = card.querySelector('div[style*="font-size:13px"]');
       if (levelProg) {
-        const nextLevel = level + 1;
         const xpInLevel = (currentUser.xp || 0) % 100;
         levelProg.textContent = `Level ${level} → Level ${nextLevel}: ${xpInLevel}/100 XP`;
       }
