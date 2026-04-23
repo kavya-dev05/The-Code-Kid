@@ -3693,7 +3693,7 @@ function updateHeroPanel(){
   const user = currentUser || {};
   const userXp = user.xp || 0;
   const userStreak = user.streak || 0;
-  const userLevel = Math.floor(userXp / 100);
+  const userLevel = Math.floor(userXp / 100) + 1;
   const xpInLevel = userXp % 100;
   const xpPct = Math.min(100, xpInLevel);
   // Use real earned badges from server, fallback to defaults
@@ -5452,7 +5452,7 @@ function updateNavUI() {
   const xpEl = document.getElementById('xp-display');
   if (xpEl) xpEl.textContent = currentUser.xp || 0;
   // Update level display in navbar
-  const level = Math.floor((currentUser.xp || 0) / 100);
+  const level = Math.floor((currentUser.xp || 0) / 100) + 1;
   const navLvEl = document.querySelector('.nlv');
   if (navLvEl) navLvEl.innerHTML = `Lv<br>${level}`;
   // Update streak in navbar
@@ -6097,7 +6097,7 @@ function openFooterModal(key){
 
   // If about section and user is logged in, show personalized info
   if (key === 'about' && currentUser) {
-    const level = Math.floor((currentUser.xp || 0) / 100);
+    const level = Math.floor((currentUser.xp || 0) / 100) + 1;
     bodyContent = `
     <div style="margin-bottom:20px;padding:16px;border-radius:14px;background:rgba(var(--a1-rgb,249,115,22),.08);border:1px solid var(--bdr);">
       <div style="font-size:14px;color:var(--a1);font-weight:700;margin-bottom:8px;">Welcome back, ${currentUser.username || 'Coder'}!</div>
@@ -6208,7 +6208,7 @@ function updateDashboardFromUser() {
   if (!currentUser) return;
 
   // Calculate level and progress
-  const level = Math.floor((currentUser.xp || 0) / 100);
+  const level = Math.floor((currentUser.xp || 0) / 100) + 1;
   const xpInLevel = (currentUser.xp || 0) % 100;
   const xpToNextLevel = 100 - xpInLevel;
   const progressPercent = xpInLevel;
@@ -6292,10 +6292,10 @@ function updateDashboardFromUser() {
 
 // Get level title based on level number
 function getLevelTitle(level) {
-  if (level < 5) return 'Beginner';
-  if (level < 10) return 'Logic Master';
-  if (level < 20) return 'Code Expert';
-  if (level < 50) return 'Algorithm Wizard';
+  if (level < 2) return 'Beginner';
+  if (level < 5) return 'Logic Master';
+  if (level < 10) return 'Code Expert';
+  if (level < 20) return 'Algorithm Wizard';
   return 'Coding Legend';
 }
 
@@ -6305,7 +6305,7 @@ function getLevelTitle(level) {
 function updateProfileFromUser() {
   if (!currentUser) return;
 
-  const level = Math.floor((currentUser.xp || 0) / 100);
+  const level = Math.floor((currentUser.xp || 0) / 100) + 1;
 
   // Update username
   const usernameEl = document.getElementById('profile-username-display');
@@ -6340,28 +6340,38 @@ function updateProfileFromUser() {
     levelTextEl.textContent = `Level ${level} · ${currentUser.tier ? currentUser.tier.charAt(0).toUpperCase() + currentUser.tier.slice(1) : 'Coder'} · ${currentUser.school || 'No School Set'}`;
   }
 
-  // Update XP progress card
-  const profileXpCard = document.querySelector('#page-profile .db-card');
-  if (profileXpCard) {
-    const xpLabel = profileXpCard.querySelector('.db-lbl');
-    if (xpLabel && xpLabel.textContent.includes('XP')) {
-      const xpValue = profileXpCard.querySelector('div[style*="font-size:48px"]');
+  // Update XP progress card (find the card with "XP Progress" label)
+  const allCards = document.querySelectorAll('#page-profile .db-card');
+  allCards.forEach(card => {
+    const lbl = card.querySelector('.db-lbl');
+    if (lbl && lbl.textContent.includes('XP Progress')) {
+      const xpValue = card.querySelector('div[style*="font-size:48px"]');
       if (xpValue) xpValue.textContent = `${currentUser.xp || 0} XP`;
 
-      const levelProg = profileXpCard.querySelector('div[style*="font-size:13px"]');
+      const levelProg = card.querySelector('div[style*="font-size:13px"]');
       if (levelProg) {
         const nextLevel = level + 1;
         const xpInLevel = (currentUser.xp || 0) % 100;
         levelProg.textContent = `Level ${level} → Level ${nextLevel}: ${xpInLevel}/100 XP`;
       }
 
-      const pfill = profileXpCard.querySelector('.pfill');
+      const pfill = card.querySelector('.pfill');
       if (pfill) pfill.style.width = `${(currentUser.xp || 0) % 100}%`;
+
+      // Update percentage text
+      const percentEl = card.querySelector('span[style*="color:var(--a1)"]');
+      if (percentEl) percentEl.textContent = `${(currentUser.xp || 0) % 100}%`;
+
+      // Update level labels
+      const levelLabels = card.querySelectorAll('div[style*="font-size:11px"] span');
+      if (levelLabels.length >= 3) {
+        levelLabels[0].textContent = `Lv ${level}`;
+        levelLabels[2].textContent = `Lv ${nextLevel}`;
+      }
     }
-  }
+  });
 
   // Update badges - use real badge data from server
-  const allCards = document.querySelectorAll('#page-profile .db-card');
   allCards.forEach(card => {
     const lbl = card.querySelector('.db-lbl');
     if (lbl && lbl.textContent.includes('Badges')) {
