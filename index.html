@@ -2961,11 +2961,7 @@ nav{
     <div class="gs-meta">
       <!-- Language selector -->
       <div style="display:flex;gap:4px;background:var(--bg2);border:1px solid var(--bdr);border-radius:20px;padding:3px;">
-        <button class="lang-btn active" id="lang-js"  onclick="switchLang('js',this)"  style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:var(--a1);color:#fff;transition:all .2s">JS</button>
-        <button class="lang-btn"        id="lang-py"  onclick="switchLang('py',this)"  style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">Python</button>
-        <button class="lang-btn"        id="lang-java" onclick="switchLang('java',this)" style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">Java</button>
-        <button class="lang-btn"        id="lang-c"   onclick="switchLang('c',this)"   style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">C</button>
-        <button class="lang-btn"        id="lang-cpp" onclick="switchLang('cpp',this)" style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s">C++</button>
+        <button class="lang-btn active" id="lang-py"  onclick="switchLang('py',this)"  style="font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;padding:4px 11px;border-radius:16px;border:none;cursor:pointer;background:var(--a1);color:#fff;transition:all .2s">Python</button>
       </div>
       <div class="gs-xp" id="code-xp-display">0 XP</div>
       <div class="gs-prog-n" id="code-prog">1/5</div>
@@ -4922,17 +4918,13 @@ function toggleHint(){
 // ════════════════════════════════════════
 // CODE EDITOR SYSTEM — Multi-lang, Hint, Complexity
 // ════════════════════════════════════════
-let currentProblem=null, currentLang='js';
+let currentProblem=null, currentLang='py';
 
 const langStarters={
-  js:  p=>p.starter,
   py:  p=>p.starter.replace(/function (\w+)\(([^)]*)\) \{/,(_,fn,args)=>`def ${fn}(${args}):`).replace(/\/\/ /g,'# ').replace(/\n  /g,'\n    ').replace(/return /g,'return ').replace(/\n\}$/,''),
-  java:p=>`class Solution {\n    // ${p.title}\n    public int solve() {\n        // Write your solution here\n        return -1;\n    }\n}`,
-  c:   p=>`#include <stdio.h>\n\n// ${p.title}\nint solve() {\n    // Write your solution here\n    return -1;\n}`,
-  cpp: p=>`#include <bits/stdc++.h>\nusing namespace std;\n\n// ${p.title}\nclass Solution {\npublic:\n    int solve() {\n        // Write your solution here\n        return -1;\n    }\n};`,
 };
-const langLabels={js:'JavaScript',py:'Python',java:'Java',c:'C',cpp:'C++'};
-const langComments={js:'// ',py:'# ',java:'// ',c:'// ',cpp:'// '};
+const langLabels={py:'Python'};
+const langComments={py:'# '};
 
 // Complexity data per problem title
 const complexityMap={
@@ -5018,7 +5010,7 @@ function openProProblem(n) {
 }
 
 function openCodeProblem(cfg){
-  currentProblem=cfg; currentLang='js';
+  currentProblem=cfg; currentLang='py';
   document.getElementById('code-screen').style.display='flex';
   document.getElementById('code-xp-display').textContent=`${xpEarned} XP`;
   document.getElementById('code-prog').textContent=`${cfg.n}/5`;
@@ -5035,15 +5027,15 @@ function openCodeProblem(cfg){
   document.getElementById('hint-toggle-txt').textContent='Show Hint';
   document.getElementById('hint-toggle-icon').textContent='💡';
   // Code area
-  document.getElementById('code-editor-area').value=langStarters.js(cfg);
-  document.getElementById('cp-lang-label').textContent='JavaScript';
+  document.getElementById('code-editor-area').value=langStarters.py(cfg);
+  document.getElementById('cp-lang-label').textContent='Python';
   document.getElementById('code-output').textContent='// Output appears here...';
   document.getElementById('code-output').style.color='var(--a3)';
   document.getElementById('code-result-panel').style.display='none';
   // Reset lang buttons
   document.querySelectorAll('.lang-btn').forEach(b=>{ b.style.background='transparent'; b.style.color='var(--muted)'; });
-  const jsbtn=document.getElementById('lang-js');
-  if(jsbtn){jsbtn.style.background='var(--a1)';jsbtn.style.color='#fff';}
+  const pybtn=document.getElementById('lang-py');
+  if(pybtn){pybtn.style.background='var(--a1)';pybtn.style.color='#fff';}
 }
 
 function switchLang(lang, btn){
