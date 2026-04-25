@@ -24,6 +24,7 @@ app.use(express.json());
 app.use('/api/auth',        require('./routes/auth'));
 app.use('/api/user',        require('./routes/user'));
 app.use('/api/leaderboard', require('./routes/leaderboard'));
+app.use('/api/compiler',    require('./routes/compiler'));
 
 // ─── Health check ─────────────────────────────────────────
 app.get('/', (req, res) => {

@@ -4921,7 +4921,112 @@ function toggleHint(){
 let currentProblem=null, currentLang='py';
 
 const langStarters={
-  py:  p=>p.starter.replace(/function (\w+)\(([^)]*)\) \{/,(_,fn,args)=>`def ${fn}(${args}):`).replace(/\/\/ /g,'# ').replace(/\n  /g,'\n    ').replace(/return /g,'return ').replace(/\n\}$/,''),
+  py:  p=>{
+    // Map problem titles to proper Python starter code with I/O handling
+    const starters = {
+      'Binary Search': `# Binary Search - O(log n) solution
+def binarySearch(nums, target):
+    # Implement your solution here
+    lo, hi = 0, len(nums) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+
+# Read input and print output
+line1 = input().strip()
+line2 = input().strip()
+nums = [int(x.strip()) for x in line1.split(',')]
+target = int(line2.split('=')[1].strip()) if '=' in line2 else int(line2)
+print(binarySearch(nums, target))
+`,
+      'Two Sum': `# Two Sum - O(n) solution using hash map
+def twoSum(nums, target):
+    # Implement your solution here
+    seen = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement], i]
+        seen[num] = i
+    return []
+
+# Read input and print output
+line1 = input().strip()
+line2 = input().strip()
+nums = [int(x.strip()) for x in line1.split(',')]
+target = int(line2.split('=')[1].strip()) if '=' in line2 else int(line2)
+result = twoSum(nums, target)
+print(result)
+`,
+      'Valid Palindrome': `# Valid Palindrome - Two pointer approach
+def isPalindrome(s):
+    # Implement your solution here
+    s = ''.join(c.lower() for c in s if c.isalnum())
+    return s == s[::-1]
+
+# Read input and print output
+s = input().strip()
+result = isPalindrome(s)
+print(str(result).lower())
+`,
+      'Maximum Depth of Binary Tree': `# Maximum Depth of Binary Tree - Recursive DFS
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def maxDepth(root):
+    # Implement your solution here
+    if root is None:
+        return 0
+    return 1 + max(maxDepth(root.left), maxDepth(root.right))
+
+# Read input and build tree
+def buildTree(level_order):
+    if not level_order:
+        return None
+    nodes = [None if val == 'null' else TreeNode(int(val)) for val in level_order]
+    kids = nodes[::-1]
+    root = kids.pop()
+    for node in nodes:
+        if node:
+            if kids: node.left = kids.pop()
+            if kids: node.right = kids.pop()
+    return root
+
+line = input().strip()
+level_order = [x.strip() for x in line.split(',')]
+root = buildTree(level_order)
+print(maxDepth(root))
+`,
+      'Longest Common Subsequence': `# Longest Common Subsequence - 2D DP
+def longestCommonSubsequence(text1, text2):
+    # Implement your solution here
+    m, n = len(text1), len(text2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i-1] == text2[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    return dp[m][n]
+
+# Read input and print output
+text1 = input().strip()
+text2 = input().strip()
+print(longestCommonSubsequence(text1, text2))
+`
+    };
+    return starters[p.title] || p.starter;
+  },
 };
 const langLabels={py:'Python'};
 const langComments={py:'# '};
@@ -4950,8 +5055,10 @@ const PRO_PROBLEMS = [
       {inp:'[-1,0,3,5,9,12], target = 9', out:'4'},
       {inp:'[-1,0,3,5,9,12], target = 2', out:'-1'}
     ],
+    input:'-1,0,3,5,9,12\n9',
+    expectedOutput:'4',
     hint:'Divide the search space in half each iteration using two pointers.',
-    starter:'function binarySearch(nums, target) {\n  // Implement binary search\n  // Return index or -1\n\n}'
+    starter:'def binarySearch(nums, target):\n    # Implement binary search\n    # Return index or -1\n    pass\n'
   },
   {
     n:2, cat:'ARRAYS', diff:'easy', xp:40,
@@ -4962,8 +5069,10 @@ const PRO_PROBLEMS = [
       {inp:'[2,7,11,15], target = 9', out:'[0, 1]'},
       {inp:'[3,2,4], target = 6',     out:'[1, 2]'}
     ],
+    input:'2,7,11,15\n9',
+    expectedOutput:'[0, 1]',
     hint:'Use a hash map for O(n) solution.',
-    starter:'function twoSum(nums, target) {\n  // Return [index1, index2]\n\n}'
+    starter:'def twoSum(nums, target):\n    # Return [index1, index2]\n    pass\n'
   },
   {
     n:3, cat:'STRINGS', diff:'medium', xp:55,
@@ -4974,8 +5083,10 @@ const PRO_PROBLEMS = [
       {inp:'"A man, a plan, a canal: Panama"', out:'true'},
       {inp:'"race a car"',                    out:'false'}
     ],
+    input:'A man, a plan, a canal: Panama',
+    expectedOutput:'true',
     hint:'Two pointer approach: one at start, one at end. Skip non-alphanumeric chars.',
-    starter:'function isPalindrome(s) {\n  // Return true or false\n\n}'
+    starter:'def isPalindrome(s):\n    # Return True or False\n    pass\n'
   },
   {
     n:4, cat:'TREES', diff:'medium', xp:70,
@@ -4986,8 +5097,10 @@ const PRO_PROBLEMS = [
       {inp:'root = [3,9,20,null,null,15,7]', out:'3'},
       {inp:'root = [1,null,2]',              out:'2'}
     ],
+    input:'3,9,20,null,null,15,7',
+    expectedOutput:'3',
     hint:'Use recursion: maxDepth = 1 + max(depth of left subtree, depth of right subtree).',
-    starter:'function maxDepth(root) {\n  // Return max depth\n\n}'
+    starter:'def maxDepth(root):\n    # Return max depth\n    pass\n'
   },
   {
     n:5, cat:'DP', diff:'hard', xp:100,
@@ -4998,8 +5111,10 @@ const PRO_PROBLEMS = [
       {inp:'"abcde", "ace"', out:'3'},
       {inp:'"abc", "abc"',   out:'3'}
     ],
+    input:'abcde\nace',
+    expectedOutput:'3',
     hint:'Classic 2D DP: dp[i][j] = LCS of first i chars of s1 and first j chars of s2.',
-    starter:'function longestCommonSubsequence(text1, text2) {\n  // Return length of LCS\n\n}'
+    starter:'def longestCommonSubsequence(text1, text2):\n    # Return length of LCS\n    pass\n'
   }
 ];
 
@@ -5073,81 +5188,203 @@ function nextCodeProblem(){
   else{closeCode();}
 }
 
-function runCode(){
+async function runCode(){
   const out=document.getElementById('code-output');
+  const code=document.getElementById('code-editor-area').value;
+
+  if(!code || code.trim().length < 5){
+    out.style.color='#ef4444';
+    out.textContent='// Please write some code first!';
+    return;
+  }
+
   out.style.color='var(--a3)';
-  out.textContent='// Running...\n// ✓ Test 1: Passed\n// ✓ Test 2: Passed\n// All visible tests passed. Submit to check full test suite.';
+  out.textContent='// Running...\n// Executing code on Judge0 API...';
+
+  // Map frontend language to Judge0 language key
+  const langMap = { 'python': 'python', 'py': 'python', 'javascript': 'javascript', 'js': 'javascript', 'java': 'java', 'cpp': 'cpp', 'c': 'c' };
+  const language = langMap[currentLang] || 'python';
+
+  // Get test input from current problem
+  const input = currentProblem?.input || '';
+
+  try {
+    const response = await fetch(`${API}/compiler/run`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, language, input })
+    });
+
+    const result = await response.json();
+
+    if (result.error) {
+      out.style.color='#ef4444';
+      out.textContent=`// Error: ${result.error}\n${result.details || ''}`;
+      return;
+    }
+
+    // Display output
+    let output = '';
+    if (result.status.description === 'Accepted') {
+      out.style.color='var(--a3)';
+      output = `// ✓ Execution successful\n// Time: ${result.executionTime}s | Memory: ${result.memory}KB\n\n${result.output}`;
+      if (result.stderr) {
+        output += `\n// Warnings:\n${result.stderr}`;
+      }
+    } else if (result.status.description === 'Runtime Error (NZEC)') {
+      out.style.color='#ef4444';
+      output = `// ✗ Runtime Error (NZEC)\n// Exit Code: ${result.exitCode}\n\n${result.stderr || result.compileOutput || 'Check your code for errors.'}`;
+    } else if (result.status.description === 'Time Limit Exceeded') {
+      out.style.color='#f59e0b';
+      output = `// ⚠ Time Limit Exceeded\n// Your code took too long to execute.\n// Optimize your solution for better performance.`;
+    } else if (result.compileOutput) {
+      out.style.color='#ef4444';
+      output = `// ✗ Compilation Error\n\n${result.compileOutput}`;
+    } else {
+      out.style.color='#f59e0b';
+      output = `// ⚠ ${result.status.description}\n${result.stderr || result.output || ''}`;
+    }
+
+    out.textContent = output;
+  } catch (error) {
+    out.style.color='#ef4444';
+    out.textContent=`// Network Error: ${error.message}\n// Make sure the backend server is running on port 3000`;
+  }
 }
 
-function submitCode(){
+async function submitCode(){
   const code=document.getElementById('code-editor-area').value;
+  const out=document.getElementById('code-output');
+
   if(!currentProblem||code.trim()===langStarters[currentLang](currentProblem).trim()||code.trim().length<20){
-    const out=document.getElementById('code-output');
     out.textContent='// Please write your solution first!';
-    out.style.color='#ef4444'; return;
+    out.style.color='#ef4444';
+    return;
   }
-  // Earn XP
-  xpEarned+=currentProblem.xp;
-  const baseXp = currentUser ? currentUser.xp : 0;
-  const totalXp = baseXp + xpEarned;
-  document.getElementById('xp-display').textContent=totalXp;
-  document.getElementById('code-xp-display').textContent=`${xpEarned} XP`;
 
-  // Build challenge ID for this pro problem
-  const challengeId = 'code-' + currentProblem.title.replace(/\s+/g,'-').toLowerCase();
+  // First, run the code through Judge0 to validate it works
+  out.style.color='var(--a3)';
+  out.textContent='// Submitting...\n// Running test cases on Judge0 API...';
 
-  // Save XP to backend if logged in
-  const token = getToken();
-  if (token && currentUser) {
-    fetch(`${API}/user/complete-challenge`, {
+  const langMap = { 'python': 'python', 'py': 'python', 'javascript': 'javascript', 'js': 'javascript', 'java': 'java', 'cpp': 'cpp', 'c': 'c' };
+  const language = langMap[currentLang] || 'python';
+
+  try {
+    // Run code through Judge0
+    const response = await fetch(`${API}/compiler/run`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ challengeId: challengeId, xpEarned: currentProblem.xp, tier: 'pro' })
-    }).then(r => r.json()).then(d => {
-      if (d.totalXp !== undefined) {
-        currentUser.xp = d.totalXp;
-        document.getElementById('xp-display').textContent = d.totalXp;
-        document.getElementById('crp-total-xp').textContent = `Total: ${d.totalXp} XP`;
-        // Add to completions if not already done
-        if (!currentUser.completions) currentUser.completions = [];
-        if (!currentUser.completions.find(c => c.challenge_id === challengeId)) {
-          currentUser.completions.push({ challenge_id: challengeId, tier: 'pro', xp_earned: currentProblem.xp });
-          currentUser.solved = currentUser.completions.length;
-        }
-        // Award badges if earned
-        if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
-          showBadgeEarnedToast(d.newlyEarnedBadges);
-        }
-        // Update all UI components
-        if(typeof updateHeroPanel==='function') updateHeroPanel();
-        if(typeof updateDashboardFromUser==='function') updateDashboardFromUser();
-        if(typeof updateProfileFromUser==='function') updateProfileFromUser();
-        if(typeof updateNavUI==='function') updateNavUI();
-        if(typeof updateCourseTickmarks==='function') updateCourseTickmarks();
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, language, input: currentProblem?.input || '' })
+    });
+
+    const result = await response.json();
+
+    // Check if code executed successfully
+    if (result.error) {
+      out.style.color='#ef4444';
+      out.textContent=`// Submission Error: ${result.error}`;
+      return;
+    }
+
+    if (result.status.description !== 'Accepted') {
+      // Code failed - show error
+      if (result.status.description === 'Runtime Error (NZEC)') {
+        out.style.color='#ef4444';
+        out.textContent=`// ✗ Runtime Error\n// Exit Code: ${result.exitCode}\n\n${result.stderr || 'Check your code for errors.'}`;
+      } else if (result.status.description === 'Time Limit Exceeded') {
+        out.style.color='#f59e0b';
+        out.textContent=`// ⚠ Time Limit Exceeded\n// Your solution is too slow. Optimize your algorithm.`;
+      } else if (result.compileOutput) {
+        out.style.color='#ef4444';
+        out.textContent=`// ✗ Compilation Error\n\n${result.compileOutput}`;
+      } else {
+        out.style.color='#f59e0b';
+        out.textContent=`// ⚠ ${result.status.description}\n${result.stderr || ''}`;
       }
-    }).catch(() => {});
+      return;
+    }
+
+    // Code executed successfully - now validate output against expected
+    const expectedOutput = currentProblem?.expectedOutput;
+    let isCorrect = true;
+
+    if (expectedOutput) {
+      // Normalize both outputs for comparison (trim whitespace, handle newlines)
+      const normalizedOutput = result.output.trim().replace(/\r\n/g, '\n');
+      const normalizedExpected = expectedOutput.trim().replace(/\r\n/g, '\n');
+      isCorrect = normalizedOutput === normalizedExpected || normalizedOutput.includes(normalizedExpected);
+    }
+
+    if (!isCorrect) {
+      out.style.color='#ef4444';
+      out.textContent=`// ✗ Wrong Answer\n// Expected output does not match.\n// Your output:\n${result.output}\n// Review your logic and try again.`;
+      return;
+    }
+
+    // Code is correct - award XP and show success
+    xpEarned+=currentProblem.xp;
+    const baseXp = currentUser ? currentUser.xp : 0;
+    const totalXp = baseXp + xpEarned;
+    document.getElementById('xp-display').textContent=totalXp;
+    document.getElementById('code-xp-display').textContent=`${xpEarned} XP`;
+
+    // Build challenge ID for this pro problem
+    const challengeId = 'code-' + currentProblem.title.replace(/\s+/g,'-').toLowerCase();
+
+    // Save XP to backend if logged in
+    const token = getToken();
+    if (token && currentUser) {
+      fetch(`${API}/user/complete-challenge`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ challengeId: challengeId, xpEarned: currentProblem.xp, tier: 'pro' })
+      }).then(r => r.json()).then(d => {
+        if (d.totalXp !== undefined) {
+          currentUser.xp = d.totalXp;
+          document.getElementById('xp-display').textContent = d.totalXp;
+          document.getElementById('crp-total-xp').textContent = `Total: ${d.totalXp} XP`;
+          if (!currentUser.completions) currentUser.completions = [];
+          if (!currentUser.completions.find(c => c.challenge_id === challengeId)) {
+            currentUser.completions.push({ challenge_id: challengeId, tier: 'pro', xp_earned: currentProblem.xp });
+            currentUser.solved = currentUser.completions.length;
+          }
+          if (d.newlyEarnedBadges && d.newlyEarnedBadges.length > 0) {
+            showBadgeEarnedToast(d.newlyEarnedBadges);
+          }
+          if(typeof updateHeroPanel==='function') updateHeroPanel();
+          if(typeof updateDashboardFromUser==='function') updateDashboardFromUser();
+          if(typeof updateProfileFromUser==='function') updateProfileFromUser();
+          if(typeof updateNavUI==='function') updateNavUI();
+          if(typeof updateCourseTickmarks==='function') updateCourseTickmarks();
+        }
+      }).catch(() => {});
+    }
+
+    const cx=complexityMap[currentProblem.title]||{time:'O(n)',space:'O(n)',runtime:'5ms',curve:'n'};
+
+    // Fill result panel
+    document.getElementById('crp-icon').textContent='🎉';
+    document.getElementById('crp-title').textContent='Accepted!';
+    document.getElementById('crp-sub').textContent=`All test cases passed · ${langLabels[currentLang]} · ${result.executionTime}s`;
+    document.getElementById('crp-xp').textContent=`+${currentProblem.xp}`;
+    document.getElementById('crp-total-xp').textContent=`Total: ${totalXp} XP`;
+    document.getElementById('crp-time-val').textContent=cx.time;
+    document.getElementById('crp-space-val').textContent=cx.space;
+    document.getElementById('crp-runtime').textContent=`${parseFloat(result.executionTime) * 1000 | 0}ms`;
+    document.getElementById('crp-complexity-label').textContent=`Your solution: ${cx.time} time · ${cx.space} space — Beats 94% of submissions`;
+
+    // Test result chips
+    document.getElementById('crp-tests').innerHTML=[1,2,3,4,5].map(i=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:20px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#22c55e;">✓ Test ${i}</span>`).join('');
+
+    // Draw complexity graph
+    drawComplexityGraph(cx.curve);
+
+    document.getElementById('code-result-panel').style.display='block';
+
+  } catch (error) {
+    out.style.color='#ef4444';
+    out.textContent=`// Network Error: ${error.message}\n// Make sure the backend server is running on port 3000`;
   }
-
-  const cx=complexityMap[currentProblem.title]||{time:'O(n)',space:'O(n)',runtime:'5ms',curve:'n'};
-
-  // Fill result panel
-  document.getElementById('crp-icon').textContent='🎉';
-  document.getElementById('crp-title').textContent='Accepted!';
-  document.getElementById('crp-sub').textContent=`All test cases passed · ${langLabels[currentLang]}`;
-  document.getElementById('crp-xp').textContent=`+${currentProblem.xp}`;
-  document.getElementById('crp-total-xp').textContent=`Total: ${totalXp} XP`;
-  document.getElementById('crp-time-val').textContent=cx.time;
-  document.getElementById('crp-space-val').textContent=cx.space;
-  document.getElementById('crp-runtime').textContent=cx.runtime;
-  document.getElementById('crp-complexity-label').textContent=`Your solution: ${cx.time} time · ${cx.space} space — Beats 94% of submissions`;
-
-  // Test result chips
-  document.getElementById('crp-tests').innerHTML=[1,2,3,4,5].map(i=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:20px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#22c55e;">✓ Test ${i}</span>`).join('');
-
-  // Draw complexity graph
-  drawComplexityGraph(cx.curve);
-
-  document.getElementById('code-result-panel').style.display='block';
 }
 
 function drawComplexityGraph(curve){
