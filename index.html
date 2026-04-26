@@ -3066,6 +3066,16 @@ nav{
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ════════════════════════════════════════
+// XSS PROTECTION - Sanitize user content
+// ════════════════════════════════════════
+function sanitize(str) {
+  if (typeof str !== 'string') return str;
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ════════════════════════════════════════
 // CURSOR
 // ════════════════════════════════════════
 document.body.style.cursor='none';
@@ -3264,7 +3274,7 @@ function setMode(m,btn){
   updateFeatVis();
   updateCommunityGrid();
   updateDailyChallenge();
-  // Update texts
+  // Update texts (innerHTML for config content with HTML tags, textContent for plain text)
   const cfg=modeConfig[m];
   document.getElementById('hero-heading').innerHTML=cfg.heroH;
   document.getElementById('hero-desc').textContent=cfg.heroP;
@@ -5130,9 +5140,9 @@ function openCodeProblem(cfg){
   document.getElementById('code-pfill').style.width=`${cfg.n*20}%`;
   document.getElementById('cp-title').textContent=cfg.title;
   const diffColor=cfg.diff==='easy'?'#22c55e':cfg.diff==='medium'?'#f59e0b':'#ef4444';
-  document.getElementById('cp-tags').innerHTML=`<span class="prob-tag prob-tag-cat">${cfg.cat}</span><span class="prob-tag" style="background:${diffColor}22;color:${diffColor}">${cfg.diff}</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">${cfg.xp} XP</span>`;
-  document.getElementById('cp-body').innerHTML=cfg.desc.replace(/\n\n/g,'</p><p>').replace(/^/,'<p>').replace(/$/,'</p>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-  document.getElementById('cp-examples').innerHTML=`<div style="font-size:14px;font-weight:700;color:var(--text);margin:16px 0 10px;font-family:'Clash Display',sans-serif">Examples</div>`+cfg.examples.map(e=>`<div class="code-example">Input: ${e.inp}<br>Output: ${e.out}</div>`).join('');
+  document.getElementById('cp-tags').innerHTML=`<span class="prob-tag prob-tag-cat">${sanitize(cfg.cat)}</span><span class="prob-tag" style="background:${diffColor}22;color:${diffColor}">${sanitize(cfg.diff)}</span><span style="color:var(--a1);font-weight:700;font-family:'JetBrains Mono',monospace">${sanitize(cfg.xp)} XP</span>`;
+  document.getElementById('cp-body').innerHTML=sanitize(cfg.desc).replace(/\n\n/g,'</p><p>').replace(/^/,'<p>').replace(/$/,'</p>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  document.getElementById('cp-examples').innerHTML=`<div style="font-size:14px;font-weight:700;color:var(--text);margin:16px 0 10px;font-family:'Clash Display',sans-serif">Examples</div>`+cfg.examples.map(e=>`<div class="code-example">Input: ${sanitize(e.inp)}<br>Output: ${sanitize(e.out)}</div>`).join('');
   // Hint — hidden
   const hintPanel=document.getElementById('cp-hint-panel');
   hintPanel.textContent=`💡 Hint: ${cfg.hint}`;
@@ -5523,6 +5533,27 @@ function completeDailyChallenge(xpEarned) {
   }).catch(() => {});
 }
 
+// ════════════════════════════════════════
+// LOADING SPINNER UTILITIES
+// ════════════════════════════════════════
+function showLoading(btn, loadingText = 'Loading...') {
+  if (!btn) return null;
+  const originalHTML = btn.innerHTML;
+  const originalPointer = btn.style.pointerEvents;
+  const originalOpacity = btn.style.opacity;
+  btn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;"></span>${loadingText}</span>`;
+  btn.style.opacity = '.7';
+  btn.style.pointerEvents = 'none';
+  return { originalHTML, originalPointer, originalOpacity };
+}
+
+function hideLoading(btn, state) {
+  if (!btn || !state) return;
+  btn.innerHTML = state.originalHTML;
+  btn.style.opacity = state.originalOpacity || '';
+  btn.style.pointerEvents = state.originalPointer || '';
+}
+
 // Show badge earned toast notification
 function showBadgeEarnedToast(badges) {
   if (!badges || badges.length === 0) return;
@@ -5823,8 +5854,16 @@ async function doSignup() {
     showFormError('Please fill in your name, email and password.');
     return;
   }
-  if (password.length < 6) {
-    showFormError('Password must be at least 6 characters.');
+  if (password.length < 8) {
+    showFormError('Password must be at least 8 characters.');
+    return;
+  }
+  if (!/\d/.test(password)) {
+    showFormError('Password must contain at least one number.');
+    return;
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\;'`~]/.test(password)) {
+    showFormError('Password must contain at least one special character (!@#$%^&*...).');
     return;
   }
 
@@ -5944,7 +5983,7 @@ function lmSel(el,m){
   document.getElementById('ltp-badge').textContent=p.badge;
   document.getElementById('ltp-heading').innerHTML=p.heading;
   document.getElementById('ltp-desc').textContent=p.desc;
-  document.getElementById('ltp-features').innerHTML=p.feats.map(f=>`<div class="ltp-feat"><div class="ltp-feat-icon">${f.icon}</div>${f.text}</div>`).join('');
+  document.getElementById('ltp-features').innerHTML=p.feats.map(f=>`<div class="ltp-feat"><div class="ltp-feat-icon">${sanitize(f.icon)}</div>${sanitize(f.text)}</div>`).join('');
   const cardTitle=document.getElementById('ltp-card-title');
   const cardSub=document.getElementById('ltp-card-sub');
   const cardIcon=document.querySelector('#ltp-visual-card > div:first-child');
@@ -6047,15 +6086,15 @@ function updateCommunityGrid(){
   if(!grid)return;
   grid.innerHTML=communityPosts.map(p=>`
     <div class="com-card" onclick="openPost(${p.id})">
-      <div class="com-img" style="background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:56px;">${p.emoji}</div>
+      <div class="com-img" style="background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:56px;">${sanitize(p.emoji)}</div>
       <div class="com-body">
-        <div class="com-title">${p.title}</div>
-        <div class="com-auth">by ${p.author} · ${p.school}</div>
-        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.55;transition:color .4s">${p.desc}</p>
+        <div class="com-title">${sanitize(p.title)}</div>
+        <div class="com-auth">by ${sanitize(p.author)} · ${sanitize(p.school)}</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.55;transition:color .4s">${sanitize(p.desc)}</p>
         <div class="com-acts">
           <span>❤️ ${p.likes}</span>
           <span>💬 ${p.comments.length}</span>
-          <span style="margin-left:auto;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1)">${p.tier.toUpperCase()}</span>
+          <span style="margin-left:auto;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1)">${sanitize(p.tier.toUpperCase())}</span>
         </div>
       </div>
     </div>
@@ -6067,15 +6106,15 @@ function openPost(id){
   if(!p)return;
   currentPost=p;
   document.getElementById('post-modal-content').innerHTML=`
-    <div style="background:linear-gradient(135deg,var(--a1),var(--a2));height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;">${p.emoji}</div>
+    <div style="background:linear-gradient(135deg,var(--a1),var(--a2));height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;">${sanitize(p.emoji)}</div>
     <div style="padding:32px;">
-      <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">${p.tier}</div>
-      <div style="font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.5px;transition:color .4s">${p.title}</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:18px;transition:color .4s">by ${p.author} · ${p.school}</div>
-      <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px;transition:color .4s">${p.desc}</p>
+      <div style="font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--a1);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">${sanitize(p.tier)}</div>
+      <div style="font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.5px;transition:color .4s">${sanitize(p.title)}</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:18px;transition:color .4s">by ${sanitize(p.author)} · ${sanitize(p.school)}</div>
+      <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px;transition:color .4s">${sanitize(p.desc)}</p>
       <div style="display:flex;gap:12px;margin-bottom:28px;">
         <button class="btn btn-outline btn-sm" id="like-btn" onclick="toggleLike(${p.id})">
-          ${userLikes.has(p.id)?'❤️':'🤍'} ${p.likes + (userLikes.has(p.id)?0:0)} Likes
+          ${userLikes.has(p.id)?'❤️':'🤍'} ${p.likes} Likes
         </button>
         <button class="btn btn-outline btn-sm" onclick="closePostModal()">✕ Close</button>
       </div>
@@ -6083,8 +6122,8 @@ function openPost(id){
         <div style="font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px">💬 ${p.comments.length} Comments</div>
         <div id="comments-list">
           ${p.comments.map(c=>`<div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${c.user[0]}</div>
-            <div style="background:rgba(var(--a1-rgb,249,115,22),.05);border:1px solid var(--bdr);border-radius:14px;padding:10px 14px;flex:1"><div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;transition:color .4s">${c.user}</div><div style="font-size:13px;color:var(--muted);transition:color .4s">${c.text}</div></div>
+            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${sanitize(c.user[0])}</div>
+            <div style="background:rgba(var(--a1-rgb,249,115,22),.05);border:1px solid var(--bdr);border-radius:14px;padding:10px 14px;flex:1"><div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;transition:color .4s">${sanitize(c.user)}</div><div style="font-size:13px;color:var(--muted);transition:color .4s">${sanitize(c.text)}</div></div>
           </div>`).join('')}
         </div>
         <div style="display:flex;gap:10px;margin-top:16px;">
@@ -6144,7 +6183,7 @@ function handleAvatarUpload(input){
     if(img){img.src=e.target.result;img.style.display='block';}
     if(svg)svg.style.display='none';
     // Also update nav avatar
-    if(navAv){navAv.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;}
+    if(navAv){navAv.innerHTML=`<img src="${sanitize(e.target.result)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;}
     // Toast notification
     const toast=document.createElement('div');
     toast.textContent='✓ Profile picture updated!';
@@ -6729,6 +6768,8 @@ setTimeout(()=>{
 @keyframes tierDeco2{0%,100%{transform:translate(80px,120px)}50%{transform:translate(120px,60px)}}
 @keyframes tierDeco3{0%,100%{transform:translate(60vw,20vh) scale(1)}50%{transform:translate(65vw,25vh) scale(1.2)}}
 @keyframes tierSlideOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.05)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 </style>
 
 <script>
@@ -6816,17 +6857,17 @@ function _showTierOverlay(tier, d) {
   icon.textContent = d.icon;
   badge.textContent = d.badge;
   badge.style.color = d.badgeColor;
-  title.innerHTML = d.title.replace('\n','<br>');
+  title.innerHTML = sanitize(d.title).replace('\n','<br>');
   title.style.color = d.textColor;
   desc.textContent = d.desc;
   desc.style.color = d.textColor;
 
   feats.innerHTML = d.features.map(f =>
-    `<div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:50px;padding:8px 18px;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${d.textColor};letter-spacing:.5px;">${f}</div>`
+    `<div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:50px;padding:8px 18px;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${d.textColor};letter-spacing:.5px;">${sanitize(f)}</div>`
   ).join('');
 
   // Button shows Sign In / Sign Up (since tier is locked)
-  btn.innerHTML = `<span style="font-size:16px">${d.icon}</span> Sign in to ${tier.charAt(0).toUpperCase()+tier.slice(1)} →`;
+  btn.innerHTML = `<span style="font-size:16px">${sanitize(d.icon)}</span> Sign in to ${sanitize(tier.charAt(0).toUpperCase()+tier.slice(1))} →`;
   btn.style.background = d.btnBg;
   btn.style.color = d.btnColor;
   btn.onmouseover = () => { btn.style.transform='translateY(-3px) scale(1.04)'; btn.style.boxShadow=`0 16px 40px -8px ${d.btnBg}`; };

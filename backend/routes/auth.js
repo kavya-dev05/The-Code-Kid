@@ -53,8 +53,14 @@ router.post('/signup', async (req, res) => {
   if (!email || !password || !username) {
     return res.status(400).json({ error: 'Email, password and username are required.' });
   }
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+  }
+  if (!/\d/.test(password)) {
+    return res.status(400).json({ error: 'Password must contain at least one number.' });
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\;'`~]/.test(password)) {
+    return res.status(400).json({ error: 'Password must contain at least one special character (!@#$%^&*...).' });
   }
   if (username.trim().length < 3) {
     return res.status(400).json({ error: 'Username must be at least 3 characters.' });
@@ -219,7 +225,12 @@ router.post('/login', async (req, res) => {
 router.post('/logout', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (token) {
-    await supabase.auth.admin.signOut(token);
+    try {
+      await supabase.auth.admin.signOut(token);
+    } catch (error) {
+      // Log error but don't fail the logout - client already cleared session
+      console.error('Logout error:', error.message);
+    }
   }
   res.json({ message: 'Logged out successfully.' });
 });
