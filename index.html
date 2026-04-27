@@ -222,7 +222,8 @@ nav{
   font-size:clamp(52px,6.5vw,88px);
   font-weight:900;line-height:.97;
   letter-spacing:-1px;color:#111418;}
-[data-mode="pro"] .hero-h em{
+[data-mode="pro"] .hero-h .hero-main{display:block;}
+[data-mode="pro"] .hero-h .hero-em{
   font-style:italic;color:#111418;
   display:block;}
 [data-mode="pro"] .hero-p{
@@ -993,7 +994,8 @@ nav{
   margin-bottom:22px;animation:fadeSlideDown .7s .1s ease forwards;
   transition:color .4s;
 }
-.hero-h em{
+.hero-h .hero-main{display:block;}
+.hero-h .hero-em{
   font-style:italic;color:var(--a1);
   display:block;transition:color .4s;
 }
@@ -2001,7 +2003,7 @@ nav{
         <div class="ltp-deco-dot" style="bottom:100px;left:20px;width:10px;height:10px;"></div>
 
         <div class="ltp-badge" id="ltp-badge">🎮 Junior Mode</div>
-        <div class="ltp-heading" id="ltp-heading">Start Your<br><em>Coding Journey.</em></div>
+        <div class="ltp-heading" id="ltp-heading"></div>
         <div class="ltp-desc" id="ltp-desc">Logic puzzles, pattern games and fun challenges designed for young minds aged 8–12.</div>
         <div class="ltp-features" id="ltp-features">
           <div class="ltp-feat"><div class="ltp-feat-icon">🧩</div>Fun pattern-based quizzes</div>
@@ -2256,7 +2258,7 @@ nav{
   <section class="hero" style="z-index:2;position:relative;">
     <div class="hero-l">
       <div class="hero-eyebrow"><span class="hero-dot"></span>India's #1 Coding Platform for Kids</div>
-      <h1 class="hero-h" id="hero-heading">Start Your<br>Coding<br><em id="hero-em">Journey.</em></h1>
+      <h1 class="hero-h" id="hero-heading"><span class="hero-main"></span><span class="hero-em"></span></h1>
       <p class="hero-p" id="hero-desc">Discover the art of code through a perfectly balanced, distraction-free environment designed for young minds across India.</p>
       <div class="hero-ctas">
         <button class="btn btn-fill" onclick="goPage('courses')">▶ Start Learning</button>
@@ -2329,7 +2331,7 @@ nav{
     <div class="feat-grid">
       <div>
         <div class="stag">Why Us</div>
-        <h2 class="shead">Built<br><em>Different.</em></h2>
+        <h2 class="shead">Built<em>Different.</em></h2>
         <p class="sdesc">A platform built on modern pedagogy and premium aesthetics — zero noise, pure growth.</p>
         <div class="feat-list">
           <div class="feat-item"><div class="feat-n">01</div><div><div class="feat-t">Distraction-Free Focus</div><p class="feat-d">No pop-ups, no chaos. Clean, aesthetic interfaces that respect your concentration.</p></div></div>
@@ -2345,7 +2347,7 @@ nav{
   <!-- CTA -->
   <div class="wrap section rv">
     <div class="cta-box">
-      <h2 class="cta-h" id="cta-heading">Experience the <em>Difference.</em></h2>
+      <h2 class="cta-h" id="cta-heading"></h2>
       <p class="cta-p" id="cta-desc">Join 450+ students from schools across India in the highest-quality coding environment for young minds.</p>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <button class="btn btn-fill" id="cta-primary-btn" onclick="goPage('courses')">▶ Start Today's Challenge</button>
@@ -3178,7 +3180,8 @@ animBg();
 // ════════════════════════════════════════
 const modeConfig={
   junior:{
-    heroH:'Start Coding,<br><em>Journey Begins.</em>',
+    heroMain:'Start Coding,',
+    heroEm:'Journey Begins.',
     heroP:'Discover the art of code through a perfectly balanced, distraction-free environment designed for young minds.',
     courseH:'Fun <em>Logic Games</em>',
     courseP:'Build strong logic through fun games and puzzles — structured for every young mind.',
@@ -3186,7 +3189,8 @@ const modeConfig={
     cheroGrad:'linear-gradient(135deg,#f97316,#fbbf24)',
   },
   explorer:{
-    heroH:'Code Beyond,<br><em>No Limits.</em>',
+    heroMain:'Code Beyond,',
+    heroEm:'No Limits.',
     heroP:'Master structural thinking and real problem solving. Bridge the gap between logic and real code.',
     courseH:'Structural <em>Thinking</em>',
     courseP:'Intermediate challenges to transition you from logic puzzles to real algorithmic thinking.',
@@ -3194,7 +3198,8 @@ const modeConfig={
     cheroGrad:'linear-gradient(135deg,#06b6d4,#3b82f6)',
   },
   pro:{
-    heroH:'Architecture<br><em>of Thought.</em>',
+    heroMain:'Architecture',
+    heroEm:'of Thought.',
     heroP:'Class 9–12 Elite Coding Track. A quiet sanctuary for the next generation of software architects.',
     courseH:'Engineering <em>Curriculum</em>',
     courseP:'Curated modules designed by industry veterans. From foundational algorithms to advanced systems.',
@@ -3244,9 +3249,9 @@ function updateActivityList() {
         ${!isLast ? '<div class="pro-act-line"></div>' : ''}
         <div class="pro-act-dot pro-act-dot--${a.type}"></div>
         <div class="pro-act-body">
-          <div class="pro-act-meta"><span class="pro-act-tag pro-act-tag--${a.type}">${a.tag}</span><span class="pro-act-time">${a.time}</span></div>
-          <div class="pro-act-title">${a.title}</div>
-          <div class="pro-act-sub">${a.xp?`<span class="pro-act-xp">${a.xp}</span>`:''}<span class="pro-act-detail">${a.detail}</span></div>
+          <div class="pro-act-meta"><span class="pro-act-tag pro-act-tag--${a.type}">${sanitize(a.tag)}</span><span class="pro-act-time">${sanitize(a.time)}</span></div>
+          <div class="pro-act-title">${sanitize(a.title)}</div>
+          <div class="pro-act-sub">${a.xp?`<span class="pro-act-xp">${sanitize(a.xp)}</span>`:''}<span class="pro-act-detail">${sanitize(a.detail)}</span></div>
         </div>
       </div>`;
     }).join('');
@@ -3255,10 +3260,10 @@ function updateActivityList() {
     el.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
     el.innerHTML = data.map(a => `
       <div class="activity-row">
-        <span class="activity-icon">${a.icon}</span>
+        <span class="activity-icon">${sanitize(a.icon)}</span>
         <div>
-          <div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">${a.title}</div>
-          <div style="font-size:11px;color:var(--muted);transition:color .4s">${a.sub}</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);transition:color .4s">${sanitize(a.title)}</div>
+          <div style="font-size:11px;color:var(--muted);transition:color .4s">${sanitize(a.sub)}</div>
         </div>
       </div>`).join('');
   }
@@ -3276,9 +3281,10 @@ function setMode(m,btn){
   updateDailyChallenge();
   // Update texts (innerHTML for config content with HTML tags, textContent for plain text)
   const cfg=modeConfig[m];
-  document.getElementById('hero-heading').innerHTML=cfg.heroH;
+  document.querySelector('#hero-heading .hero-main').textContent=cfg.heroMain;
+  document.querySelector('#hero-heading .hero-em').textContent=cfg.heroEm;
   document.getElementById('hero-desc').textContent=cfg.heroP;
-  document.getElementById('course-heading').innerHTML=cfg.courseH;
+  document.getElementById('course-heading').innerHTML=sanitize(cfg.courseH);
   document.getElementById('course-desc').textContent=cfg.courseP;
   document.getElementById('ch-title').textContent=cfg.chTitle;
   document.getElementById('ch-desc').textContent=cfg.chDesc;
@@ -3289,15 +3295,15 @@ function setMode(m,btn){
   else switchCourseTab('pro',document.getElementById('ctab-p'));
   // Update CTA section per tier
   const ctaCfg={
-    junior:{heading:'Keep the <em>Streak Alive.</em>',desc:"You're on a roll! Jump into today's logic puzzle and earn XP.",btnLabel:'🧩 Play Today\'s Puzzle',btnPage:'challenges'},
-    explorer:{heading:'Push Your <em>Limits.</em>',desc:'New algorithm challenges are waiting. Keep climbing the leaderboard.',btnLabel:'🌌 Tackle Next Challenge',btnPage:'challenges'},
-    pro:{heading:'The silence of a clean room<br><em>is where the best code is written.</em>',desc:'Applications for the next academic cycle are now being accepted for careful review.',btnLabel:'BEGIN YOUR JOURNEY',btnPage:'compete'},
+    junior:{headingMain:'Keep the',headingEm:'Streak Alive.',desc:"You're on a roll! Jump into today's logic puzzle and earn XP.",btnLabel:'🧩 Play Today\'s Puzzle',btnPage:'challenges'},
+    explorer:{headingMain:'Push Your',headingEm:'Limits.',desc:'New algorithm challenges are waiting. Keep climbing the leaderboard.',btnLabel:'🌌 Tackle Next Challenge',btnPage:'challenges'},
+    pro:{headingMain:'The silence of a clean room ',headingEm:'is where the best code is written.',desc:'Applications for the next academic cycle are now being accepted for careful review.',btnLabel:'BEGIN YOUR JOURNEY',btnPage:'compete'},
   };
   const cc=ctaCfg[m];
   const ctaH=document.getElementById('cta-heading');
   const ctaD=document.getElementById('cta-desc');
   const ctaBtn=document.getElementById('cta-primary-btn');
-  if(ctaH)ctaH.innerHTML=cc.heading;
+  if(ctaH)ctaH.innerHTML=`${sanitize(cc.headingMain)}<em>${sanitize(cc.headingEm)}</em>`;
   if(ctaD)ctaD.textContent=cc.desc;
   if(ctaBtn){ctaBtn.textContent=cc.btnLabel;ctaBtn.onclick=()=>goPage(cc.btnPage);}
   // Compete nav — Pro only
@@ -3702,7 +3708,7 @@ function updateHeroPanel(){
   const xpPct = Math.min(100, xpInLevel);
   // Use real earned badges from server, fallback to defaults
   const userBadges = user.earnedBadges && user.earnedBadges.length > 0
-    ? user.earnedBadges.slice(0, 4).map(b => b.badge_icon)
+    ? user.earnedBadges.slice(0, 4).map(b => b.badge_icon || b.icon || b.badge || '🏆')
     : null;
 
   const themes={
@@ -3791,7 +3797,7 @@ function updateHeroPanel(){
 
   // Build leaderboard rows - show user and top 2 others from leaderboard
   const lbUsers = user.username ? [
-    {av:'★',name:user.username,xp:userXp,you:true},
+    {av:'★',name:sanitize(user.username),xp:userXp,you:true},
     ...(user.leaderboardRank && user.leaderboardRank > 3 ? [{av:'KN',name:'Kavya Nair',xp:'3,159',you:false},{av:'SS',name:'Sneha Singh',xp:'2,643',you:false}] : [])
   ] : [];
   const lbRows = lbUsers.map(u=>`
@@ -5541,7 +5547,7 @@ function showLoading(btn, loadingText = 'Loading...') {
   const originalHTML = btn.innerHTML;
   const originalPointer = btn.style.pointerEvents;
   const originalOpacity = btn.style.opacity;
-  btn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;"></span>${loadingText}</span>`;
+  btn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;"></span>${sanitize(loadingText)}</span>`;
   btn.style.opacity = '.7';
   btn.style.pointerEvents = 'none';
   return { originalHTML, originalPointer, originalOpacity };
@@ -5561,10 +5567,10 @@ function showBadgeEarnedToast(badges) {
   const toast = document.createElement('div');
   toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fbbf24,#f97316);color:#fff;padding:16px 28px;border-radius:16px;font-size:14px;font-weight:700;font-family:"Satoshi",sans-serif;z-index:9999;box-shadow:0 8px 32px -8px rgba(249,115,22,.5);animation:pageIn .4s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:12px;';
   toast.innerHTML = `
-    <span style="font-size:24px">${badges[0].badge_icon}</span>
+    <span style="font-size:24px">${sanitize(badges[0].badge_icon)}</span>
     <div>
       <div style="font-size:11px;opacity:.9">Badge Earned!</div>
-      <div style="font-size:15px">${badges[0].badge_name}</div>
+      <div style="font-size:15px">${sanitize(badges[0].badge_name)}</div>
     </div>
   `;
   document.body.appendChild(toast);
@@ -5717,7 +5723,7 @@ function updateNavUI() {
   // Update level display in navbar
   const level = Math.floor((currentUser.xp || 0) / 100) + 1;
   const navLvEl = document.querySelector('.nlv');
-  if (navLvEl) navLvEl.innerHTML = `Lv<br>${level}`;
+  if (navLvEl) navLvEl.innerHTML = `Lv<br>${sanitize(String(level))}`;
   // Update streak in navbar
   document.querySelectorAll('.streak-text').forEach(el => {
     el.textContent = currentUser.streak || 0;
@@ -5959,21 +5965,24 @@ function lmSel(el,m){
   const previews={
     junior:{
       badge:'🎮 Junior Mode',
-      heading:'Start Your<br><em>Coding Journey.</em>',
+      headingMain:'Start Your',
+      headingEm:'Coding Journey.',
       desc:'Logic puzzles, pattern games and fun challenges designed for young minds aged 8–12.',
       feats:[{icon:'🧩',text:'Fun pattern-based quizzes'},{icon:'📚',text:'Beginner-friendly curriculum'},{icon:'⭐',text:'XP rewards & streaks'},{icon:'🛡️',text:'Safe, distraction-free environment'}],
       cardIcon:'🎮',cardTitle:"Today's Challenge",cardSub:'Node Calibration · ✦ 20 XP'
     },
     explorer:{
       badge:'🔭 Explorer Mode',
-      heading:'Code Beyond,<br><em>No Limits.</em>',
+      headingMain:'Code Beyond,',
+      headingEm:'No Limits.',
       desc:'Bridge logic and real programming. Structural thinking, algorithms and problem solving for ages 12–15.',
       feats:[{icon:'🔭',text:'Intermediate algorithm challenges'},{icon:'🌌',text:'Real data structure puzzles'},{icon:'📊',text:'Competitive leaderboard'},{icon:'🚀',text:'Dark ocean UI — focused & immersive'}],
       cardIcon:'🔭',cardTitle:"Today's Challenge",cardSub:'Fibonacci Sequence · ✦ 25 XP'
     },
     pro:{
       badge:'⚡ Pro Mode',
-      heading:'Think & Build,<br><em>Conquer.</em>',
+      headingMain:'Think & Build,',
+      headingEm:'Conquer.',
       desc:'Advanced algorithms, live coding editor, and competitive challenges. For those ready to lead the field.',
       feats:[{icon:'💻',text:'Live code editor with run & submit'},{icon:'⚡',text:'Hard algorithm problems (LeetCode style)'},{icon:'🏆',text:'Full matrix/terminal aesthetic'},{icon:'🔥',text:'Compete at national level'}],
       cardIcon:'⚡',cardTitle:"Today's Challenge",cardSub:'Binary Search · ✦ 60 XP'
@@ -5981,7 +5990,7 @@ function lmSel(el,m){
   };
   const p=previews[m];
   document.getElementById('ltp-badge').textContent=p.badge;
-  document.getElementById('ltp-heading').innerHTML=p.heading;
+  document.getElementById('ltp-heading').innerHTML=`${sanitize(p.headingMain)}<em>${sanitize(p.headingEm)}</em>`;
   document.getElementById('ltp-desc').textContent=p.desc;
   document.getElementById('ltp-features').innerHTML=p.feats.map(f=>`<div class="ltp-feat"><div class="ltp-feat-icon">${sanitize(f.icon)}</div>${sanitize(f.text)}</div>`).join('');
   const cardTitle=document.getElementById('ltp-card-title');
@@ -6010,21 +6019,24 @@ function _syncLoginPreviewPanel(m) {
   var previews2 = {
     junior: {
       badge:'🎮 Junior Mode',
-      heading:'Start Your<br><em>Coding Journey.</em>',
+      headingMain:'Start Your',
+      headingEm:'Coding Journey.',
       desc:'Logic puzzles, pattern games and fun challenges designed for young minds aged 8–12.',
       feats:[{icon:'🧩',text:'Fun pattern-based quizzes'},{icon:'📚',text:'Beginner-friendly curriculum'},{icon:'⭐',text:'XP rewards & streaks'},{icon:'🛡️',text:'Safe, distraction-free environment'}],
       cardIcon:'🎮', cardTitle:"Today's Challenge", cardSub:'Node Calibration · ✦ 20 XP'
     },
     explorer: {
       badge:'🔭 Explorer Mode',
-      heading:'Code Beyond,<br><em>No Limits.</em>',
+      headingMain:'Code Beyond,',
+      headingEm:'No Limits.',
       desc:'Bridge logic and real programming. Structural thinking, algorithms and problem solving for ages 12–15.',
       feats:[{icon:'🔭',text:'Intermediate algorithm challenges'},{icon:'🌌',text:'Real data structure puzzles'},{icon:'📊',text:'Competitive leaderboard'},{icon:'🚀',text:'Dark ocean UI — focused & immersive'}],
       cardIcon:'🔭', cardTitle:"Today's Challenge", cardSub:'Fibonacci Sequence · ✦ 25 XP'
     },
     pro: {
       badge:'⚡ Pro Mode',
-      heading:'Think & Build,<br><em>Conquer.</em>',
+      headingMain:'Think & Build,',
+      headingEm:'Conquer.',
       desc:'Advanced algorithms, live coding editor, and competitive challenges. For those ready to lead the field.',
       feats:[{icon:'💻',text:'Live code editor with run & submit'},{icon:'⚡',text:'Hard algorithm problems (LeetCode style)'},{icon:'🏆',text:'Full matrix/terminal aesthetic'},{icon:'🔥',text:'Compete at national level'}],
       cardIcon:'⚡', cardTitle:"Today's Challenge", cardSub:'Binary Search · ✦ 60 XP'
@@ -6039,9 +6051,9 @@ function _syncLoginPreviewPanel(m) {
   var cardSub = document.getElementById('ltp-card-sub');
   var cardIcon = document.querySelector('#ltp-visual-card > div:first-child');
   if(badge) badge.textContent = p.badge;
-  if(heading) heading.innerHTML = p.heading;
+  if(heading) heading.innerHTML = sanitize(p.headingMain) + '<em>' + sanitize(p.headingEm) + '</em>';
   if(desc) desc.textContent = p.desc;
-  if(feats) feats.innerHTML = p.feats.map(function(f){ return '<div class="ltp-feat"><div class="ltp-feat-icon">'+f.icon+'</div>'+f.text+'</div>'; }).join('');
+  if(feats) feats.innerHTML = p.feats.map(function(f){ return '<div class="ltp-feat"><div class="ltp-feat-icon">'+sanitize(f.icon)+'</div>'+sanitize(f.text)+'</div>'; }).join('');
   if(cardTitle) cardTitle.textContent = p.cardTitle;
   if(cardSub) cardSub.textContent = p.cardSub;
   if(cardIcon) cardIcon.textContent = p.cardIcon;
@@ -6371,7 +6383,7 @@ function openFooterModal(key){
     const level = Math.floor((currentUser.xp || 0) / 100) + 1;
     bodyContent = `
     <div style="margin-bottom:20px;padding:16px;border-radius:14px;background:rgba(var(--a1-rgb,249,115,22),.08);border:1px solid var(--bdr);">
-      <div style="font-size:14px;color:var(--a1);font-weight:700;margin-bottom:8px;">Welcome back, ${currentUser.username || 'Coder'}!</div>
+      <div style="font-size:14px;color:var(--a1);font-weight:700;margin-bottom:8px;">Welcome back, ${sanitize(currentUser.username) || 'Coder'}!</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;">
         <div><span style="font-size:20px;font-weight:700;color:var(--text);">${currentUser.xp || 0}</span><span style="font-size:11px;color:var(--muted);"> XP</span></div>
         <div><span style="font-size:20px;font-weight:700;color:var(--text);">${level}</span><span style="font-size:11px;color:var(--muted);"> Level</span></div>
@@ -6382,7 +6394,7 @@ function openFooterModal(key){
   }
 
   document.getElementById('footer-modal-content').innerHTML = `
-    <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.5px;margin-bottom:20px;">${data.title}</div>
+    <div style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.5px;margin-bottom:20px;">${sanitize(data.title)}</div>
     ${bodyContent}
   `;
   modal.style.display = 'flex';
@@ -6397,17 +6409,24 @@ function closeFooterModal(){
 // ════════════════════════════════════════
 // SIGN OUT
 // ════════════════════════════════════════
-function signOut(){
+async function signOut(){
   // Remember which tier they were in so login page shows correct theme
   var lastTier = mode || 'junior';
 
-  // Tell the backend to invalidate the session (fire-and-forget)
+  // Tell the backend to invalidate the session
   const token = getToken();
   if (token) {
-    fetch(`${API}/auth/logout`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}` }
-    }).catch(() => {});
+    try {
+      const res = await fetch(`${API}/auth/logout`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) {
+        console.warn('Logout API call failed:', res.status);
+      }
+    } catch (err) {
+      console.error('Logout error:', err.message);
+    }
   }
 
   // Clear all local state
@@ -6451,11 +6470,11 @@ async function fetchAndRenderLeaderboard(tier) {
       return `<div class="lb-row${isMe?' me':''}">
         ${rankDisplay}
         <div style="display:flex;align-items:center;gap:11px">
-          <div class="lbav" style="${isMe?'background:var(--a1)':''}">${u.initials}</div>
-          <div><div class="lbn">${u.username}${isMe?' <span class="me-tag">YOU</span>':''}</div><div class="lbs">Lv ${u.level}</div></div>
+          <div class="lbav" style="${isMe?'background:var(--a1)':''}">${sanitize(u.initials)}</div>
+          <div><div class="lbn">${sanitize(u.username)}${isMe?' <span class="me-tag">YOU</span>':''}</div><div class="lbs">Lv ${sanitize(u.level)}</div></div>
         </div>
-        <div class="lblv">🔥 ${u.streak}</div>
-        <div class="lbxp">✦ ${u.xp.toLocaleString()}</div>
+        <div class="lblv">🔥 ${sanitize(u.streak)}</div>
+        <div class="lbxp">✦ ${sanitize(u.xp.toLocaleString())}</div>
       </div>`;
     }).join('');
 
@@ -6557,7 +6576,7 @@ function updateDashboardFromUser() {
   streakTextEls.forEach(el => el.textContent = currentUser.streak || 0);
   // Update nav level
   const navLvEl = document.querySelector('.nlv');
-  if (navLvEl) navLvEl.innerHTML = `Lv<br>${level}`;
+  if (navLvEl) navLvEl.innerHTML = `Lv<br>${sanitize(String(level))}`;
 }
 
 // Get level title based on level number
@@ -6662,7 +6681,7 @@ function updateProfileFromUser() {
 
   // Update nav level display
   const navLvEl = document.querySelector('.nlv');
-  if (navLvEl) navLvEl.innerHTML = `Lv<br>${level}`;
+  if (navLvEl) navLvEl.innerHTML = `Lv<br>${sanitize(String(level))}`;
 
   // Populate edit profile form with current user data
   populateEditProfileForm();
