@@ -70,13 +70,17 @@ app.use('/api/user',        require('./routes/user'));
 app.use('/api/leaderboard', require('./routes/leaderboard'));
 app.use('/api/compiler',    compilerLimiter, require('./routes/compiler'));
 
+// ─── Database Connection Validation ───────────────────────
+const supabase = require('./db/supabase');
+supabase.validateConnection();
+
 // ─── Health check ─────────────────────────────────────────
 app.get('/', (req, res) => {
   res.json({ status: 'TheCodeKid backend is running ✅' });
 });
 
 // ─── Environment Validation ───────────────────────────────
-const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'JUDGE0_API_URL', 'JUDGE0_API_KEY'];
+const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY'];
 const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingVars.length > 0) {
@@ -84,6 +88,12 @@ if (missingVars.length > 0) {
   missingVars.forEach(varName => console.error(`   - ${varName}`));
   console.error('\n   Please check your .env file and restart the server.\n');
   process.exit(1);
+}
+
+// Warn about optional Judge0 API key
+if (!process.env.JUDGE0_API_KEY || process.env.JUDGE0_API_KEY === 'your_rapidapi_key_here') {
+  console.warn('\n⚠️  Judge0 API key not configured. Compiler features will be disabled.');
+  console.warn('   Get a free key from https://rapidapi.com/judge0-official/api/judge0-ce\n');
 }
 
 // ─── Start ────────────────────────────────────────────────

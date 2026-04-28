@@ -31,7 +31,7 @@ router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required.' });
 
-  const { error } = await supabase.auth.resetPasswordEmail(email, {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${req.protocol}://${req.get('host')}/reset-password`,
   });
 
@@ -40,6 +40,41 @@ router.post('/forgot-password', async (req, res) => {
   }
 
   res.json({ message: 'Password reset email sent! Check your inbox.' });
+});
+
+// ─────────────────────────────────────────
+// POST /api/auth/reset-password
+// Body: { newPassword } - called after user clicks email link
+// Updates password for the authenticated user
+// ─────────────────────────────────────────
+router.post('/reset-password', async (req, res) => {
+  const { newPassword } = req.body;
+
+  if (!newPassword) {
+    return res.status(400).json({ error: 'New password is required.' });
+  }
+
+  // Validate password strength
+  if (newPassword.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+  }
+  if (!/\d/.test(newPassword)) {
+    return res.status(400).json({ error: 'Password must contain at least one number.' });
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\;'`~]/.test(newPassword)) {
+    return res.status(400).json({ error: 'Password must contain at least one special character (!@#$%^&*...).' });
+  }
+
+  // Update password using Supabase Auth
+  const { data, error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) {
+    return res.status(400).json({ error: error.message });
+  }
+
+  res.json({ message: 'Password updated successfully! You can now log in with your new password.' });
 });
 
 // ─────────────────────────────────────────
@@ -88,6 +123,7 @@ router.post('/signup', async (req, res) => {
   });
 
   if (error) {
+    console.error('Signup error creating auth user:', error);
     if (error.message.includes('already registered')) {
       return res.status(400).json({ error: 'An account with this email already exists.' });
     }
@@ -104,6 +140,10 @@ router.post('/signup', async (req, res) => {
     last_active: new Date().toISOString().split('T')[0],
     school: school ? school.trim() : null,
   });
+
+  if (profileError) {
+    console.error('Signup error creating profile:', profileError);
+  }
 
   // Log the signup activity
   if (!profileError) {

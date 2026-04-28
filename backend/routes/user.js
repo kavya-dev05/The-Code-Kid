@@ -380,7 +380,29 @@ router.put('/profile', async (req, res) => {
   const { username, school } = req.body;
 
   const updateData = {};
-  if (username) updateData.username = username;
+  if (username) {
+    // Validate username format
+    if (username.trim().length < 3) {
+      return res.status(400).json({ error: 'Username must be at least 3 characters.' });
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username.trim())) {
+      return res.status(400).json({ error: 'Username can only contain letters, numbers and underscores.' });
+    }
+
+    // Check if username is already taken by another user
+    const { data: existingUser } = await supabase
+      .from('profiles')
+      .select('id, username')
+      .eq('username', username.trim())
+      .neq('id', req.user.id) // Exclude current user
+      .single();
+
+    if (existingUser) {
+      return res.status(409).json({ error: 'That username is already taken. Try another.' });
+    }
+
+    updateData.username = username.trim();
+  }
   if (school) updateData.school = school;
 
   if (Object.keys(updateData).length === 0) {
@@ -399,6 +421,38 @@ router.put('/profile', async (req, res) => {
   }
 
   res.json({ username: data.username, school: data.school });
+});
+
+// ─────────────────────────────────────────
+// POST /api/user/avatar
+// Body: { avatarUrl } — update user's avatar URL
+// ─────────────────────────────────────────
+router.post('/avatar', async (req, res) => {
+  const { avatarUrl } = req.body;
+
+  if (!avatarUrl || typeof avatarUrl !== 'string') {
+    return res.status(400).json({ error: 'avatarUrl is required and must be a string.' });
+  }
+
+  // Validate URL format
+  try {
+    new URL(avatarUrl);
+  } catch {
+    return res.status(400).json({ error: 'Invalid URL format for avatar.' });
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({ avatar_url: avatarUrl })
+    .eq('id', req.user.id)
+    .select('avatar_url')
+    .single();
+
+  if (error) {
+    return res.status(500).json({ error: 'Failed to update avatar.' });
+  }
+
+  res.json({ avatar_url: data.avatar_url });
 });
 
 module.exports = router;

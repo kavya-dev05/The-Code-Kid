@@ -2086,6 +2086,35 @@ nav{
 </div>
 
 <!-- ════════════════════════════════
+     PAGE: RESET PASSWORD
+════════════════════════════════ -->
+<div class="page" id="page-reset-password">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 20px 40px;position:relative;z-index:2;">
+    <div class="login-form-card rv" style="max-width:480px;">
+      <div class="form-title">Reset Password<span style="color:var(--a1)">.</span></div>
+      <div class="form-sub">Enter your new password below.</div>
+
+      <div id="reset-password-message" style="margin-bottom:20px;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;display:none;"></div>
+
+      <div class="form-group">
+        <label class="form-label">New Password</label>
+        <input type="password" class="form-input" placeholder="••••••••" id="reset-password">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" class="form-input" placeholder="••••••••" id="reset-password-confirm">
+      </div>
+
+      <button class="btn btn-fill" style="width:100%;justify-content:center;border-radius:14px;padding:15px;margin-top:12px;" onclick="submitResetPassword()">Update Password →</button>
+
+      <div style="text-align:center;margin-top:22px;font-size:13px;color:var(--muted)">
+        Remember your password? <span style="color:var(--a1);cursor:pointer;font-weight:700" onclick="goPage('login')">Sign in →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
      PAGE: COMPETE  (Pro only)
 ════════════════════════════════ -->
 <div class="page" id="page-compete">
@@ -2448,6 +2477,25 @@ nav{
     <div style="position:relative;z-index:1;background:var(--card);border:1px solid var(--bdr);border-radius:24px;padding:40px;max-width:560px;width:100%;backdrop-filter:blur(30px);animation:pageIn .3s ease both;max-height:80vh;overflow-y:auto;">
       <button onclick="closeFooterModal()" style="position:absolute;top:16px;right:16px;background:var(--bg3);border:1px solid var(--bdr);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;">✕</button>
       <div id="footer-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgot-password-modal" style="display:none;position:fixed;inset:0;z-index:3100;align-items:center;justify-content:center;padding:20px;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);" onclick="closeForgotPasswordModal()"></div>
+    <div style="position:relative;z-index:1;background:var(--card);border:1px solid var(--bdr);border-radius:24px;padding:40px;max-width:480px;width:100%;backdrop-filter:blur(30px);animation:pageIn .3s ease both;">
+      <button onclick="closeForgotPasswordModal()" style="position:absolute;top:16px;right:16px;background:var(--bg3);border:1px solid var(--bdr);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;">✕</button>
+      <h3 style="font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:8px;">Forgot Password?</h3>
+      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:24px;">Enter your email address and we'll send you a link to reset your password.</p>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="kavya@thecodekid.in" id="forgot-email">
+      </div>
+      <div id="forgot-password-message" style="margin-top:16px;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;display:none;"></div>
+      <button class="btn btn-fill" style="width:100%;justify-content:center;border-radius:14px;padding:15px;margin-top:24px;" onclick="submitForgotPassword()">Send Reset Link →</button>
+      <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted)">
+        Remember your password? <span style="color:var(--a1);cursor:pointer;font-weight:700" onclick="closeForgotPasswordModal();goPage('login')">Sign in →</span>
+      </div>
     </div>
   </div>
 
@@ -5150,7 +5198,13 @@ function openProProblem(n) {
   openCodeProblem(prob);
 }
 
-function openCodeProblem(cfg){
+async function openCodeProblem(cfg){
+  // Check compiler health on first Pro challenge open
+  if (!compilerHealthChecked) {
+    await checkCompilerHealth();
+    showCompilerStatusWarning();
+  }
+
   currentProblem=cfg; currentLang='py';
   document.getElementById('code-screen').style.display='flex';
   document.getElementById('code-xp-display').textContent=`${xpEarned} XP`;
@@ -5212,6 +5266,36 @@ function nextCodeProblem(){
   const next = PRO_PROBLEMS[currentProblem.n + 1];
   if(next){openCodeProblem(next);}
   else{closeCode();}
+}
+
+// Compiler health status cache
+let compilerHealthStatus = null;
+let compilerHealthChecked = false;
+
+// Check compiler health status
+async function checkCompilerHealth() {
+  try {
+    const response = await fetch(`${API}/compiler/health`);
+    const data = await response.json();
+    compilerHealthStatus = data;
+    compilerHealthChecked = true;
+    return data;
+  } catch (error) {
+    compilerHealthStatus = { status: 'error', error: error.message };
+    compilerHealthChecked = true;
+    return compilerHealthStatus;
+  }
+}
+
+// Show compiler status warning if not healthy
+function showCompilerStatusWarning() {
+  if (!compilerHealthChecked) return;
+
+  if (!compilerHealthStatus.judge0Configured) {
+    alert('⚠️  Compiler Not Configured\n\nThe Judge0 API key is not set. Pro Mode code execution will not work.\n\nPlease configure JUDGE0_API_KEY in the backend .env file.');
+  } else if (compilerHealthStatus.status !== 'ok') {
+    alert('⚠️  Compiler Unavailable\n\nThe code compiler is currently unavailable. Please try again later.');
+  }
 }
 
 async function runCode(){
@@ -5594,9 +5678,23 @@ function showBadgeEarnedToast(badges) {
 // ════════════════════════════════════════
 // ════════════════════════════════════════
 // BACKEND CONFIG
-// Change this URL after you deploy your backend
+// Auto-detects production URL or uses localhost for development
 // ════════════════════════════════════════
-const API = 'http://localhost:3000/api';
+(function configureAPI() {
+  // Check if running on Vercel/Netlify/other hosting
+  const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+
+  if (isProduction) {
+    // Production: Update this URL after deploying your backend
+    window.API_BASE = 'https://your-backend-url.herokuapp.com/api'; // ← Replace with your deployed backend URL
+  } else {
+    // Development: Local backend server
+    window.API_BASE = 'http://localhost:3000/api';
+  }
+})();
+
+// Backwards compatibility alias
+const API = window.API_BASE;
 
 // ════════════════════════════════════════
 // TIER ACCESS SYSTEM — now backed by real API
@@ -5778,6 +5876,143 @@ function showFormError(msg) {
 function clearFormError() {
   const el = document.getElementById('form-error-msg');
   if (el) el.remove();
+}
+
+// ─── FORGOT PASSWORD ──────────────────────────────────────────
+function showForgotPwModal() {
+  document.getElementById('forgot-password-modal').style.display = 'flex';
+}
+
+function closeForgotPasswordModal() {
+  document.getElementById('forgot-password-modal').style.display = 'none';
+  const msgEl = document.getElementById('forgot-password-message');
+  if (msgEl) {
+    msgEl.style.display = 'none';
+    msgEl.textContent = '';
+    msgEl.style.color = '';
+  }
+  document.getElementById('forgot-email').value = '';
+}
+
+async function submitForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  const msgEl = document.getElementById('forgot-password-message');
+
+  if (!email) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = '⚠ Please enter your email address.';
+    return;
+  }
+
+  msgEl.style.display = 'block';
+  msgEl.style.color = 'var(--a1)';
+  msgEl.textContent = '⏳ Sending reset email...';
+
+  try {
+    const res = await fetch(`${API}/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msgEl.style.color = '#ef4444';
+      msgEl.textContent = '⚠ ' + (data.error || 'Failed to send reset email.');
+      return;
+    }
+
+    msgEl.style.color = '#22c55e';
+    msgEl.textContent = '✓ ' + data.message;
+
+    // Auto-close after 3 seconds
+    setTimeout(() => {
+      closeForgotPasswordModal();
+    }, 3000);
+
+  } catch (e) {
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = '⚠ Cannot connect to server. Please try again.';
+  }
+}
+
+// ─── RESET PASSWORD ───────────────────────────────────────────
+async function submitResetPassword() {
+  const passEl = document.getElementById('reset-password');
+  const confirmEl = document.getElementById('reset-password-confirm');
+  const msgEl = document.getElementById('reset-password-message');
+
+  const newPassword = passEl.value;
+  const confirmPassword = confirmEl.value;
+
+  if (!newPassword || !confirmPassword) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = '⚠ Please fill in both password fields.';
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = '⚠ Passwords do not match.';
+    return;
+  }
+
+  if (newPassword.length < 8) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = '⚠ Password must be at least 8 characters.';
+    return;
+  }
+
+  if (!/\d/.test(newPassword)) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = '⚠ Password must contain at least one number.';
+    return;
+  }
+
+  if (!/[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\;'`~]/.test(newPassword)) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = '⚠ Password must contain at least one special character.';
+    return;
+  }
+
+  msgEl.style.display = 'block';
+  msgEl.style.color = 'var(--a1)';
+  msgEl.textContent = '⏳ Updating password...';
+
+  try {
+    const res = await fetch(`${API}/auth/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newPassword })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msgEl.style.color = '#ef4444';
+      msgEl.textContent = '⚠ ' + (data.error || 'Failed to update password.');
+      return;
+    }
+
+    msgEl.style.color = '#22c55e';
+    msgEl.textContent = '✓ ' + data.message;
+
+    // Redirect to login after 3 seconds
+    setTimeout(() => {
+      goPage('login');
+    }, 3000);
+
+  } catch (e) {
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = '⚠ Cannot connect to server. Please try again.';
+  }
 }
 
 // ─── REAL LOGIN ───────────────────────────────────────────────
@@ -6196,26 +6431,83 @@ function submitProject(){
 // ════════════════════════════════════════
 // PROFILE
 // ════════════════════════════════════════
-function handleAvatarUpload(input){
+async function handleAvatarUpload(input){
   const file=input.files[0];
   if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const img=document.getElementById('profile-avatar-img');
-    const svg=document.getElementById('profile-avatar-svg');
-    const navAv=document.querySelector('.nav-avatar');
-    if(img){img.src=e.target.result;img.style.display='block';}
-    if(svg)svg.style.display='none';
-    // Also update nav avatar
-    if(navAv){navAv.innerHTML=`<img src="${sanitize(e.target.result)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;}
-    // Toast notification
-    const toast=document.createElement('div');
-    toast.textContent='✓ Profile picture updated!';
-    toast.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--a1);color:#fff;padding:12px 24px;border-radius:50px;font-size:13px;font-weight:700;font-family:"JetBrains Mono",monospace;z-index:9999;animation:pageIn .3s ease;';
-    document.body.appendChild(toast);
-    setTimeout(()=>toast.remove(),2500);
-  };
-  reader.readAsDataURL(file);
+
+  // Show loading state
+  const toast=document.createElement('div');
+  toast.textContent='⏳ Uploading...';
+  toast.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--a1);color:#fff;padding:12px 24px;border-radius:50px;font-size:13px;font-weight:700;font-family:"JetBrains Mono",monospace;z-index:9999;animation:pageIn .3s ease;';
+  document.body.appendChild(toast);
+
+  try {
+    // Convert file to base64
+    const reader = new FileReader();
+    reader.onload = async e => {
+      const base64Data = e.target.result;
+
+      try {
+        // Upload to a public image hosting service or use Supabase Storage
+        // For now, we'll use a placeholder approach - in production, you'd upload to Supabase Storage
+        // Here we simulate by storing the base64 directly (for demo purposes)
+        // In production, replace this with actual Supabase Storage upload
+
+        const token = getToken();
+        if (!token) {
+          toast.textContent = '❌ Please log in first';
+          toast.style.background = '#ef4444';
+          setTimeout(() => toast.remove(), 2500);
+          return;
+        }
+
+        // For production: Upload to Supabase Storage first, then get the URL
+        // For now, we'll use a data URL (works for demo, not recommended for production)
+        const avatarUrl = base64Data;
+
+        // Call backend to save avatar URL
+        const res = await fetch(`${API}/user/avatar`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ avatarUrl })
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to upload avatar');
+        }
+
+        // Update UI
+        const img=document.getElementById('profile-avatar-img');
+        const svg=document.getElementById('profile-avatar-svg');
+        const navAv=document.querySelector('.nav-avatar');
+        if(img){img.src=base64Data;img.style.display='block';}
+        if(svg)svg.style.display='none';
+        if(navAv){navAv.innerHTML=`<img src="${sanitize(base64Data)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;}
+
+        toast.textContent='✓ Profile picture updated!';
+        toast.style.background = 'var(--a1)';
+
+        // Update currentUser
+        if (currentUser) {
+          currentUser.avatar_url = avatarUrl;
+        }
+
+        setTimeout(()=>toast.remove(),2500);
+      } catch (error) {
+        toast.textContent = '❌ Upload failed: ' + error.message;
+        toast.style.background = '#ef4444';
+        setTimeout(() => toast.remove(), 3000);
+      }
+    };
+    reader.readAsDataURL(file);
+  } catch (error) {
+    toast.textContent = '❌ Upload failed: ' + error.message;
+    toast.style.background = '#ef4444';
+    setTimeout(() => toast.remove(), 3000);
+  }
 }
 
 function updateUsernameDisplay(val){
