@@ -230,8 +230,8 @@ nav{
   font-family:"Satoshi",sans-serif;
   font-size:15px;line-height:1.75;
   color:#737878;font-weight:400;
-  max-width:380px;margin-top:24px;}
-[data-mode="pro"] .hero-ctas{margin-top:36px;gap:14px;}
+  max-width:380px;margin-top:20px;margin-bottom:20px;}
+[data-mode="pro"] .hero-ctas{margin-top:28px;margin-bottom:28px;gap:14px;}
 [data-mode="pro"] .hstat-n{
   font-family:"Playfair Display",serif;
   font-size:28px;font-weight:900;
@@ -241,9 +241,23 @@ nav{
   font-size:9.5px;font-weight:700;
   text-transform:uppercase;letter-spacing:2px;color:#737878;}
 [data-mode="pro"] .hero-stats{
-  margin-top:52px;
+  margin-top:40px;
   border-top:1px solid rgba(17,20,24,.1);
-  padding-top:28px;gap:36px;}
+  padding-top:24px;gap:32px;}
+
+/* Junior theme - adjusted spacing for 100% zoom visibility */
+[data-mode="junior"] .hero-h{
+  margin-bottom:18px;
+}
+[data-mode="junior"] .hero-p{
+  margin-bottom:20px;
+}
+[data-mode="junior"] .hero-ctas{
+  margin-bottom:32px;
+}
+[data-mode="junior"] .hero-stats{
+  margin-top:36px;
+}
 
 /* ─ Marquee ─ */
 [data-mode="pro"] .marquee{
@@ -969,7 +983,7 @@ nav{
 }
 .hero-l{
   display:flex;flex-direction:column;justify-content:center;
-  padding:64px 40px 64px 80px;
+  padding:48px 40px 48px 80px;
   z-index:2;
 }
 /* HERO MIDDLE — removed, merged into right panel */
@@ -1001,10 +1015,10 @@ nav{
 }
 .hero-p{
   font-size:17px;color:var(--muted);line-height:1.65;
-  max-width:420px;margin-bottom:36px;
+  max-width:420px;margin-bottom:24px;
   animation:fadeSlideDown .7s .2s ease forwards;transition:color .4s;
 }
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:52px;animation:fadeSlideDown .7s .3s ease forwards;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px;animation:fadeSlideDown .7s .3s ease forwards;}
 .hero-stats{
   display:flex;gap:36px;padding-top:28px;
   border-top:1px solid var(--bdr);
@@ -3534,62 +3548,60 @@ function heroScenePro(){
     </g>
     <!-- Main code editor card — light theme -->
     <g filter="url(#shadow-p)">
-      <rect x="55" y="180" width="420" height="420" rx="12" fill="#ffffff" stroke="rgba(26,39,68,.08)" stroke-width="1"/>
+      <rect x="55" y="140" width="420" height="380" rx="12" fill="#ffffff" stroke="rgba(26,39,68,.08)" stroke-width="1"/>
     </g>
     <!-- Editor title bar -->
-    <rect x="55" y="180" width="420" height="38" rx="12" fill="#f5f6f8"/>
-    <rect x="55" y="200" width="420" height="18" fill="#f5f6f8"/>
-    <circle cx="80" cy="200" r="6" fill="#ef4444" opacity=".7"/>
-    <circle cx="100" cy="200" r="6" fill="#f59e0b" opacity=".7"/>
-    <circle cx="120" cy="200" r="6" fill="#22c55e" opacity=".7"/>
-    <text x="420" y="205" text-anchor="end" fill="#9ca3af" font-family="JetBrains Mono" font-size="10">solution.js</text>
+    <rect x="55" y="140" width="420" height="38" rx="12" fill="#f5f6f8"/>
+    <rect x="55" y="160" width="420" height="18" fill="#f5f6f8"/>
+    <circle cx="80" cy="160" r="6" fill="#ef4444" opacity=".7"/>
+    <circle cx="100" cy="160" r="6" fill="#f59e0b" opacity=".7"/>
+    <circle cx="120" cy="160" r="6" fill="#22c55e" opacity=".7"/>
+    <text x="420" y="165" text-anchor="end" fill="#9ca3af" font-family="JetBrains Mono" font-size="10">solution.js</text>
     <!-- Line numbers -->
-    ${Array.from({length:12},(_,i)=>`<text x="72" y="${238+i*28}" fill="#d1d5db" font-family="JetBrains Mono" font-size="11">${i+1}</text>`).join('')}
+    ${Array.from({length:11},(_,i)=>`<text x="72" y="${198+i*28}" fill="#d1d5db" font-family="JetBrains Mono" font-size="11">${i+1}</text>`).join('')}
     <!-- Code lines — clean syntax highlighting -->
     ${[
-      {x:92,y:238,t:'function binarySearch(arr, target) {',c:'#3b4dd8'},
-      {x:104,y:266,t:'let lo = 0, hi = arr.length - 1;',c:'#374151'},
-      {x:104,y:294,t:'while (lo <= hi) {',c:'#374151'},
-      {x:116,y:322,t:'const mid = (lo + hi) >> 1;',c:'#7c3aed'},
-      {x:116,y:350,t:'if (arr[mid] === target)',c:'#374151'},
-      {x:128,y:378,t:'return mid;',c:'#059669'},
-      {x:116,y:406,t:'else if (arr[mid] < target)',c:'#374151'},
-      {x:128,y:434,t:'lo = mid + 1;',c:'#374151'},
-      {x:116,y:462,t:'else hi = mid - 1;',c:'#374151'},
-      {x:104,y:490,t:'}',c:'#374151'},
-      {x:104,y:518,t:'return -1;',c:'#059669'},
-      {x:92, y:546,t:'}',c:'#3b4dd8'},
+      {x:92,y:198,t:'function binarySearch(arr, target) {',c:'#3b4dd8'},
+      {x:104,y:226,t:'let lo = 0, hi = arr.length - 1;',c:'#374151'},
+      {x:104,y:254,t:'while (lo <= hi) {',c:'#374151'},
+      {x:116,y:282,t:'const mid = (lo + hi) >> 1;',c:'#7c3aed'},
+      {x:116,y:310,t:'if (arr[mid] === target)',c:'#374151'},
+      {x:128,y:338,t:'return mid;',c:'#059669'},
+      {x:116,y:366,t:'else if (arr[mid] < target)',c:'#374151'},
+      {x:128,y:394,t:'lo = mid + 1;',c:'#374151'},
+      {x:116,y:422,t:'else hi = mid - 1;',c:'#374151'},
+      {x:104,y:450,t:'}',c:'#374151'},
+      {x:92, y:478,t:'  return -1;',c:'#059669'},
     ].map(l=>`<text x="${l.x}" y="${l.y}" fill="${l.c}" font-family="JetBrains Mono" font-size="11.5" font-weight="500">${l.t}</text>`).join('')}
     <!-- Cursor blink -->
-    <rect x="92" y="552" width="6" height="11" rx="0" fill="#1c2b3a"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect>
+    <rect x="92" y="484" width="6" height="11" rx="0" fill="#1c2b3a"><animate attributeName="opacity" values=".9;0;.9" dur="1.2s" repeatCount="indefinite"/></rect>
     <!-- Rank card -->
     <g filter="url(#shadow-p)">
-      <rect x="310" y="230" width="190" height="110" rx="12" fill="#ffffff" stroke="rgba(26,39,68,.08)" stroke-width="1"/>
+      <rect x="310" y="190" width="190" height="100" rx="12" fill="#ffffff" stroke="rgba(26,39,68,.08)" stroke-width="1"/>
     </g>
-    <text x="326" y="258" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">NATIONAL RANK</text>
-    <text x="326" y="300" fill="#1c2b3a" font-family="Playfair Display,serif" font-size="42" font-weight="900">#3</text>
-    <text x="326" y="324" fill="#6b7280" font-family="JetBrains Mono" font-size="10">Top 0.8% · 450+ coders</text>
+    <text x="326" y="218" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">NATIONAL RANK</text>
+    <text x="326" y="260" fill="#1c2b3a" font-family="Playfair Display,serif" font-size="42" font-weight="900">#3</text>
+    <text x="326" y="284" fill="#6b7280" font-family="JetBrains Mono" font-size="10">Top 0.8% · 450+ coders</text>
     <!-- XP card -->
     <g filter="url(#shadow-p)">
-      <rect x="310" y="362" width="190" height="100" rx="12" fill="#ffffff" stroke="rgba(26,39,68,.08)" stroke-width="1"/>
+      <rect x="310" y="310" width="190" height="90" rx="12" fill="#ffffff" stroke="rgba(26,39,68,.08)" stroke-width="1"/>
     </g>
-    <text x="326" y="390" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">TOTAL XP</text>
-    <text x="326" y:="432" fill="#3b4dd8" font-family="Clash Display,sans-serif" font-size="38" font-weight="700">1,840</text>
-    <text x="326" y="450" fill="#1c2b3a" font-family="Playfair Display,serif" font-size="38" font-weight="900">1,840</text>
-    <text x="326" y="472" fill="#6b7280" font-family="JetBrains Mono" font-size="10">+120 XP today</text>
+    <text x="326" y="338" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">TOTAL XP</text>
+    <text x="326" y="380" fill="#1c2b3a" font-family="Playfair Display,serif" font-size="38" font-weight="900">1,840</text>
+    <text x="326" y="396" fill="#6b7280" font-family="JetBrains Mono" font-size="10">+120 XP today</text>
     <!-- Complexity badge -->
     <g filter="url(#shadow-p)">
-      <rect x="310" y="484" width="190" height="80" rx="12" fill="#f0f4ff" stroke="rgba(26,39,68,.08)" stroke-width="1"/>
+      <rect x="310" y="420" width="190" height="70" rx="12" fill="#f0f4ff" stroke="rgba(26,39,68,.08)" stroke-width="1"/>
     </g>
-    <text x="326" y="510" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">AVG COMPLEXITY</text>
-    <text x="326" y="546" fill="#1a2744" font-family="JetBrains Mono" font-size="22" font-weight="700">O(log n)</text>
-    <!-- Tag pills -->
-    <rect x="55" y="618" width="88" height="26" rx="13" fill="#eef1ff"/>
-    <text x="99" y="635" text-anchor="middle" fill="#3b4dd8" font-family="JetBrains Mono" font-size="10" font-weight="700">Algorithms</text>
-    <rect x="153" y="618" width="72" height="26" rx="13" fill="#f0fdf4"/>
-    <text x="189" y="635" text-anchor="middle" fill="#059669" font-family="JetBrains Mono" font-size="10" font-weight="700">Accepted</text>
-    <rect x="235" y="618" width="78" height="26" rx="13" fill="#fefce8"/>
-    <text x="274" y="635" text-anchor="middle" fill="#d97706" font-family="JetBrains Mono" font-size="10" font-weight="700">94% faster</text>
+    <text x="326" y="446" fill="#9ca3af" font-family="JetBrains Mono" font-size="9" font-weight="700" letter-spacing="1.5">AVG COMPLEXITY</text>
+    <text x="326" y="476" fill="#1a2744" font-family="JetBrains Mono" font-size="22" font-weight="700">O(log n)</text>
+    <!-- Tag pills - moved up significantly -->
+    <rect x="55" y="530" width="88" height="26" rx="13" fill="#eef1ff"/>
+    <text x="99" y="547" text-anchor="middle" fill="#3b4dd8" font-family="JetBrains Mono" font-size="10" font-weight="700">Algorithms</text>
+    <rect x="153" y="530" width="72" height="26" rx="13" fill="#f0fdf4"/>
+    <text x="189" y="547" text-anchor="middle" fill="#059669" font-family="JetBrains Mono" font-size="10" font-weight="700">Accepted</text>
+    <rect x="235" y="530" width="78" height="26" rx="13" fill="#fefce8"/>
+    <text x="274" y="547" text-anchor="middle" fill="#d97706" font-family="JetBrains Mono" font-size="10" font-weight="700">94% faster</text>
   </svg>`;
 }
 
